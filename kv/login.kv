@@ -1,0 +1,31 @@
+#:kivy 2.3.1
+
+<LoginScreen>:
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: "30dp"
+        spacing: "20dp"
+
+        Widget:
+            size_hint_y: 0.3
+
+        Label:
+            text: "Login"
+            font_size: "34sp"
+            bold: True
+            color: 0.1, 0.2, 0.6, 1
+
+        Label:
+            text: "We'll build the login form here."
+            color: 0.4, 0.4, 0.4, 1
+
+        Widget:
+            size_hint_y: 0.5

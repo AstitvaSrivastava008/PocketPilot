@@ -1,0 +1,77 @@
+#:kivy 2.3.1
+
+<WelcomeScreen>:
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: "20dp"
+        padding: "40dp"
+
+        Widget:
+            size_hint_y: 0.3
+
+        Label:
+            text: "PP"
+            font_size: "72sp"
+            bold: True
+            color: 0.1, 0.2, 0.6, 1
+            halign: "center"
+            valign: "middle"
+            text_size: self.size
+            size_hint_y: None
+            height: "80dp"
+
+        Label:
+            text: "PocketPilot"
+            font_size: "34sp"
+            bold: True
+            color: 0.1, 0.2, 0.6, 1
+            halign: "center"
+            valign: "middle"
+            text_size: self.size
+            size_hint_y: None
+            height: "50dp"
+
+        Label:
+            text: "Take control of your money."
+            font_size: "18sp"
+            color: 0.3, 0.3, 0.3, 1
+            halign: "center"
+            valign: "middle"
+            text_size: self.size
+            size_hint_y: None
+            height: "40dp"
+
+        Widget:
+            size_hint_y: 0.2
+
+        MDRaisedButton:
+            text: "Get Started"
+            size_hint: None, None
+            size: "220dp", "50dp"
+            pos_hint: {"center_x": 0.5}
+            on_release: root.go_to_choice()
+
+        Label:
+            text: "Already have an account?"
+            color: 0.5, 0.5, 0.5, 1
+            font_size: "14sp"
+            halign: "center"
+            valign: "middle"
+            text_size: self.size
+            size_hint_y: None
+            height: "30dp"
+
+        MDFlatButton:
+            text: "Login"
+            pos_hint: {"center_x": 0.5}
+            on_release: root.go_to_login()
+
+        Widget:
+            size_hint_y: 0.2

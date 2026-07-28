@@ -1,0 +1,60 @@
+#:kivy 2.3.1
+
+<ChoiceScreen>:
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: "20dp"
+        padding: "30dp"
+
+        Widget:
+            size_hint_y: 0.2
+
+        Label:
+            text: "How would you like to continue?"
+            font_size: "28sp"
+            bold: True
+            color: 0.1, 0.2, 0.6, 1
+            halign: "center"
+            text_size: self.size
+
+        Widget:
+            size_hint_y: 0.05
+
+        MDRaisedButton:
+            text: "Create Account"
+            size_hint: None, None
+            size: "250dp", "50dp"
+            pos_hint: {"center_x": 0.5}
+            on_release: root.create_account()
+
+        MDRaisedButton:
+            text: "Continue as Guest"
+            size_hint: None, None
+            size: "250dp", "50dp"
+            pos_hint: {"center_x": 0.5}
+            on_release: root.continue_as_guest()
+
+        Widget:
+            size_hint_y: 0.1
+
+        Label:
+            text: "Already have an account?"
+            color: 0.5, 0.5, 0.5, 1
+            halign: "center"
+            text_size: self.size
+
+        MDFlatButton:
+            text: "Login"
+            pos_hint: {"center_x": 0.5}
+            on_release: root.login()
+
+        Widget:
+            size_hint_y: 0.2
