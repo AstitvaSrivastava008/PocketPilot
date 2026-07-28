@@ -22,10 +22,38 @@
             font_size: "34sp"
             bold: True
             color: 0.1, 0.2, 0.6, 1
+            size_hint_y: None
+            height: "50dp"
 
-        Label:
-            text: "We'll build the login form here."
-            color: 0.4, 0.4, 0.4, 1
+        TextInput:
+            id: email_input
+            hint_text: "Email"
+            multiline: False
+            size_hint_y: None
+            height: "45dp"
 
         Widget:
-            size_hint_y: 0.5
+            size_hint_y: None
+            height: "10dp"
+
+        TextInput:
+            id: password_input
+            hint_text: "Password"
+            multiline: False
+            password: True
+            size_hint_y: None
+            height: "45dp"
+
+        Widget:
+            size_hint_y: None
+            height: "20dp"
+
+        MDRaisedButton:
+            text: "Login"
+            size_hint: None, None
+            size: "200dp", "45dp"
+            pos_hint: {"center_x": 0.5}
+            on_release: root.login()
+
+        Widget:
+            size_hint_y: 0.4
