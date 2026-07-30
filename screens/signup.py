@@ -1,5 +1,5 @@
 from kivy.uix.screenmanager import Screen
-
+from database import add_user
 
 class SignupScreen(Screen):
 
@@ -36,3 +36,4 @@ class SignupScreen(Screen):
 
        else:
         print("Validation Successful!")
+        add_user(name, email, password)
