@@ -42,7 +42,24 @@ def add_user(name, email, password):
     connection.close()
 
     print("User added successfully!")
+def login_user(email, password):
 
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT * FROM users
+        WHERE email = ? AND password = ?
+        """,
+        (email, password)
+    )
+
+    user = cursor.fetchone()
+
+    connection.close()
+
+    return user
 
 if __name__ == "__main__":
     create_database()

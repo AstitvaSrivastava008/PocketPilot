@@ -1,4 +1,5 @@
 from kivy.uix.screenmanager import Screen
+from database import login_user
 
 
 class LoginScreen(Screen):
@@ -25,6 +26,11 @@ class LoginScreen(Screen):
             print("Password must be at least 8 characters long")
 
         else:
-            print("Login Successful!")
-            print("Email:", email)
-            print("Password:", password)
+            user = login_user(email, password)
+
+            if user:
+                print("Login Successful!")
+                print("Welcome,", user[1])
+
+            else:
+                print("Invalid email or password")
