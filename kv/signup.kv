@@ -1,1 +1,82 @@
 #:kivy 2.3.1
+
+<SignupScreen>:
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: "30dp"
+        spacing: "15dp"
+
+        Widget:
+            size_hint_y: 0.15
+
+        Label:
+            text: "Create Account"
+            font_size: "34sp"
+            bold: True
+            color: 0.1, 0.2, 0.6, 1
+            size_hint_y: None
+            height: "50dp"
+
+        TextInput:
+            id: name_input
+            hint_text: "Full Name"
+            multiline: False
+            size_hint_y: None
+            height: "45dp"
+
+        TextInput:
+            id: email_input
+            hint_text: "Email"
+            multiline: False
+            size_hint_y: None
+            height: "45dp"
+
+        TextInput:
+            id: password_input
+            hint_text: "Password"
+            multiline: False
+            password: True
+            size_hint_y: None
+            height: "45dp"
+
+        TextInput:
+            id: confirm_password_input
+            hint_text: "Confirm Password"
+            multiline: False
+            password: True
+            size_hint_y: None
+            height: "45dp"
+
+        MDRaisedButton:
+            text: "Create Account"
+            size_hint: None, None
+            size: "220dp", "45dp"
+            pos_hint: {"center_x": 0.5}
+            on_release:
+                root.create_account()
+
+        Widget:
+            size_hint_y: 0.05
+
+        Label:
+            text: "Already have an account?"
+            color: 0, 0, 0, 1
+            size_hint_y: None
+            height: "30dp"
+
+        MDTextButton:
+            text: "Login"
+            pos_hint: {"center_x": 0.5}
+            on_release:
+                app.root.current = "login"
+
+        Widget:
+            size_hint_y: 0.2
