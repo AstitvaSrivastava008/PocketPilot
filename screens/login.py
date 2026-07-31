@@ -29,8 +29,9 @@ class LoginScreen(Screen):
             user = login_user(email, password)
 
             if user:
-                print("Login Successful!")
-                print("Welcome,", user[1])
+             print("Login Successful!")
+             print("Welcome,", user[1])
+             self.manager.current = "home"
 
             else:
                 print("Invalid email or password")

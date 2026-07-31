@@ -7,6 +7,7 @@ from screens.welcome import WelcomeScreen
 from screens.choice import ChoiceScreen
 from screens.login import LoginScreen
 from screens.signup import SignupScreen
+from screens.home import HomeScreen
 class PocketPilot(MDApp):
     def build(self):
         # Load the KV file
@@ -15,6 +16,7 @@ class PocketPilot(MDApp):
         Builder.load_file("kv/choice.kv")
         Builder.load_file("kv/login.kv")
         Builder.load_file("kv/signup.kv")
+        Builder.load_file("kv/home.kv")
 
         self.title = "PocketPilot"
 
@@ -35,6 +37,7 @@ class PocketPilot(MDApp):
         LoginScreen(name="login")
         )
         screen_manager.add_widget(SignupScreen(name="signup"))
+        screen_manager.add_widget(HomeScreen(name="home"))
 
         return screen_manager
 
