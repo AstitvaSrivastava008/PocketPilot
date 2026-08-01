@@ -5,7 +5,6 @@ from database import login_user
 class LoginScreen(Screen):
 
     def login(self):
-        print("Login button clicked!")
 
         email = self.ids.email_input.text.strip()
         password = self.ids.password_input.text.strip()
@@ -29,9 +28,17 @@ class LoginScreen(Screen):
             user = login_user(email, password)
 
             if user:
-             print("Login Successful!")
-             print("Welcome,", user[1])
-             self.manager.current = "home"
+                print("Login Successful!")
+                print("Welcome,", user[1])
+
+                # Get the Home screen
+                home_screen = self.manager.get_screen("home")
+
+                # Pass the user's name
+                home_screen.user_name = user[1]
+
+                # Open Home Screen
+                self.manager.current = "home"
 
             else:
                 print("Invalid email or password")
