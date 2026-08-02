@@ -1,55 +1,203 @@
 #:kivy 2.3.1
+#:import MDCard kivymd.uix.card.MDCard
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
+#:import BottomNav widget.bottom_nav.BottomNav
 
 <HomeScreen>:
 
-    canvas.before:
-        Color:
-            rgba: 1, 1, 1, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
-
     BoxLayout:
         orientation: "vertical"
-        padding: "25dp"
-        spacing: "20dp"
 
-        Label:
-            text: "PocketPilot"
-            font_size: "30sp"
-            bold: True
-            color: 0.1, 0.2, 0.6, 1
-            size_hint_y: None
-            height: "50dp"
+        # ==========================
+        # SCROLLABLE CONTENT
+        # ==========================
+        ScrollView:
+            do_scroll_x: False
 
-        Label:
-            text: "Welcome,"
-            font_size: "24sp"
-            color: 0, 0, 0, 1
-            size_hint_y: None
-            height: "35dp"
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: "20dp"
 
-        Label:
-            text: root.user_name
-            font_size: "28sp"
-            bold: True
-            color: 0.1, 0.2, 0.6, 1
-            size_hint_y: None
-            height: "40dp"
+                canvas.before:
+                    Color:
+                        rgba: 0.96, 0.97, 1, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
 
-        Label:
-            text: "Current Balance"
-            font_size: "18sp"
-            color: 0.4, 0.4, 0.4, 1
-            size_hint_y: None
-            height: "30dp"
+                # ==========================
+                # HEADER
+                # ==========================
+                MDCard:
+                    size_hint_y: None
+                    height: "220dp"
+                    radius: [0, 0, 30, 30]
+                    elevation: 0
+                    md_bg_color: 0.10, 0.32, 0.82, 1
 
-        Label:
-            text: "₹0.00"
-            font_size: "36sp"
-            bold: True
-            color: 0.1, 0.6, 0.2, 1
-            size_hint_y: None
-            height: "60dp"
+                    BoxLayout:
+                        orientation: "vertical"
+                        padding: "25dp"
+                        spacing: "8dp"
 
-        Widget:
+                        Label:
+                            text: "PocketPilot"
+                            font_size: "32sp"
+                            bold: True
+                            color: 1, 1, 1, 1
+                            halign: "center"
+                            valign: "middle"
+                            text_size: self.size
+
+                        Widget:
+
+                        Label:
+                            text: "Welcome back,"
+                            font_size: "18sp"
+                            color: .9, .9, 1, 1
+                            halign: "left"
+                            text_size: self.width, None
+
+                        Label:
+                            text: root.user_name
+                            font_size: "30sp"
+                            bold: True
+                            color: 1, 1, 1, 1
+                            halign: "left"
+                            text_size: self.width, None
+
+                # ==========================
+                # BODY
+                # ==========================
+                BoxLayout:
+                    orientation: "vertical"
+                    padding: "20dp"
+                    spacing: "20dp"
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                    # ==========================
+                    # CURRENT BALANCE
+                    # ==========================
+                    MDCard:
+                        orientation: "vertical"
+                        size_hint_y: None
+                        height: "160dp"
+                        radius: [20]
+                        elevation: 4
+                        padding: "20dp"
+                        spacing: "10dp"
+                        md_bg_color: 1, 1, 1, 1
+
+                        Label:
+                            text: "Current Balance"
+                            font_size: "20sp"
+                            bold: True
+                            color: .35, .35, .35, 1
+
+                        Label:
+                            text: "₹0.00"
+                            font_size: "48sp"
+                            bold: True
+                            color: .1, .65, .2, 1
+
+                    # ==========================
+                    # ACTION BUTTONS
+                    # ==========================
+                    BoxLayout:
+                        spacing: "15dp"
+                        size_hint_y: None
+                        height: "55dp"
+
+                        MDRaisedButton:
+                            text: "+ Income"
+                            md_bg_color: 0.1, 0.65, 0.2, 1
+                            size_hint_x: 0.5
+
+                            on_release:
+                                app.root.current = "add_transaction"
+
+                        MDRaisedButton:
+                            text: "+ Expense"
+                            md_bg_color: 0.10, 0.32, 0.82, 1
+                            size_hint_x: 0.5
+
+                            on_release:
+                                app.root.current = "add_transaction"
+
+                    # ==========================
+                    # INCOME & EXPENSE CARDS
+                    # ==========================
+                    BoxLayout:
+                        spacing: "15dp"
+                        size_hint_y: None
+                        height: "100dp"
+
+                        MDCard:
+                            radius: [15]
+                            elevation: 2
+                            md_bg_color: 1, 1, 1, 1
+
+                            BoxLayout:
+                                orientation: "vertical"
+                                padding: "15dp"
+
+                                Label:
+                                    text: "Income"
+                                    color: .4, .4, .4, 1
+
+                                Label:
+                                    text: "₹0"
+                                    font_size: "28sp"
+                                    bold: True
+                                    color: 0, .7, 0, 1
+
+                        MDCard:
+                            radius: [15]
+                            elevation: 2
+                            md_bg_color: 1, 1, 1, 1
+
+                            BoxLayout:
+                                orientation: "vertical"
+                                padding: "15dp"
+
+                                Label:
+                                    text: "Expense"
+                                    color: .4, .4, .4, 1
+
+                                Label:
+                                    text: "₹0"
+                                    font_size: "28sp"
+                                    bold: True
+                                    color: .8, 0, 0, 1
+
+                    # ==========================
+                    # RECENT TRANSACTIONS
+                    # ==========================
+                    Label:
+                        text: "Recent Transactions"
+                        font_size: "22sp"
+                        bold: True
+                        color: .15, .15, .15, 1
+                        size_hint_y: None
+                        height: "35dp"
+
+                    MDCard:
+                        size_hint_y: None
+                        height: "120dp"
+                        radius: [15]
+                        elevation: 2
+                        md_bg_color: 1, 1, 1, 1
+
+                        Label:
+                            text: "No transactions yet."
+                            font_size: "18sp"
+                            color: .5, .5, .5, 1
+
+                    Widget:
+                        size_hint_y: None
+                        height: "20dp"
+
+        BottomNav:

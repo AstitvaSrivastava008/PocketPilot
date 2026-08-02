@@ -1,0 +1,73 @@
+#:kivy 2.3.1
+#:import MDIconButton kivymd.uix.button.MDIconButton
+
+<BottomNav>:
+    orientation: "horizontal"
+    size_hint_y: None
+    height: "75dp"
+
+    spacing: "5dp"
+    padding: "10dp"
+
+    canvas.before:
+        Color:
+            rgba: 1,1,1,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+
+        MDIconButton:
+            icon: "home"
+            pos_hint: {"center_x": .5}
+            on_release:
+                root.go_home()
+
+        Label:
+            text: "Home"
+            font_size: "12sp"
+            halign: "center"
+
+    BoxLayout:
+        orientation: "vertical"
+
+        MDIconButton:
+            icon: "history"
+            pos_hint: {"center_x": .5}
+            on_release:
+                root.go_history()
+
+        Label:
+            text: "History"
+            font_size: "12sp"
+            halign: "center"
+
+    BoxLayout:
+        orientation: "vertical"
+
+        MDIconButton:
+            icon: "chart-box"
+            pos_hint: {"center_x": .5}
+            on_release:
+                root.go_analytics()
+
+        Label:
+            text: "Analytics"
+            font_size: "12sp"
+            halign: "center"
+
+    BoxLayout:
+        orientation: "vertical"
+
+        MDIconButton:
+            icon: "cog"
+            pos_hint: {"center_x": .5}
+            on_release:
+                root.go_settings()
+
+        Label:
+            text: "Settings"
+            font_size: "12sp"
+            halign: "center"

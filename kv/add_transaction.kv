@@ -1,0 +1,19 @@
+#:kivy 2.3.1
+
+<AddTransactionScreen>:
+
+    BoxLayout:
+        orientation: "vertical"
+
+        canvas.before:
+            Color:
+                rgba: 0.96, 0.97, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "Add Transaction"
+            font_size: "32sp"
+            bold: True
+            color: 0.1, 0.2, 0.6, 1

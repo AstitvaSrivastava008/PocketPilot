@@ -8,6 +8,11 @@ from screens.choice import ChoiceScreen
 from screens.login import LoginScreen
 from screens.signup import SignupScreen
 from screens.home import HomeScreen
+from screens.history import HistoryScreen
+from screens.analytics import AnalyticsScreen
+from screens.settings import SettingsScreen
+from widget.bottom_nav import BottomNav
+from screens.add_transaction import AddTransactionScreen
 class PocketPilot(MDApp):
     def build(self):
         # Load the KV file
@@ -17,6 +22,11 @@ class PocketPilot(MDApp):
         Builder.load_file("kv/login.kv")
         Builder.load_file("kv/signup.kv")
         Builder.load_file("kv/home.kv")
+        Builder.load_file("kv/history.kv")
+        Builder.load_file("kv/analytics.kv")
+        Builder.load_file("kv/settings.kv")
+        Builder.load_file("kv/bottom_nav.kv")
+        Builder.load_file("kv/add_transaction.kv")
 
         self.title = "PocketPilot"
 
@@ -38,6 +48,11 @@ class PocketPilot(MDApp):
         )
         screen_manager.add_widget(SignupScreen(name="signup"))
         screen_manager.add_widget(HomeScreen(name="home"))
+        screen_manager.add_widget(HistoryScreen(name="history"))
+        screen_manager.add_widget(AnalyticsScreen(name="analytics"))
+        screen_manager.add_widget(SettingsScreen(name="settings"))
+        screen_manager.add_widget(
+        AddTransactionScreen(name="add_transaction"))
 
         return screen_manager
 
