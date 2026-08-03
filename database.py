@@ -199,5 +199,27 @@ def get_recent_transaction(user_id):
         return f"{category}   {sign}₹{amount}"
 
     return "No transactions yet."
+def get_all_transactions(user_id):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT
+            type,
+            category,
+            amount,
+            description,
+            date
+        FROM transactions
+        WHERE user_id = ?
+        ORDER BY id DESC
+    """, (user_id,))
+
+    transactions = cursor.fetchall()
+
+    connection.close()
+
+    return transactions
 if __name__ == "__main__":
     create_database()

@@ -89,7 +89,7 @@ class AddTransactionScreen(Screen):
         category = self.ids.category_spinner.text
         description = self.ids.description_input.text.strip()
 
-        date = datetime.now().strftime("%d-%m-%Y")
+        date = datetime.now().strftime("%d-%b-%Y")
 
         # -----------------------------
         # Validation

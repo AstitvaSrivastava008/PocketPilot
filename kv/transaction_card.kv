@@ -1,0 +1,63 @@
+#:kivy 2.3.1
+#:import MDIcon kivymd.uix.label.MDIcon
+
+<TransactionCard>:
+
+    size_hint_y: None
+    height: "110dp"
+
+    radius: [18]
+    elevation: 2
+    padding: "18dp"
+
+    md_bg_color: 1, 1, 1, 1
+
+    BoxLayout:
+        spacing: "15dp"
+
+        MDIcon:
+            icon: root.icon
+            font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color: root.amount_color
+            size_hint_x: None
+            width: "40dp"
+
+        BoxLayout:
+            orientation: "vertical"
+
+            BoxLayout:
+                size_hint_y: None
+                height: "28dp"
+
+                Label:
+                    text: root.category
+                    bold: True
+                    font_size: "20sp"
+                    color: .15, .15, .15, 1
+                    halign: "left"
+                    valign: "middle"
+                    text_size: self.size
+
+                Label:
+                    text: root.amount
+                    bold: True
+                    font_size: "21sp"
+                    color: root.amount_color
+                    halign: "right"
+                    valign: "middle"
+                    text_size: self.size
+
+            Label:
+                text: root.description
+                color: .45, .45, .45, 1
+                font_size: "15sp"
+                halign: "left"
+                text_size: self.size
+
+            Label:
+                text: root.date
+                color: .60, .60, .60, 1
+                font_size: "13sp"
+                halign: "left"
+                text_size: self.size
