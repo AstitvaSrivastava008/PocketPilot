@@ -1,4 +1,5 @@
 from kivy.uix.screenmanager import Screen
+from kivy.app import App
 from database import login_user
 
 
@@ -31,13 +32,20 @@ class LoginScreen(Screen):
                 print("Login Successful!")
                 print("Welcome,", user[1])
 
-                # Get the Home screen
+                # Store logged-in user globally
+                app = App.get_running_app()
+                app.current_user = user
+
+                # Get Home Screen
                 home_screen = self.manager.get_screen("home")
 
-                # Pass the user's name
+                # Pass user's name
                 home_screen.user_name = user[1]
 
-                # Open Home Screen
+               # Refresh dashboard (we'll create this function next)
+                home_screen.refresh_dashboard()
+
+              # Open Home Screen
                 self.manager.current = "home"
 
             else:

@@ -14,6 +14,7 @@ from screens.settings import SettingsScreen
 from widget.bottom_nav import BottomNav
 from screens.add_transaction import AddTransactionScreen
 class PocketPilot(MDApp):
+    current_user = None
     def build(self):
         # Load the KV file
         Builder.load_file("kv/splash.kv")

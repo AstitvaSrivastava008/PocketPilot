@@ -1,4 +1,6 @@
 #:kivy 2.3.1
+#:import MDCard kivymd.uix.card.MDCard
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
 
 <AddTransactionScreen>:
 
@@ -12,8 +14,160 @@
                 pos: self.pos
                 size: self.size
 
-        Label:
-            text: "Add Transaction"
-            font_size: "32sp"
-            bold: True
-            color: 0.1, 0.2, 0.6, 1
+        # ======================================
+        # HEADER
+        # ======================================
+        MDCard:
+            size_hint_y: None
+            height: "120dp"
+
+            radius: [0, 0, 30, 30]
+            elevation: 0
+            md_bg_color: 0.10, 0.32, 0.82, 1
+
+            BoxLayout:
+                orientation: "vertical"
+                padding: "20dp"
+
+                Label:
+                    text: "Add Transaction"
+                    font_size: "30sp"
+                    bold: True
+                    color: 1, 1, 1, 1
+
+                Label:
+                    text: "Record your income or expense"
+                    font_size: "16sp"
+                    color: .9, .9, 1, 1
+
+        # ======================================
+        # FORM
+        # ======================================
+        ScrollView:
+            do_scroll_x: False
+
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+
+                padding: "20dp"
+                spacing: "20dp"
+
+                # -----------------------------
+                # Transaction Type
+                # -----------------------------
+                Label:
+                    text: "Transaction Type"
+                    font_size: "18sp"
+                    bold: True
+                    color: 0.15, 0.15, 0.15, 1
+                    size_hint_y: None
+                    height: "30dp"
+
+                BoxLayout:
+                    spacing: "15dp"
+                    size_hint_y: None
+                    height: "50dp"
+
+                    ToggleButton:
+                        id: income_toggle
+                        text: "Income"
+                        group: "type"
+
+                        on_state:
+                            if self.state == "down": root.load_income_categories()
+
+                    ToggleButton:
+                        id: expense_toggle
+                        text: "Expense"
+                        group: "type"
+                        state: "down"
+
+                        on_state:
+                            if self.state == "down": root.load_expense_categories()
+
+                # -----------------------------
+                # Amount
+                # -----------------------------
+                Label:
+                    text: "Amount"
+                    color: 0.15, 0.15, 0.15, 1
+                    font_size: "18sp"
+                    bold: True
+                    size_hint_y: None
+                    height: "25dp"
+
+                TextInput:
+                    id: amount_input
+                    hint_text: "Enter amount"
+                    multiline: False
+                    input_filter: "float"
+                    size_hint_y: None
+                    height: "45dp"
+
+                # -----------------------------
+                # Category
+                # -----------------------------
+                Label:
+                    text: "Category"
+                    color: 0.15, 0.15, 0.15, 1
+                    font_size: "18sp"
+                    bold: True
+                    size_hint_y: None
+                    height: "25dp"
+
+                Spinner:
+                    id: category_spinner
+                    text: "Select Category"
+                    values: ()
+                    size_hint_y: None
+                    height: "45dp"
+
+                # -----------------------------
+                # Description
+                # -----------------------------
+                Label:
+                    text: "Description"
+                    color: 0.15, 0.15, 0.15, 1
+                    font_size: "18sp"
+                    bold: True
+                    size_hint_y: None
+                    height: "25dp"
+
+                TextInput:
+                    id: description_input
+                    hint_text: "Optional"
+                    multiline: True
+                    size_hint_y: None
+                    height: "100dp"
+
+                # -----------------------------
+                # Buttons
+                # -----------------------------
+                BoxLayout:
+                    spacing: "15dp"
+                    size_hint_y: None
+                    height: "50dp"
+
+                    MDRaisedButton:
+                        text: "Cancel"
+                        md_bg_color: 0.6, 0.6, 0.6, 1
+                        size_hint_x: 0.5
+
+                        on_release:
+                            root.clear_form()
+                            app.root.current = "home"
+
+                    MDRaisedButton:
+                        id: save_button
+                        text: "Save Transaction"
+                        md_bg_color: 0.10, 0.32, 0.82, 1
+                        size_hint_x: 0.5
+
+                        on_release:
+                            root.save_transaction()
+
+                Widget:
+                    size_hint_y: None
+                    height: "20dp"
