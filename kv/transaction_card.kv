@@ -1,10 +1,12 @@
 #:kivy 2.3.1
+
 #:import MDIcon kivymd.uix.label.MDIcon
+#:import MDIconButton kivymd.uix.button.MDIconButton
 
 <TransactionCard>:
 
     size_hint_y: None
-    height: "110dp"
+    height: "120dp"
 
     radius: [18]
     elevation: 2
@@ -15,6 +17,9 @@
     BoxLayout:
         spacing: "15dp"
 
+        # ==========================
+        # Transaction Icon
+        # ==========================
         MDIcon:
             icon: root.icon
             font_size: "30sp"
@@ -23,6 +28,9 @@
             size_hint_x: None
             width: "40dp"
 
+        # ==========================
+        # Transaction Details
+        # ==========================
         BoxLayout:
             orientation: "vertical"
 
@@ -61,3 +69,30 @@
                 font_size: "13sp"
                 halign: "left"
                 text_size: self.size
+
+        # ==========================
+        # Action Buttons
+        # ==========================
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_x: None
+            width: "45dp"
+            spacing: "5dp"
+
+            Widget:
+
+            MDIconButton:
+                icon: "pencil"
+                theme_text_color: "Custom"
+                text_color: 0.10, 0.32, 0.82, 1
+
+                on_release:
+                    app.root.get_screen("history").edit_transaction(root.transaction_id)
+
+            MDIconButton:
+                icon: "delete"
+                theme_text_color: "Custom"
+                text_color: 0.85, 0, 0, 1
+
+                on_release:
+                    app.root.get_screen("history").confirm_delete(root.transaction_id)

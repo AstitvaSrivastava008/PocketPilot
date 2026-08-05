@@ -91,12 +91,13 @@ def login_user(email, password):
 # ==========================================
 # TRANSACTION FUNCTIONS
 # ==========================================
-def add_transaction(user_id,
-                    transaction_type,
-                    amount,
-                    category,
-                    description,
-                    date):
+def add_transaction(
+        user_id,
+        transaction_type,
+        amount,
+        category,
+        description,
+        date):
 
     connection = sqlite3.connect("data/pocketpilot.db")
     cursor = connection.cursor()
@@ -125,7 +126,7 @@ def add_transaction(user_id,
 
 
 # ==========================================
-# TEST DATABASE
+# DASHBOARD FUNCTIONS
 # ==========================================
 def get_total_income(user_id):
 
@@ -199,6 +200,11 @@ def get_recent_transaction(user_id):
         return f"{category}   {sign}₹{amount}"
 
     return "No transactions yet."
+
+
+# ==========================================
+# HISTORY FUNCTIONS
+# ==========================================
 def get_all_transactions(user_id):
 
     connection = sqlite3.connect("data/pocketpilot.db")
@@ -206,6 +212,7 @@ def get_all_transactions(user_id):
 
     cursor.execute("""
         SELECT
+            id,
             type,
             category,
             amount,
@@ -221,5 +228,68 @@ def get_all_transactions(user_id):
     connection.close()
 
     return transactions
+
+
+# ==========================================
+# DELETE TRANSACTION
+# ==========================================
+def delete_transaction(transaction_id):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        DELETE FROM transactions
+        WHERE id = ?
+    """, (transaction_id,))
+
+    connection.commit()
+    connection.close()
+
+    print("Transaction deleted successfully!")
+
+
+# ==========================================
+# UPDATE TRANSACTION
+# ==========================================
+def update_transaction(
+        transaction_id,
+        transaction_type,
+        amount,
+        category,
+        description,
+        date):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        UPDATE transactions
+        SET
+            type = ?,
+            amount = ?,
+            category = ?,
+            description = ?,
+            date = ?
+        WHERE id = ?
+    """,
+    (
+        transaction_type,
+        amount,
+        category,
+        description,
+        date,
+        transaction_id
+    ))
+
+    connection.commit()
+    connection.close()
+
+    print("Transaction updated successfully!")
+
+
+# ==========================================
+# TEST DATABASE
+# ==========================================
 if __name__ == "__main__":
     create_database()
