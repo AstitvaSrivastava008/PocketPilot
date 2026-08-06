@@ -5,6 +5,10 @@ import sqlite3
 # CREATE DATABASE & TABLES
 # ==========================================
 def create_database():
+    import os
+
+    print("Database:", os.path.abspath("data/pocketpilot.db"))
+
     connection = sqlite3.connect("data/pocketpilot.db")
     cursor = connection.cursor()
 
@@ -29,16 +33,43 @@ def create_database():
         description TEXT,
         date TEXT NOT NULL,
 
-        FOREIGN KEY(user_id) REFERENCES users(id)
+        FOREIGN KEY(user_id)
+        REFERENCES users(id)
+    )
+    """)
+
+    # ---------- SAVINGS GOAL TABLE ----------
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS savings_goal (
+
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        user_id INTEGER UNIQUE,
+        goal_name TEXT NOT NULL,
+
+        goal_amount REAL NOT NULL,
+        saved_amount REAL DEFAULT 0,
+
+        saving_percentage REAL DEFAULT 10,
+
+        target_date TEXT,
+
+        FOREIGN KEY(user_id)
+        REFERENCES users(id)
+
     )
     """)
 
     connection.commit()
 
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    cursor.execute(
+        "SELECT name FROM sqlite_master WHERE type='table';"
+    )
+
     tables = cursor.fetchall()
 
     print("\nTables in database:")
+
     for table in tables:
         print(table[0])
 
@@ -200,8 +231,6 @@ def get_recent_transaction(user_id):
         return f"{category}   {sign}₹{amount}"
 
     return "No transactions yet."
-
-
 # ==========================================
 # HISTORY FUNCTIONS
 # ==========================================
@@ -286,6 +315,237 @@ def update_transaction(
     connection.close()
 
     print("Transaction updated successfully!")
+
+
+# ==========================================
+# ANALYTICS FUNCTIONS
+# ==========================================
+def get_transaction_count(user_id):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT COUNT(*)
+        FROM transactions
+        WHERE user_id = ?
+    """, (user_id,))
+
+    count = cursor.fetchone()[0]
+
+    connection.close()
+
+    return count
+
+
+def get_total_savings(user_id):
+
+    return get_total_income(user_id) - get_total_expense(user_id)
+
+
+def get_expense_by_category(user_id):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT
+            category,
+            SUM(amount)
+        FROM transactions
+        WHERE
+            user_id = ?
+            AND type = 'expense'
+        GROUP BY category
+        ORDER BY SUM(amount) DESC
+    """, (user_id,))
+
+    data = cursor.fetchall()
+
+    connection.close()
+
+    return data
+
+
+# ==========================================
+# HIGHEST EXPENSE CATEGORY
+# ==========================================
+def get_highest_expense_category(user_id):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT
+            category,
+            SUM(amount)
+        FROM transactions
+        WHERE
+            user_id = ?
+            AND type = 'expense'
+        GROUP BY category
+        ORDER BY SUM(amount) DESC
+        LIMIT 1
+    """, (user_id,))
+
+    result = cursor.fetchone()
+
+    connection.close()
+
+    return result
+
+
+# ==========================================
+# TOTAL EXPENSE CATEGORIES
+# ==========================================
+def get_expense_category_count(user_id):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT COUNT(DISTINCT category)
+        FROM transactions
+        WHERE
+            user_id = ?
+            AND type = 'expense'
+    """, (user_id,))
+
+    count = cursor.fetchone()[0]
+
+    connection.close()
+
+    return count
+
+
+# ==========================================
+# CURRENT BALANCE
+# ==========================================
+def get_balance(user_id):
+
+    return get_total_income(user_id) - get_total_expense(user_id)
+
+
+# ==========================================
+# INCOME VS EXPENSE
+# ==========================================
+def get_income_vs_expense(user_id):
+
+    return (
+        get_total_income(user_id),
+        get_total_expense(user_id)
+    )
+
+
+# ==========================================
+# SAVINGS GOAL
+# ==========================================
+def save_goal(
+        user_id,
+        goal_name,
+        goal_amount,
+        saving_percentage,
+        target_date):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        INSERT INTO savings_goal (
+            user_id,
+            goal_name,
+            goal_amount,
+            saved_amount,
+            saving_percentage,
+            target_date
+        )
+
+        VALUES (?, ?, ?, ?, ?, ?)
+
+        ON CONFLICT(user_id)
+        DO UPDATE SET
+            goal_name = excluded.goal_name,
+            goal_amount = excluded.goal_amount,
+            saving_percentage = excluded.saving_percentage,
+            target_date = excluded.target_date
+    """, (
+        user_id,
+        goal_name,
+        goal_amount,
+        0,
+        saving_percentage,
+        target_date
+    ))
+
+    connection.commit()
+    connection.close()
+
+
+# ==========================================
+# UPDATE SAVED AMOUNT
+# ==========================================
+def update_saved_amount(user_id, income_amount):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT
+            saved_amount,
+            saving_percentage
+        FROM savings_goal
+        WHERE user_id = ?
+    """, (user_id,))
+
+    result = cursor.fetchone()
+
+    if result:
+
+        saved_amount, saving_percentage = result
+
+        amount_to_save = (
+            income_amount * saving_percentage
+        ) / 100
+
+        new_saved = saved_amount + amount_to_save
+
+        cursor.execute("""
+            UPDATE savings_goal
+            SET saved_amount = ?
+            WHERE user_id = ?
+        """, (
+            new_saved,
+            user_id
+        ))
+
+    connection.commit()
+    connection.close()
+
+
+# ==========================================
+# GET SAVINGS GOAL
+# ==========================================
+def get_goal(user_id):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT
+            goal_name,
+            goal_amount,
+            saved_amount,
+            saving_percentage,
+            target_date
+        FROM savings_goal
+        WHERE user_id = ?
+    """, (user_id,))
+
+    result = cursor.fetchone()
+
+    connection.close()
+
+    return result
 
 
 # ==========================================

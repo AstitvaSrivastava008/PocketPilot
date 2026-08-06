@@ -13,15 +13,21 @@ from screens.analytics import AnalyticsScreen
 from screens.settings import SettingsScreen
 from screens.add_transaction import AddTransactionScreen
 
+from database import create_database
+
 from widget.bottom_nav import BottomNav
 from widget.transaction_card import TransactionCard
-
+from widget.animated_bar import AnimatedBar
 
 class PocketPilot(MDApp):
 
     current_user = None
 
     def build(self):
+        # -----------------------------
+        # Create Database
+        # -----------------------------
+        create_database()
 
         # -----------------------------
         # Load KV Files

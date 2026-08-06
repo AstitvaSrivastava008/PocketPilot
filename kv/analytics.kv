@@ -1,24 +1,223 @@
 #:kivy 2.3.1
+
 #:import BottomNav widget.bottom_nav.BottomNav
+#:import MDCard kivymd.uix.card.MDCard
+#:import Image kivy.uix.image.Image
+
 <AnalyticsScreen>:
 
     BoxLayout:
         orientation: "vertical"
 
-        BoxLayout:
-            orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: 0.96, 0.97, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
 
-            canvas.before:
-                Color:
-                    rgba: 0.96, 0.97, 1, 1
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
+        ScrollView:
+            do_scroll_x: False
 
-            Label:
-                text: "Analytics Screen"
-                font_size: "30sp"
-                bold: True
-                color: 0.1, 0.2, 0.6, 1
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+
+                padding: "20dp"
+                spacing: "20dp"
+
+                Label:
+                    text: "Analytics"
+                    font_size: "32sp"
+                    bold: True
+                    color: 0.10, 0.32, 0.82, 1
+                    size_hint_y: None
+                    height: "50dp"
+
+                # =====================================
+                # Expense Breakdown
+                # =====================================
+                MDCard:
+                    size_hint_y: None
+                    height: "620dp"
+                    radius: [20]
+                    elevation: 2
+                    padding: "20dp"
+
+                    BoxLayout:
+                        orientation: "vertical"
+                        spacing: "15dp"
+
+                        Label:
+                            text: "Expense Breakdown"
+                            font_size: "24sp"
+                            bold: True
+                            color: 0.15, 0.15, 0.15, 1
+                            size_hint_y: None
+                            height: "40dp"
+
+                        Image:
+                            id: expense_chart
+                            source: ""
+                            allow_stretch: True
+                            keep_ratio: True
+
+                        Widget:
+                            size_hint_y: None
+                            height: "10dp"
+
+                        Label:
+                            text: "Highest Spending Category"
+                            font_size: "18sp"
+                            bold: True
+                            color: 0.25, 0.25, 0.25, 1
+                            size_hint_y: None
+                            height: "30dp"
+
+                        Label:
+                            id: highest_category
+                            text: "-"
+                            font_size: "24sp"
+                            bold: True
+                            color: 0.10, 0.32, 0.82, 1
+                            size_hint_y: None
+                            height: "35dp"
+
+                        Label:
+                            id: highest_amount
+                            text: "₹0.00"
+                            font_size: "20sp"
+                            bold: True
+                            color: 0.85, 0, 0, 1
+                            size_hint_y: None
+                            height: "30dp"
+
+                # =====================================
+                # Income vs Expense
+                # =====================================
+                MDCard:
+                    size_hint_y: None
+                    height: "430dp"
+                    radius: [20]
+                    elevation: 2
+                    padding: "20dp"
+
+                    BoxLayout:
+                        orientation: "vertical"
+                        spacing: "15dp"
+
+                        Label:
+                            text: "Income vs Expense"
+                            font_size: "24sp"
+                            bold: True
+                            color: 0.15, 0.15, 0.15, 1
+                            size_hint_y: None
+                            height: "40dp"
+
+                        Image:
+                            id: income_expense_chart
+                            source: ""
+                            allow_stretch: True
+                            keep_ratio: True
+
+                # =====================================
+                # Category-wise Spending
+                # =====================================
+                MDCard:
+                    size_hint_y: None
+                    height: "450dp"
+                    radius: [20]
+                    elevation: 2
+                    padding: "20dp"
+
+                    BoxLayout:
+                        orientation: "vertical"
+                        spacing: "15dp"
+
+                        Label:
+                            text: "Category-wise Spending"
+                            font_size: "24sp"
+                            bold: True
+                            color: 0.15, 0.15, 0.15, 1
+                            size_hint_y: None
+                            height: "40dp"
+
+                        Image:
+                            id: category_chart
+                            source: ""
+                            allow_stretch: True
+                            keep_ratio: True
+
+                # =====================================
+                # Financial Insights
+                # =====================================
+                MDCard:
+                    size_hint_y: None
+                    height: "330dp"
+                    radius: [20]
+                    elevation: 2
+                    padding: "20dp"
+
+                    BoxLayout:
+                        orientation: "vertical"
+                        spacing: "12dp"
+
+                        Label:
+                            text: "Financial Insights"
+                            font_size: "24sp"
+                            bold: True
+                            color: 0.15, 0.15, 0.15, 1
+                            size_hint_y: None
+                            height: "40dp"
+
+                        Label:
+                            text: "Current Balance"
+                            color: .45, .45, .45, 1
+                            size_hint_y: None
+                            height: "25dp"
+
+                        Label:
+                            id: balance_label
+                            text: "₹0.00"
+                            font_size: "26sp"
+                            bold: True
+                            color: 0.10, 0.32, 0.82, 1
+                            size_hint_y: None
+                            height: "35dp"
+
+                        Label:
+                            text: "Total Transactions"
+                            color: .45, .45, .45, 1
+                            size_hint_y: None
+                            height: "25dp"
+
+                        Label:
+                            id: transaction_count_label
+                            text: "0"
+                            font_size: "22sp"
+                            bold: True
+                            color: .2, .2, .2, 1
+                            size_hint_y: None
+                            height: "30dp"
+
+                        Label:
+                            text: "Expense Categories"
+                            color: .45, .45, .45, 1
+                            size_hint_y: None
+                            height: "25dp"
+
+                        Label:
+                            id: category_count_label
+                            text: "0"
+                            font_size: "22sp"
+                            bold: True
+                            color: .2, .2, .2, 1
+                            size_hint_y: None
+                            height: "30dp"
+
+                Widget:
+                    size_hint_y: None
+                    height: "20dp"
 
         BottomNav:

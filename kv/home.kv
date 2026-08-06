@@ -104,6 +104,53 @@
                             color: .1, .65, .2, 1
 
                     # ==========================
+                    # SAVINGS GOAL
+                    # ==========================
+                    MDCard:
+                        orientation: "vertical"
+                        size_hint_y: None
+                        height: "250dp"
+                        radius: [20]
+                        elevation: 4
+                        padding: "20dp"
+                        spacing: "10dp"
+                        md_bg_color: 1, 1, 1, 1
+
+                        Label:
+                            text: " Savings Goal"
+                            font_size: "22sp"
+                            bold: True
+                            color: 0.10, 0.32, 0.82, 1
+
+                        Label:
+                            text: root.goal_progress
+                            font_size: "18sp"
+                            color: .45, .45, .45, 1
+
+                        ProgressBar:
+                            id: goal_progress_bar
+                            max: 100
+                            value: root.goal_percentage
+
+                        Label:
+                            text: root.goal_percentage_text
+                            font_size: "18sp"
+                            bold: True
+                            color: 0, .65, .2, 1
+
+                        Label:
+                            text: root.goal_remaining
+                            font_size: "18sp"
+                            color: .45, .45, .45, 1
+
+                        MDRaisedButton:
+                            text: "Set Goal"
+                            md_bg_color: 0.10, 0.32, 0.82, 1
+                            pos_hint: {"center_x": .5}
+                            on_release:
+                                root.open_goal_popup()
+
+                    # ==========================
                     # ACTION BUTTONS
                     # ==========================
                     BoxLayout:

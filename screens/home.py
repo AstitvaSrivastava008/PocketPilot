@@ -1,12 +1,21 @@
 from kivy.app import App
 from kivy.uix.screenmanager import Screen
-from kivy.properties import StringProperty
+from kivy.properties import (
+    StringProperty,
+    NumericProperty
+)
+from kivy.uix.popup import Popup
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
 
 from database import (
     get_total_income,
     get_total_expense,
     get_current_balance,
-    get_recent_transaction
+    get_recent_transaction,
+    get_goal,
+    save_goal
 )
 
 
@@ -19,6 +28,14 @@ class HomeScreen(Screen):
     expense = StringProperty("₹0.00")
     recent_transaction = StringProperty("No transactions yet.")
 
+    goal_progress = StringProperty("No Goal Set")
+    goal_percentage = NumericProperty(0)
+    goal_percentage_text = StringProperty("0% Completed")
+    goal_remaining = StringProperty("Remaining: ₹0.00")
+
+    # =====================================
+    # Refresh Dashboard
+    # =====================================
     def refresh_dashboard(self):
 
         app = App.get_running_app()
@@ -38,9 +55,139 @@ class HomeScreen(Screen):
 
         self.recent_transaction = get_recent_transaction(user_id)
 
-    # -------------------------
+        # =========================
+        # Savings Goal
+        # =========================
+        goal = get_goal(user_id)
+
+        if goal:
+
+            (
+                goal_name,
+                goal_amount,
+                saved_amount,
+                saving_percentage,
+                target_date
+            ) = goal
+
+            percentage = 0
+
+            if goal_amount > 0:
+                percentage = min(
+                    (saved_amount / goal_amount) * 100,
+                    100
+                )
+
+            remaining = max(
+                goal_amount - saved_amount,
+                0
+            )
+
+            self.goal_progress = (
+                f"{goal_name}\n"
+                f"₹{saved_amount:,.2f} / ₹{goal_amount:,.2f}"
+            )
+
+            self.goal_percentage = percentage
+
+            self.goal_percentage_text = (
+                f"{percentage:.1f}% Completed"
+            )
+
+            self.goal_remaining = (
+                f"Remaining: ₹{remaining:,.2f}"
+            )
+
+        else:
+
+            self.goal_progress = "No Goal Set"
+            self.goal_percentage = 0
+            self.goal_percentage_text = "0% Completed"
+            self.goal_remaining = "Remaining: ₹0.00"
+
+    # =====================================
+    # Smart Savings Goal Popup
+    # =====================================
+    def open_goal_popup(self):
+
+        layout = BoxLayout(
+            orientation="vertical",
+            spacing=10,
+            padding=20
+        )
+
+        goal_name = TextInput(
+            hint_text="Goal Name (Laptop, Bike...)",
+            multiline=False
+        )
+
+        goal_amount = TextInput(
+            hint_text="Goal Amount",
+            multiline=False,
+            input_filter="float"
+        )
+
+        saving_percentage = TextInput(
+            hint_text="Saving Percentage (%)",
+            multiline=False,
+            input_filter="float"
+        )
+
+        target_date = TextInput(
+            hint_text="Target Date (Optional)",
+            multiline=False
+        )
+
+        save_button = Button(
+            text="Save Goal",
+            size_hint_y=None,
+            height=50
+        )
+
+        layout.add_widget(goal_name)
+        layout.add_widget(goal_amount)
+        layout.add_widget(saving_percentage)
+        layout.add_widget(target_date)
+        layout.add_widget(save_button)
+
+        popup = Popup(
+            title="Smart Savings Goal",
+            content=layout,
+            size_hint=(0.85, 0.75)
+        )
+
+        def save(instance):
+
+            if (
+                goal_name.text.strip() == "" or
+                goal_amount.text.strip() == "" or
+                saving_percentage.text.strip() == ""
+            ):
+                return
+
+            app = App.get_running_app()
+
+            user_id = app.current_user[0]
+
+            save_goal(
+                user_id,
+                goal_name.text.strip(),
+                float(goal_amount.text),
+                float(saving_percentage.text),
+                target_date.text.strip()
+            )
+
+            popup.dismiss()
+
+            self.refresh_dashboard()
+
+        save_button.bind(on_release=save)
+
+        popup.open()
+
+    # =====================================
     # Open Income Screen
-    # -------------------------
+    # =====================================
     def open_income(self):
 
         screen = self.manager.get_screen("add_transaction")
@@ -49,9 +196,9 @@ class HomeScreen(Screen):
 
         self.manager.current = "add_transaction"
 
-    # -------------------------
+    # =====================================
     # Open Expense Screen
-    # -------------------------
+    # =====================================
     def open_expense(self):
 
         screen = self.manager.get_screen("add_transaction")

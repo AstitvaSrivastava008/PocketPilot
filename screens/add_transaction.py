@@ -4,7 +4,8 @@ from datetime import datetime
 
 from database import (
     add_transaction,
-    update_transaction
+    update_transaction,
+    update_saved_amount
 )
 
 
@@ -142,7 +143,6 @@ class AddTransactionScreen(Screen):
 
         user_id = app.current_user[0]
 
-        # Use transaction_mode instead of toggle state
         transaction_type = self.transaction_mode
 
         amount = self.ids.amount_input.text.strip()
@@ -202,6 +202,13 @@ class AddTransactionScreen(Screen):
                 date
             )
 
+            # Automatically save part of income
+            if transaction_type == "income":
+                update_saved_amount(
+                    user_id,
+                    amount
+                )
+
             print("Transaction Saved Successfully!")
 
         # =============================
@@ -215,7 +222,7 @@ class AddTransactionScreen(Screen):
         # =============================
         self.clear_form()
 
-        # Reset to default expense mode for next new transaction
+        # Reset to default expense mode
         self.transaction_mode = "expense"
 
         # =============================
