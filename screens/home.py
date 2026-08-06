@@ -8,6 +8,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
+from kivy.uix.label import Label
 
 from database import (
     get_total_income,
@@ -15,7 +16,9 @@ from database import (
     get_current_balance,
     get_recent_transaction,
     get_goal,
-    save_goal
+    save_goal,
+    delete_goal,
+    mark_goal_completed
 )
 
 
@@ -58,6 +61,7 @@ class HomeScreen(Screen):
         # =========================
         # Savings Goal
         # =========================
+
         goal = get_goal(user_id)
 
         if goal:
@@ -67,7 +71,8 @@ class HomeScreen(Screen):
                 goal_amount,
                 saved_amount,
                 saving_percentage,
-                target_date
+                target_date,
+                goal_completed
             ) = goal
 
             percentage = 0
@@ -98,6 +103,32 @@ class HomeScreen(Screen):
                 f"Remaining: ₹{remaining:,.2f}"
             )
 
+            # -------------------------
+            # Goal Completed Popup
+            # -------------------------
+            if (
+                goal_amount > 0
+                and saved_amount >= goal_amount
+                and not goal_completed
+            ):
+
+                popup = Popup(
+                    title=" Congratulations!",
+                    content=Label(
+                        text=(
+                            "You achieved your savings goal!\n\n"
+                            f"{goal_name}\n"
+                            f"₹{goal_amount:,.2f}"
+                        ),
+                        halign="center"
+                    ),
+                    size_hint=(0.75, 0.40)
+                )
+
+                popup.open()
+
+                mark_goal_completed(user_id)
+
         else:
 
             self.goal_progress = "No Goal Set"
@@ -109,6 +140,11 @@ class HomeScreen(Screen):
     # Smart Savings Goal Popup
     # =====================================
     def open_goal_popup(self):
+
+        app = App.get_running_app()
+        user_id = app.current_user[0]
+
+        goal = get_goal(user_id)
 
         layout = BoxLayout(
             orientation="vertical",
@@ -138,10 +174,36 @@ class HomeScreen(Screen):
             multiline=False
         )
 
+        # -----------------------------
+        # Pre-fill existing goal
+        # -----------------------------
+        if goal:
+
+            (
+                current_name,
+                current_goal,
+                current_saved,
+                current_percentage,
+                current_target,
+                current_completed
+            ) = goal
+
+            goal_name.text = current_name
+            goal_amount.text = str(current_goal)
+            saving_percentage.text = str(current_percentage)
+            target_date.text = current_target if current_target else ""
+
         save_button = Button(
             text="Save Goal",
             size_hint_y=None,
             height=50
+        )
+
+        delete_button = Button(
+            text="Delete Goal",
+            size_hint_y=None,
+            height=50,
+            background_color=(0.85, 0.20, 0.20, 1)
         )
 
         layout.add_widget(goal_name)
@@ -150,24 +212,26 @@ class HomeScreen(Screen):
         layout.add_widget(target_date)
         layout.add_widget(save_button)
 
+        if goal:
+            layout.add_widget(delete_button)
+
         popup = Popup(
             title="Smart Savings Goal",
             content=layout,
             size_hint=(0.85, 0.75)
         )
 
+        # -----------------------------
+        # Save Goal
+        # -----------------------------
         def save(instance):
 
             if (
-                goal_name.text.strip() == "" or
-                goal_amount.text.strip() == "" or
-                saving_percentage.text.strip() == ""
+                goal_name.text.strip() == ""
+                or goal_amount.text.strip() == ""
+                or saving_percentage.text.strip() == ""
             ):
                 return
-
-            app = App.get_running_app()
-
-            user_id = app.current_user[0]
 
             save_goal(
                 user_id,
@@ -181,7 +245,21 @@ class HomeScreen(Screen):
 
             self.refresh_dashboard()
 
+        # -----------------------------
+        # Delete Goal
+        # -----------------------------
+        def delete(instance):
+
+            delete_goal(user_id)
+
+            popup.dismiss()
+
+            self.refresh_dashboard()
+
         save_button.bind(on_release=save)
+
+        if goal:
+            delete_button.bind(on_release=delete)
 
         popup.open()
 
@@ -191,9 +269,7 @@ class HomeScreen(Screen):
     def open_income(self):
 
         screen = self.manager.get_screen("add_transaction")
-
         screen.transaction_mode = "income"
-
         self.manager.current = "add_transaction"
 
     # =====================================
@@ -202,7 +278,5 @@ class HomeScreen(Screen):
     def open_expense(self):
 
         screen = self.manager.get_screen("add_transaction")
-
         screen.transaction_mode = "expense"
-
         self.manager.current = "add_transaction"

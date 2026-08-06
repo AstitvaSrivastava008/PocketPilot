@@ -42,17 +42,19 @@ def create_database():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS savings_goal (
 
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER PRIMARY KEY,
 
-        user_id INTEGER UNIQUE,
         goal_name TEXT NOT NULL,
 
         goal_amount REAL NOT NULL,
+
         saved_amount REAL DEFAULT 0,
 
-        saving_percentage REAL DEFAULT 10,
+        saving_percentage REAL NOT NULL,
 
         target_date TEXT,
+
+        goal_completed INTEGER DEFAULT 0,
 
         FOREIGN KEY(user_id)
         REFERENCES users(id)
@@ -457,29 +459,32 @@ def save_goal(
             goal_amount,
             saved_amount,
             saving_percentage,
-            target_date
+            target_date,
+            goal_completed
         )
 
-        VALUES (?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
 
         ON CONFLICT(user_id)
         DO UPDATE SET
+
             goal_name = excluded.goal_name,
             goal_amount = excluded.goal_amount,
             saving_percentage = excluded.saving_percentage,
-            target_date = excluded.target_date
+            target_date = excluded.target_date,
+            goal_completed = 0
     """, (
         user_id,
         goal_name,
         goal_amount,
         0,
         saving_percentage,
-        target_date
+        target_date,
+        0
     ))
 
     connection.commit()
     connection.close()
-
 
 # ==========================================
 # UPDATE SAVED AMOUNT
@@ -492,6 +497,7 @@ def update_saved_amount(user_id, income_amount):
     cursor.execute("""
         SELECT
             saved_amount,
+            goal_amount,
             saving_percentage
         FROM savings_goal
         WHERE user_id = ?
@@ -501,13 +507,18 @@ def update_saved_amount(user_id, income_amount):
 
     if result:
 
-        saved_amount, saving_percentage = result
+        saved_amount, goal_amount, saving_percentage = result
 
+        # Calculate how much of the income should be saved
         amount_to_save = (
             income_amount * saving_percentage
         ) / 100
 
-        new_saved = saved_amount + amount_to_save
+        # Do not allow savings to exceed the goal amount
+        new_saved = min(
+            saved_amount + amount_to_save,
+            goal_amount
+        )
 
         cursor.execute("""
             UPDATE savings_goal
@@ -520,8 +531,6 @@ def update_saved_amount(user_id, income_amount):
 
     connection.commit()
     connection.close()
-
-
 # ==========================================
 # GET SAVINGS GOAL
 # ==========================================
@@ -536,7 +545,8 @@ def get_goal(user_id):
             goal_amount,
             saved_amount,
             saving_percentage,
-            target_date
+            target_date,
+            goal_completed
         FROM savings_goal
         WHERE user_id = ?
     """, (user_id,))
@@ -546,8 +556,61 @@ def get_goal(user_id):
     connection.close()
 
     return result
+# ==========================================
+# MARK GOAL COMPLETED
+# ==========================================
+def mark_goal_completed(user_id):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        UPDATE savings_goal
+        SET goal_completed = 1
+        WHERE user_id = ?
+    """, (user_id,))
+
+    connection.commit()
+    connection.close()
 
 
+# ==========================================
+# CHECK GOAL COMPLETED
+# ==========================================
+def is_goal_completed(user_id):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT goal_completed
+        FROM savings_goal
+        WHERE user_id = ?
+    """, (user_id,))
+
+    result = cursor.fetchone()
+
+    connection.close()
+
+    if result:
+        return bool(result[0])
+
+    return False
+# ==========================================
+# DELETE SAVINGS GOAL
+# ==========================================
+def delete_goal(user_id):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        DELETE FROM savings_goal
+        WHERE user_id = ?
+    """, (user_id,))
+
+    connection.commit()
+    connection.close()
 # ==========================================
 # TEST DATABASE
 # ==========================================
