@@ -47,6 +47,8 @@ class HomeScreen(Screen):
             return
 
         user_id = app.current_user[0]
+        # Update username on dashboard
+        self.user_name = app.current_user[1]
 
         total_income = get_total_income(user_id)
         total_expense = get_total_expense(user_id)

@@ -1,19 +1,24 @@
 #:kivy 2.3.1
 #:import BottomNav widget.bottom_nav.BottomNav
-<SettingsScreen>:
 
+<SettingsScreen>:
     BoxLayout:
         orientation: "vertical"
 
-        BoxLayout:
-            orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: 0.96, 0.97, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
 
-            canvas.before:
-                Color:
-                    rgba: 0.96, 0.97, 1, 1
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
+        # ==========================
+        # Header
+        # ==========================
+        BoxLayout:
+            size_hint_y: None
+            height: "70dp"
+            padding: "15dp"
 
             Label:
                 text: "Settings"
@@ -21,4 +26,55 @@
                 bold: True
                 color: 0.1, 0.2, 0.6, 1
 
+        # ==========================
+        # Settings List
+        # ==========================
+        ScrollView:
+            do_scroll_x: False
+
+            GridLayout:
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: "12dp"
+                padding: "20dp"
+
+                Button:
+                    text: "Edit Profile"
+                    size_hint_y: None
+                    height: "55dp"
+                    on_release: root.edit_profile()
+
+                Button:
+                    text: "Change Password"
+                    size_hint_y: None
+                    height: "55dp"
+                    on_release: root.change_password()
+
+                Button:
+                    text: "Theme"
+                    size_hint_y: None
+                    height: "55dp"
+                    on_release: root.change_theme()
+
+                Button:
+                    text: "Currency"
+                    size_hint_y: None
+                    height: "55dp"
+
+                Button:
+                    text: "About PocketPilot"
+                    size_hint_y: None
+                    height: "55dp"
+                    on_release: root.about_app()
+
+                Button:
+                    text: "Logout"
+                    size_hint_y: None
+                    height: "55dp"
+                    background_color: 0.85, 0.20, 0.20, 1
+                    on_release: root.logout()
+
         BottomNav:
+            size_hint_y: None
+            height: "75dp"

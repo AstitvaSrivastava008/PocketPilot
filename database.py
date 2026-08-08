@@ -5,6 +5,7 @@ import sqlite3
 # CREATE DATABASE & TABLES
 # ==========================================
 def create_database():
+
     import os
 
     print("Database:", os.path.abspath("data/pocketpilot.db"))
@@ -18,7 +19,9 @@ def create_database():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        theme TEXT DEFAULT 'Light',
+        currency TEXT DEFAULT '₹'
     )
     """)
 
@@ -61,6 +64,27 @@ def create_database():
 
     )
     """)
+
+    connection.commit()
+
+    # ==========================================
+    # DATABASE MIGRATION
+    # ==========================================
+    try:
+        cursor.execute("""
+            ALTER TABLE users
+            ADD COLUMN theme TEXT DEFAULT 'Light'
+        """)
+    except sqlite3.OperationalError:
+        pass
+
+    try:
+        cursor.execute("""
+            ALTER TABLE users
+            ADD COLUMN currency TEXT DEFAULT '₹'
+        """)
+    except sqlite3.OperationalError:
+        pass
 
     connection.commit()
 
@@ -120,7 +144,93 @@ def login_user(email, password):
 
     return user
 
+# ==========================================
+# GET USER DETAILS
+# ==========================================
+def get_user(user_id):
 
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT
+            id,
+            name,
+            email
+        FROM users
+        WHERE id = ?
+    """, (user_id,))
+
+    user = cursor.fetchone()
+
+    connection.close()
+
+    return user
+
+
+# ==========================================
+# UPDATE USER NAME
+# ==========================================
+def update_user_name(user_id, new_name):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        UPDATE users
+        SET name = ?
+        WHERE id = ?
+    """, (
+        new_name,
+        user_id
+    ))
+
+    connection.commit()
+    connection.close()
+# ==========================================
+# VERIFY PASSWORD
+# ==========================================
+def verify_password(user_id, password):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT *
+        FROM users
+        WHERE id = ?
+        AND password = ?
+    """, (
+        user_id,
+        password
+    ))
+
+    result = cursor.fetchone()
+
+    connection.close()
+
+    return result is not None
+
+
+# ==========================================
+# UPDATE PASSWORD
+# ==========================================
+def update_password(user_id, new_password):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        UPDATE users
+        SET password = ?
+        WHERE id = ?
+    """, (
+        new_password,
+        user_id
+    ))
+
+    connection.commit()
+    connection.close()
 # ==========================================
 # TRANSACTION FUNCTIONS
 # ==========================================
@@ -611,6 +721,49 @@ def delete_goal(user_id):
 
     connection.commit()
     connection.close()
+# ==========================================
+# UPDATE THEME
+# ==========================================
+def update_theme(user_id, theme):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        UPDATE users
+        SET theme = ?
+        WHERE id = ?
+    """, (
+        theme,
+        user_id
+    ))
+
+    connection.commit()
+    connection.close()
+
+
+# ==========================================
+# GET THEME
+# ==========================================
+def get_theme(user_id):
+
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT theme
+        FROM users
+        WHERE id = ?
+    """, (user_id,))
+
+    result = cursor.fetchone()
+
+    connection.close()
+
+    if result:
+        return result[0]
+
+    return "Light"
 # ==========================================
 # TEST DATABASE
 # ==========================================

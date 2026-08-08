@@ -37,6 +37,8 @@ class PocketPilot(MDApp):
         Builder.load_file("kv/choice.kv")
         Builder.load_file("kv/login.kv")
         Builder.load_file("kv/signup.kv")
+        Builder.load_file("kv/bottom_nav.kv")
+
         Builder.load_file("kv/home.kv")
 
         # Load custom widget BEFORE screens that use it
@@ -45,7 +47,6 @@ class PocketPilot(MDApp):
         Builder.load_file("kv/history.kv")
         Builder.load_file("kv/analytics.kv")
         Builder.load_file("kv/settings.kv")
-        Builder.load_file("kv/bottom_nav.kv")
         Builder.load_file("kv/add_transaction.kv")
 
         self.title = "PocketPilot"
