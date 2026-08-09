@@ -10,7 +10,7 @@
 
         canvas.before:
             Color:
-                rgba: 0.96, 0.97, 1, 1
+                rgba: (0.10, 0.10, 0.10, 1) if app.theme_cls.theme_style == "Dark" else (0.96, 0.97, 1, 1)
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -20,6 +20,8 @@
             height: "100dp"
             radius: [0, 0, 30, 30]
             elevation: 0
+
+            # Keep the header blue in both themes
             md_bg_color: 0.10, 0.32, 0.82, 1
 
             Label:
@@ -41,3 +43,5 @@
                 height: self.minimum_height
 
         BottomNav:
+            size_hint_y: None
+            height: "75dp"

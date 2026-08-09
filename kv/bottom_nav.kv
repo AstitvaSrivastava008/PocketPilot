@@ -11,7 +11,7 @@
 
     canvas.before:
         Color:
-            rgba: 1, 1, 1, 1
+            rgba: (0.12, 0.12, 0.12, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
         Rectangle:
             pos: self.pos
             size: self.size
@@ -22,13 +22,13 @@
         MDIconButton:
             icon: "home"
             pos_hint: {"center_x": .5}
-            on_release:
-                root.go_home()
+            on_release: root.go_home()
 
         Label:
             text: "Home"
             font_size: "12sp"
             halign: "center"
+            color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
 
     BoxLayout:
         orientation: "vertical"
@@ -36,13 +36,13 @@
         MDIconButton:
             icon: "history"
             pos_hint: {"center_x": .5}
-            on_release:
-                root.go_history()
+            on_release: root.go_history()
 
         Label:
             text: "History"
             font_size: "12sp"
             halign: "center"
+            color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
 
     BoxLayout:
         orientation: "vertical"
@@ -50,13 +50,13 @@
         MDIconButton:
             icon: "chart-box"
             pos_hint: {"center_x": .5}
-            on_release:
-                root.go_analytics()
+            on_release: root.go_analytics()
 
         Label:
             text: "Analytics"
             font_size: "12sp"
             halign: "center"
+            color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
 
     BoxLayout:
         orientation: "vertical"
@@ -64,10 +64,10 @@
         MDIconButton:
             icon: "cog"
             pos_hint: {"center_x": .5}
-            on_release:
-                root.go_settings()
+            on_release: root.go_settings()
 
         Label:
             text: "Settings"
             font_size: "12sp"
             halign: "center"
+            color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)

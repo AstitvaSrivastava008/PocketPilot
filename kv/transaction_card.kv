@@ -12,7 +12,7 @@
     elevation: 2
     padding: "18dp"
 
-    md_bg_color: 1, 1, 1, 1
+    md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
 
     BoxLayout:
         spacing: "15dp"
@@ -42,7 +42,7 @@
                     text: root.category
                     bold: True
                     font_size: "20sp"
-                    color: .15, .15, .15, 1
+                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (.15, .15, .15, 1)
                     halign: "left"
                     valign: "middle"
                     text_size: self.size
@@ -58,15 +58,15 @@
 
             Label:
                 text: root.description
-                color: .45, .45, .45, 1
                 font_size: "15sp"
+                color: (.82, .82, .82, 1) if app.theme_cls.theme_style == "Dark" else (.45, .45, .45, 1)
                 halign: "left"
                 text_size: self.size
 
             Label:
                 text: root.date
-                color: .60, .60, .60, 1
                 font_size: "13sp"
+                color: (.65, .65, .65, 1) if app.theme_cls.theme_style == "Dark" else (.60, .60, .60, 1)
                 halign: "left"
                 text_size: self.size
 

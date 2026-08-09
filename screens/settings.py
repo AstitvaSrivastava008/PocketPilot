@@ -77,17 +77,62 @@ class SettingsScreen(Screen):
         btn.bind(on_release=save)
         popup.open()
 
+    # -----------------------------
+    # Change Theme
+    # -----------------------------
     def change_theme(self):
-        app=App.get_running_app()
-        user_id=app.current_user[0]
-        layout=BoxLayout(orientation="vertical",spacing=15,padding=20)
-        layout.add_widget(Label(text=f"Current Theme: {get_theme(user_id)}"))
-        light=Button(text="☀ Light Mode")
-        dark=Button(text="🌙 Dark Mode")
-        layout.add_widget(light); layout.add_widget(dark)
-        popup=Popup(title="Choose Theme",content=layout,size_hint=(0.75,0.45))
-        light.bind(on_release=lambda *_:(setattr(app.theme_cls,"theme_style","Light"),update_theme(user_id,"Light"),popup.dismiss()))
-        dark.bind(on_release=lambda *_:(setattr(app.theme_cls,"theme_style","Dark"),update_theme(user_id,"Dark"),popup.dismiss()))
+
+        app = App.get_running_app()
+        user_id = app.current_user[0]
+
+        layout = BoxLayout(
+            orientation="vertical",
+            spacing=15,
+            padding=20
+        )
+
+        current_theme = get_theme(user_id)
+
+        layout.add_widget(
+            Label(
+                text=f"Current Theme: {current_theme}"
+            )
+        )
+
+        light_button = Button(
+            text="Light Mode",
+            size_hint_y=None,
+            height=50
+        )
+
+        dark_button = Button(
+            text="Dark Mode",
+            size_hint_y=None,
+            height=50
+        )
+
+        layout.add_widget(light_button)
+        layout.add_widget(dark_button)
+
+        popup = Popup(
+            title="Choose Theme",
+            content=layout,
+            size_hint=(0.75, 0.45)
+        )
+
+        def set_light(instance):
+            update_theme(user_id, "Light")
+            app.theme_cls.theme_style = "Light"
+            popup.dismiss()
+
+        def set_dark(instance):
+            update_theme(user_id, "Dark")
+            app.theme_cls.theme_style = "Dark"
+            popup.dismiss()
+
+        light_button.bind(on_release=set_light)
+        dark_button.bind(on_release=set_dark)
+
         popup.open()
 
     def about_app(self):

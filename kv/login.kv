@@ -1,59 +1,92 @@
 #:kivy 2.3.1
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
 
 <LoginScreen>:
 
     canvas.before:
         Color:
-            rgba: 1, 1, 1, 1
+            rgba: (0.10, 0.10, 0.10, 1) if app.theme_cls.theme_style == "Dark" else (0.96, 0.97, 1, 1)
         Rectangle:
             pos: self.pos
             size: self.size
 
     BoxLayout:
         orientation: "vertical"
-        padding: "30dp"
+        padding: "40dp"
         spacing: "20dp"
 
         Widget:
-            size_hint_y: 0.3
+            size_hint_y: 0.25
 
         Label:
             text: "Login"
-            font_size: "34sp"
+            font_size: "36sp"
             bold: True
-            color: 0.1, 0.2, 0.6, 1
+            color: 0.10, 0.32, 0.82, 1
             size_hint_y: None
-            height: "50dp"
+            height: "60dp"
 
         TextInput:
             id: email_input
             hint_text: "Email"
             multiline: False
-            size_hint_y: None
-            height: "45dp"
 
-        Widget:
             size_hint_y: None
-            height: "10dp"
+            height: "52dp"
+
+            background_normal: ""
+            background_active: ""
+
+            background_color: (0.18,0.18,0.18,1) if app.theme_cls.theme_style=="Dark" else (0.93,0.94,0.97,1)
+
+            foreground_color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0.10,0.10,0.10,1)
+
+            hint_text_color: (0.70,0.70,0.70,1) if app.theme_cls.theme_style=="Dark" else (0.45,0.45,0.45,1)
+
+            cursor_color: 0.10,0.32,0.82,1
+
+            padding: [15,15]
 
         TextInput:
             id: password_input
             hint_text: "Password"
             multiline: False
             password: True
+
             size_hint_y: None
-            height: "45dp"
+            height: "52dp"
+
+            background_normal: ""
+            background_active: ""
+
+            background_color: (0.18,0.18,0.18,1) if app.theme_cls.theme_style=="Dark" else (0.93,0.94,0.97,1)
+
+            foreground_color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0.10,0.10,0.10,1)
+
+            hint_text_color: (0.70,0.70,0.70,1) if app.theme_cls.theme_style=="Dark" else (0.45,0.45,0.45,1)
+
+            cursor_color: 0.10,0.32,0.82,1
+
+            padding: [15,15]
 
         Widget:
             size_hint_y: None
-            height: "20dp"
+            height: "15dp"
 
         MDRaisedButton:
-            text: "Login"
+            text: "LOGIN"
+
             size_hint: None, None
-            size: "200dp", "45dp"
-            pos_hint: {"center_x": 0.5}
-            on_release: root.login()
+            size: "240dp", "52dp"
+
+            pos_hint: {"center_x": .5}
+
+            md_bg_color: 0.10,0.32,0.82,1
+
+            elevation: 4
+
+            on_release:
+                root.login()
 
         Widget:
-            size_hint_y: 0.4
+            size_hint_y: 0.35

@@ -1,20 +1,29 @@
 import matplotlib.pyplot as plt
+from kivy.app import App
 
 
-# ==========================================
+# ==================================================
+# Theme Helper
+# ==================================================
+
+def is_dark_mode():
+    app = App.get_running_app()
+    return app and app.theme_cls.theme_style == "Dark"
+
+
+# ==================================================
 # EXPENSE PIE CHART
-# ==========================================
+# ==================================================
+
 def create_expense_pie_chart(expense_data, output_path):
 
     if not expense_data:
         return
 
-    categories = []
-    amounts = []
+    dark = is_dark_mode()
 
-    for category, amount in expense_data:
-        categories.append(category)
-        amounts.append(amount)
+    categories = [c for c, a in expense_data]
+    amounts = [a for c, a in expense_data]
 
     colors = [
         "#4CAF50",
@@ -27,126 +36,197 @@ def create_expense_pie_chart(expense_data, output_path):
         "#795548"
     ]
 
-    plt.figure(figsize=(7, 6))
+    fig, ax = plt.subplots(figsize=(7, 6))
 
-    plt.pie(
+    # Transparent background
+    ax.set_facecolor("none")
+
+    wedges, texts, autotexts = ax.pie(
         amounts,
         autopct="%1.1f%%",
         startangle=90,
         colors=colors[:len(categories)],
-        textprops={"fontsize": 11}
+        textprops={
+            "fontsize": 11,
+            "color": "white" if dark else "black"
+        }
     )
 
-    plt.legend(
+    legend = ax.legend(
         categories,
         loc="center left",
         bbox_to_anchor=(1, 0.5)
     )
 
-    plt.axis("equal")
+    if dark:
+        legend.get_frame().set_alpha(0)
+        for txt in legend.get_texts():
+            txt.set_color("white")
+
+    ax.axis("equal")
 
     plt.tight_layout()
 
     plt.savefig(
         output_path,
         dpi=180,
-        bbox_inches="tight"
+        bbox_inches="tight",
+        transparent=True
     )
 
-    plt.close()
+    plt.close(fig)
 
 
-# ==========================================
-# INCOME VS EXPENSE BAR CHART
-# ==========================================
+# ==================================================
+# INCOME VS EXPENSE
+# ==================================================
+
 def create_income_expense_chart(income, expense, output_path):
+
+    dark = is_dark_mode()
 
     labels = ["Income", "Expense"]
     values = [income, expense]
-    colors = ["#4CAF50", "#F44336"]
 
-    plt.figure(figsize=(6, 4))
+    colors = [
+        "#4CAF50",
+        "#F44336"
+    ]
 
-    bars = plt.bar(
+    fig, ax = plt.subplots(figsize=(6, 4))
+
+    # Transparent background
+    ax.set_facecolor("none")
+
+    bars = ax.bar(
         labels,
         values,
         color=colors,
         width=0.55
     )
 
-    plt.title("Income vs Expense")
-    plt.ylabel("Amount (₹)")
+    ax.set_title(
+        "Income vs Expense",
+        color="white" if dark else "black"
+    )
+
+    ax.set_ylabel(
+        "Amount (₹)",
+        color="white" if dark else "black"
+    )
+
+    ax.tick_params(
+        colors="white" if dark else "black"
+    )
+
+    ax.grid(
+        axis="y",
+        linestyle="--",
+        alpha=0.3
+    )
+
+    if dark:
+        ax.spines["bottom"].set_color("white")
+        ax.spines["left"].set_color("white")
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
 
     for bar, value in zip(bars, values):
-        plt.text(
-            bar.get_x() + bar.get_width() / 2,
+        ax.text(
+            bar.get_x() + bar.get_width()/2,
             value,
             f"₹{value:,.0f}",
             ha="center",
             va="bottom",
-            fontsize=10
+            fontsize=10,
+            color="white" if dark else "black"
         )
-
-    plt.grid(axis="y", linestyle="--", alpha=0.3)
 
     plt.tight_layout()
 
     plt.savefig(
         output_path,
         dpi=180,
-        bbox_inches="tight"
+        bbox_inches="tight",
+        transparent=True
     )
 
-    plt.close()
+    plt.close(fig)
 
 
-# ==========================================
-# CATEGORY-WISE SPENDING
-# ==========================================
+# ==================================================
+# CATEGORY BAR CHART
+# ==================================================
+
 def create_category_bar_chart(expense_data, output_path):
 
     if not expense_data:
         return
 
-    categories = []
-    amounts = []
+    dark = is_dark_mode()
 
-    for category, amount in expense_data:
-        categories.append(category)
-        amounts.append(amount)
+    categories = [c for c, a in expense_data]
+    amounts = [a for c, a in expense_data]
 
-    # Biggest category at the top
     categories.reverse()
     amounts.reverse()
 
-    plt.figure(figsize=(7, 5))
+    fig, ax = plt.subplots(figsize=(7, 5))
 
-    bars = plt.barh(
+    # Transparent background
+    ax.set_facecolor("none")
+
+    bars = ax.barh(
         categories,
         amounts,
         color="#42A5F5"
     )
 
-    plt.title("Category-wise Spending")
-    plt.xlabel("Amount (₹)")
+    ax.set_title(
+        "Category-wise Spending",
+        color="white" if dark else "black"
+    )
+
+    ax.set_xlabel(
+        "Amount (₹)",
+        color="white" if dark else "black"
+    )
+
+    ax.tick_params(
+        colors="white" if dark else "black"
+    )
+
+    ax.grid(
+        axis="x",
+        linestyle="--",
+        alpha=0.3
+    )
+
+    if dark:
+        ax.spines["bottom"].set_color("white")
+        ax.spines["left"].set_color("white")
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+
+    max_amount = max(amounts) if amounts else 0
 
     for bar, value in zip(bars, amounts):
-        plt.text(
-            value + max(amounts) * 0.02,
-            bar.get_y() + bar.get_height() / 2,
+        ax.text(
+            value + max_amount * 0.02,
+            bar.get_y() + bar.get_height()/2,
             f"₹{value:,.0f}",
             va="center",
-            fontsize=10
+            fontsize=10,
+            color="white" if dark else "black"
         )
-
-    plt.grid(axis="x", linestyle="--", alpha=0.3)
 
     plt.tight_layout()
 
     plt.savefig(
         output_path,
         dpi=180,
-        bbox_inches="tight"
+        bbox_inches="tight",
+        transparent=True
     )
 
-    plt.close()
+    plt.close(fig)

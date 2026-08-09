@@ -22,7 +22,7 @@
 
                 canvas.before:
                     Color:
-                        rgba: 0.96, 0.97, 1, 1
+                        rgba: (0.10, 0.10, 0.10, 1) if app.theme_cls.theme_style == "Dark" else (0.96, 0.97, 1, 1)
                     Rectangle:
                         pos: self.pos
                         size: self.size
@@ -89,13 +89,13 @@
                         elevation: 4
                         padding: "20dp"
                         spacing: "10dp"
-                        md_bg_color: 1, 1, 1, 1
+                        md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
 
                         Label:
                             text: "Current Balance"
                             font_size: "20sp"
                             bold: True
-                            color: .35, .35, .35, 1
+                            color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (.35, .35, .35, 1)
 
                         Label:
                             text: root.balance
@@ -114,7 +114,7 @@
                         elevation: 4
                         padding: "20dp"
                         spacing: "10dp"
-                        md_bg_color: 1, 1, 1, 1
+                        md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
 
                         Label:
                             text: " Savings Goal"
@@ -125,7 +125,7 @@
                         Label:
                             text: root.goal_progress
                             font_size: "18sp"
-                            color: .45, .45, .45, 1
+                            color: (.85, .85, .85, 1) if app.theme_cls.theme_style == "Dark" else (.45, .45, .45, 1)
 
                         ProgressBar:
                             id: goal_progress_bar
@@ -185,7 +185,7 @@
                         MDCard:
                             radius: [15]
                             elevation: 2
-                            md_bg_color: 1, 1, 1, 1
+                            md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
 
                             BoxLayout:
                                 orientation: "vertical"
@@ -193,7 +193,7 @@
 
                                 Label:
                                     text: "Income"
-                                    color: .4, .4, .4, 1
+                                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (.4, .4, .4, 1)
 
                                 Label:
                                     text: root.income
@@ -204,7 +204,7 @@
                         MDCard:
                             radius: [15]
                             elevation: 2
-                            md_bg_color: 1, 1, 1, 1
+                            md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
 
                             BoxLayout:
                                 orientation: "vertical"
@@ -212,7 +212,7 @@
 
                                 Label:
                                     text: "Expense"
-                                    color: .4, .4, .4, 1
+                                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (.4, .4, .4, 1)
 
                                 Label:
                                     text: root.expense
@@ -227,7 +227,7 @@
                         text: "Recent Transactions"
                         font_size: "22sp"
                         bold: True
-                        color: .15, .15, .15, 1
+                        color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (.15, .15, .15, 1)
                         size_hint_y: None
                         height: "35dp"
 
@@ -236,12 +236,12 @@
                         height: "120dp"
                         radius: [15]
                         elevation: 2
-                        md_bg_color: 1, 1, 1, 1
+                        md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
 
                         Label:
                             text: root.recent_transaction
                             font_size: "18sp"
-                            color: .5, .5, .5, 1
+                            color: (.85, .85, .85, 1) if app.theme_cls.theme_style == "Dark" else (.5, .5, .5, 1)
 
                     Widget:
                         size_hint_y: None

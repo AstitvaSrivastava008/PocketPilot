@@ -9,13 +9,13 @@
 
         canvas.before:
             Color:
-                rgba: 0.96, 0.97, 1, 1
+                rgba: (0.10, 0.10, 0.10, 1) if app.theme_cls.theme_style == "Dark" else (0.96, 0.97, 1, 1)
             Rectangle:
                 pos: self.pos
                 size: self.size
 
         # ======================================
-        # HEADER
+        # HEADER (Always Blue)
         # ======================================
         MDCard:
             size_hint_y: None
@@ -52,14 +52,11 @@
                 padding: "20dp"
                 spacing: "20dp"
 
-                # -----------------------------
-                # Transaction Type
-                # -----------------------------
                 Label:
                     text: "Transaction Type"
                     font_size: "18sp"
                     bold: True
-                    color: 0.15, 0.15, 0.15, 1
+                    color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (.15,.15,.15,1)
                     size_hint_y: None
                     height: "30dp"
 
@@ -71,9 +68,15 @@
                     ToggleButton:
                         id: income_toggle
                         text: "Income"
+                        background_normal: ""
+                        background_down: ""
+                        background_color: (0.20,0.20,0.20,1) if app.theme_cls.theme_style=="Dark" else (.85,.85,.85,1)
+                        color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0,0,0,1)
+
                         group: "type"
 
-                        on_state: root.load_income_categories() if self.state == "down" else None
+                        on_state:
+                            root.load_income_categories() if self.state=="down" else None
 
                     ToggleButton:
                         id: expense_toggle
@@ -81,16 +84,19 @@
                         group: "type"
                         state: "down"
 
-                        on_state: root.load_expense_categories() if self.state == "down" else None
+                        background_normal: ""
+                        background_down: ""
+                        background_color: (0.20,0.20,0.20,1) if app.theme_cls.theme_style=="Dark" else (.85,.85,.85,1)
+                        color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0,0,0,1)
 
-                # -----------------------------
-                # Amount
-                # -----------------------------
+                        on_state:
+                            root.load_expense_categories() if self.state=="down" else None
+
                 Label:
                     text: "Amount"
-                    color: 0.15, 0.15, 0.15, 1
                     font_size: "18sp"
                     bold: True
+                    color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (.15,.15,.15,1)
                     size_hint_y: None
                     height: "25dp"
 
@@ -99,17 +105,22 @@
                     hint_text: "Enter amount"
                     multiline: False
                     input_filter: "float"
+
                     size_hint_y: None
                     height: "45dp"
 
-                # -----------------------------
-                # Category
-                # -----------------------------
+                    background_normal: ""
+                    background_active: ""
+                    background_color: (0.18,0.18,0.18,1) if app.theme_cls.theme_style=="Dark" else (1,1,1,1)
+
+                    foreground_color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0,0,0,1)
+                    hint_text_color: (.7,.7,.7,1)
+
                 Label:
                     text: "Category"
-                    color: 0.15, 0.15, 0.15, 1
                     font_size: "18sp"
                     bold: True
+                    color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (.15,.15,.15,1)
                     size_hint_y: None
                     height: "25dp"
 
@@ -117,30 +128,38 @@
                     id: category_spinner
                     text: "Select Category"
                     values: ()
+
                     size_hint_y: None
                     height: "45dp"
 
-                # -----------------------------
-                # Description
-                # -----------------------------
+                    background_normal: ""
+                    background_color: (0.18,0.18,0.18,1) if app.theme_cls.theme_style=="Dark" else (1,1,1,1)
+                    color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0,0,0,1)
+
                 Label:
                     text: "Description"
-                    color: 0.15, 0.15, 0.15, 1
                     font_size: "18sp"
                     bold: True
+                    color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (.15,.15,.15,1)
                     size_hint_y: None
                     height: "25dp"
 
                 TextInput:
                     id: description_input
                     hint_text: "Optional"
+
                     multiline: True
+
                     size_hint_y: None
                     height: "100dp"
 
-                # -----------------------------
-                # Buttons
-                # -----------------------------
+                    background_normal: ""
+                    background_active: ""
+                    background_color: (0.18,0.18,0.18,1) if app.theme_cls.theme_style=="Dark" else (1,1,1,1)
+
+                    foreground_color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0,0,0,1)
+                    hint_text_color: (.7,.7,.7,1)
+
                 BoxLayout:
                     spacing: "15dp"
                     size_hint_y: None
@@ -148,19 +167,19 @@
 
                     MDRaisedButton:
                         text: "Cancel"
-                        md_bg_color: 0.6, 0.6, 0.6, 1
-                        size_hint_x: 0.5
+                        md_bg_color: .55,.55,.55,1
+                        size_hint_x: .5
 
                         on_release:
-                            root.edit_mode = False
+                            root.edit_mode=False
                             root.clear_form()
-                            app.root.current = "home"
+                            app.root.current="home"
 
                     MDRaisedButton:
                         id: save_button
                         text: "Update Transaction" if root.edit_mode else "Save Transaction"
-                        md_bg_color: 0.10, 0.32, 0.82, 1
-                        size_hint_x: 0.5
+                        md_bg_color: 0.10,0.32,0.82,1
+                        size_hint_x: .5
 
                         on_release:
                             root.save_transaction()

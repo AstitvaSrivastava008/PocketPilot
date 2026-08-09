@@ -11,7 +11,7 @@
 
         canvas.before:
             Color:
-                rgba: 0.96, 0.97, 1, 1
+                rgba: (0.10, 0.10, 0.10, 1) if app.theme_cls.theme_style == "Dark" else (0.96, 0.97, 1, 1)
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -44,6 +44,7 @@
                     radius: [20]
                     elevation: 2
                     padding: "20dp"
+                    md_bg_color: (0.16,0.16,0.16,1) if app.theme_cls.theme_style=="Dark" else (1,1,1,1)
 
                     BoxLayout:
                         orientation: "vertical"
@@ -53,7 +54,7 @@
                             text: "Expense Breakdown"
                             font_size: "24sp"
                             bold: True
-                            color: 0.15, 0.15, 0.15, 1
+                            color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0.15,0.15,0.15,1)
                             size_hint_y: None
                             height: "40dp"
 
@@ -71,7 +72,7 @@
                             text: "Highest Spending Category"
                             font_size: "18sp"
                             bold: True
-                            color: 0.25, 0.25, 0.25, 1
+                            color: (.85,.85,.85,1) if app.theme_cls.theme_style=="Dark" else (.25,.25,.25,1)
                             size_hint_y: None
                             height: "30dp"
 
@@ -80,7 +81,7 @@
                             text: "-"
                             font_size: "24sp"
                             bold: True
-                            color: 0.10, 0.32, 0.82, 1
+                            color: 0.10,0.32,0.82,1
                             size_hint_y: None
                             height: "35dp"
 
@@ -89,7 +90,7 @@
                             text: "₹0.00"
                             font_size: "20sp"
                             bold: True
-                            color: 0.85, 0, 0, 1
+                            color: .85,0,0,1
                             size_hint_y: None
                             height: "30dp"
 
@@ -102,6 +103,7 @@
                     radius: [20]
                     elevation: 2
                     padding: "20dp"
+                    md_bg_color: (0.16,0.16,0.16,1) if app.theme_cls.theme_style=="Dark" else (1,1,1,1)
 
                     BoxLayout:
                         orientation: "vertical"
@@ -111,7 +113,7 @@
                             text: "Income vs Expense"
                             font_size: "24sp"
                             bold: True
-                            color: 0.15, 0.15, 0.15, 1
+                            color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0.15,0.15,0.15,1)
                             size_hint_y: None
                             height: "40dp"
 
@@ -130,6 +132,7 @@
                     radius: [20]
                     elevation: 2
                     padding: "20dp"
+                    md_bg_color: (0.16,0.16,0.16,1) if app.theme_cls.theme_style=="Dark" else (1,1,1,1)
 
                     BoxLayout:
                         orientation: "vertical"
@@ -139,7 +142,7 @@
                             text: "Category-wise Spending"
                             font_size: "24sp"
                             bold: True
-                            color: 0.15, 0.15, 0.15, 1
+                            color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0.15,0.15,0.15,1)
                             size_hint_y: None
                             height: "40dp"
 
@@ -158,6 +161,7 @@
                     radius: [20]
                     elevation: 2
                     padding: "20dp"
+                    md_bg_color: (0.16,0.16,0.16,1) if app.theme_cls.theme_style=="Dark" else (1,1,1,1)
 
                     BoxLayout:
                         orientation: "vertical"
@@ -167,13 +171,13 @@
                             text: "Financial Insights"
                             font_size: "24sp"
                             bold: True
-                            color: 0.15, 0.15, 0.15, 1
+                            color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0.15,0.15,0.15,1)
                             size_hint_y: None
                             height: "40dp"
 
                         Label:
                             text: "Current Balance"
-                            color: .45, .45, .45, 1
+                            color: (.80,.80,.80,1) if app.theme_cls.theme_style=="Dark" else (.45,.45,.45,1)
                             size_hint_y: None
                             height: "25dp"
 
@@ -182,13 +186,13 @@
                             text: "₹0.00"
                             font_size: "26sp"
                             bold: True
-                            color: 0.10, 0.32, 0.82, 1
+                            color: 0.10,0.32,0.82,1
                             size_hint_y: None
                             height: "35dp"
 
                         Label:
                             text: "Total Transactions"
-                            color: .45, .45, .45, 1
+                            color: (.80,.80,.80,1) if app.theme_cls.theme_style=="Dark" else (.45,.45,.45,1)
                             size_hint_y: None
                             height: "25dp"
 
@@ -197,13 +201,13 @@
                             text: "0"
                             font_size: "22sp"
                             bold: True
-                            color: .2, .2, .2, 1
+                            color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (.2,.2,.2,1)
                             size_hint_y: None
                             height: "30dp"
 
                         Label:
                             text: "Expense Categories"
-                            color: .45, .45, .45, 1
+                            color: (.80,.80,.80,1) if app.theme_cls.theme_style=="Dark" else (.45,.45,.45,1)
                             size_hint_y: None
                             height: "25dp"
 
@@ -212,7 +216,7 @@
                             text: "0"
                             font_size: "22sp"
                             bold: True
-                            color: .2, .2, .2, 1
+                            color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (.2,.2,.2,1)
                             size_hint_y: None
                             height: "30dp"
 
@@ -221,3 +225,5 @@
                     height: "20dp"
 
         BottomNav:
+            size_hint_y: None
+            height: "75dp"
