@@ -138,6 +138,16 @@ class SettingsScreen(Screen):
     def change_password(self):
 
         app = App.get_running_app()
+        # ==========================================
+        # GUEST USERS DO NOT HAVE A PASSWORD
+        # ==========================================
+
+        if app.is_guest:
+            return
+
+        # ==========================================
+        # CHECK LOGGED-IN USER
+        # ==========================================
 
         if app.current_user is None:
             return
@@ -654,6 +664,8 @@ class SettingsScreen(Screen):
 
     def logout(self):
 
+        app = App.get_running_app()
+
         layout = BoxLayout(
             orientation="vertical",
             spacing=20,
@@ -683,9 +695,7 @@ class SettingsScreen(Screen):
         buttons.add_widget(yes)
         buttons.add_widget(no)
 
-        layout.add_widget(
-            buttons
-        )
+        layout.add_widget(buttons)
 
         popup = Popup(
             title="Logout",
@@ -695,10 +705,32 @@ class SettingsScreen(Screen):
 
         def confirm(instance):
 
-            App.get_running_app().current_user = None
+            # =====================================================
+            # GUEST LOGOUT
+            # =====================================================
+
+            if app.is_guest:
+
+                from database import delete_guest_database
+
+                # Delete temporary guest database
+                delete_guest_database()
+
+                # Reset guest session
+                app.is_guest = False
+                app.current_user = None
+
+            # =====================================================
+            # NORMAL USER LOGOUT
+            # =====================================================
+
+            else:
+
+                app.current_user = None
 
             popup.dismiss()
 
+            # Return to login screen
             self.manager.current = "login"
 
         yes.bind(

@@ -29,7 +29,6 @@
                 bold: True
                 color: 0.10, 0.32, 0.82, 1
 
-
         # ==========================
         # SETTINGS LIST
         # ==========================
@@ -41,10 +40,8 @@
                 cols: 1
                 size_hint_y: None
                 height: self.minimum_height
-
                 spacing: "12dp"
                 padding: "20dp"
-
 
                 # ==========================
                 # EDIT PROFILE
@@ -52,39 +49,35 @@
 
                 Button:
                     text: "Edit Profile"
-
                     size_hint_y: None
                     height: "55dp"
-
                     background_normal: ""
-
                     background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
-
                     color: 1, 1, 1, 1
 
                     on_release:
                         root.edit_profile()
 
-
                 # ==========================
                 # CHANGE PASSWORD
+                # Hidden for Guest
                 # ==========================
 
                 Button:
                     text: "Change Password"
 
                     size_hint_y: None
-                    height: "55dp"
+                    height: "0dp" if app.is_guest else "55dp"
+
+                    opacity: 0 if app.is_guest else 1
+                    disabled: app.is_guest
 
                     background_normal: ""
-
                     background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
-
                     color: 1, 1, 1, 1
 
                     on_release:
                         root.change_password()
-
 
                 # ==========================
                 # THEME
@@ -92,19 +85,14 @@
 
                 Button:
                     text: "Theme"
-
                     size_hint_y: None
                     height: "55dp"
-
                     background_normal: ""
-
                     background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
-
                     color: 1, 1, 1, 1
 
                     on_release:
                         root.change_theme()
-
 
                 # ==========================
                 # CURRENCY
@@ -112,19 +100,14 @@
 
                 Button:
                     text: "Currency"
-
                     size_hint_y: None
                     height: "55dp"
-
                     background_normal: ""
-
                     background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
-
                     color: 1, 1, 1, 1
 
                     on_release:
                         root.change_currency()
-
 
                 # ==========================
                 # ABOUT POCKETPILOT
@@ -132,19 +115,14 @@
 
                 Button:
                     text: "About PocketPilot"
-
                     size_hint_y: None
                     height: "55dp"
-
                     background_normal: ""
-
                     background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
-
                     color: 1, 1, 1, 1
 
                     on_release:
                         root.about_app()
-
 
                 # ==========================
                 # LOGOUT
@@ -152,19 +130,14 @@
 
                 Button:
                     text: "Logout"
-
                     size_hint_y: None
                     height: "55dp"
-
                     background_normal: ""
-
                     background_color: 0.75, 0.15, 0.15, 1
-
                     color: 1, 1, 1, 1
 
                     on_release:
                         root.logout()
-
 
         # ==========================
         # BOTTOM NAVIGATION

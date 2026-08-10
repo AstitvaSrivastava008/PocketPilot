@@ -19,13 +19,26 @@ from widget.bottom_nav import BottomNav
 from widget.transaction_card import TransactionCard
 from widget.animated_bar import AnimatedBar
 
+
 class PocketPilot(MDApp):
+
+    # =========================================================
+    # CURRENT USER
+    # =========================================================
 
     current_user = None
 
+    # True when the current session is a Guest session
+    is_guest = False
+
+    # =========================================================
+    # BUILD APPLICATION
+    # =========================================================
+
     def build(self):
+
         # -----------------------------
-        # Create Database
+        # Create normal database
         # -----------------------------
         create_database()
 
@@ -49,26 +62,87 @@ class PocketPilot(MDApp):
         Builder.load_file("kv/settings.kv")
         Builder.load_file("kv/add_transaction.kv")
 
+        # -----------------------------
+        # Application Settings
+        # -----------------------------
         self.title = "PocketPilot"
 
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = "Blue"
 
+        # -----------------------------
+        # Screen Manager
+        # -----------------------------
         screen_manager = ScreenManager()
 
-        screen_manager.add_widget(SplashScreen(name="splash"))
-        screen_manager.add_widget(WelcomeScreen(name="welcome"))
-        screen_manager.add_widget(ChoiceScreen(name="choice"))
-        screen_manager.add_widget(LoginScreen(name="login"))
-        screen_manager.add_widget(SignupScreen(name="signup"))
-        screen_manager.add_widget(HomeScreen(name="home"))
-        screen_manager.add_widget(HistoryScreen(name="history"))
-        screen_manager.add_widget(AnalyticsScreen(name="analytics"))
-        screen_manager.add_widget(SettingsScreen(name="settings"))
-        screen_manager.add_widget(AddTransactionScreen(name="add_transaction"))
+        screen_manager.add_widget(
+            SplashScreen(name="splash")
+        )
+
+        screen_manager.add_widget(
+            WelcomeScreen(name="welcome")
+        )
+
+        screen_manager.add_widget(
+            ChoiceScreen(name="choice")
+        )
+
+        screen_manager.add_widget(
+            LoginScreen(name="login")
+        )
+
+        screen_manager.add_widget(
+            SignupScreen(name="signup")
+        )
+
+        screen_manager.add_widget(
+            HomeScreen(name="home")
+        )
+
+        screen_manager.add_widget(
+            HistoryScreen(name="history")
+        )
+
+        screen_manager.add_widget(
+            AnalyticsScreen(name="analytics")
+        )
+
+        screen_manager.add_widget(
+            SettingsScreen(name="settings")
+        )
+
+        screen_manager.add_widget(
+            AddTransactionScreen(name="add_transaction")
+        )
 
         return screen_manager
 
+    # =========================================================
+    # APPLICATION CLOSE
+    # =========================================================
+
+    def on_stop(self):
+
+        """
+        Delete the temporary Guest database when the
+        application closes.
+
+        Registered-user data is never deleted.
+        """
+
+        if self.is_guest:
+
+            from database import delete_guest_database
+
+            delete_guest_database()
+
+            self.current_user = None
+            self.is_guest = False
+
+
+# =============================================================
+# START APPLICATION
+# =============================================================
 
 if __name__ == "__main__":
     PocketPilot().run()

@@ -1,16 +1,41 @@
 import sqlite3
+import os
+# =========================================================
+# DATABASE PATH
+# =========================================================
+
+DATABASE_PATH = "data/pocketpilot.db"
 
 
+def set_database_path(path):
+    """
+    Change the active database.
+
+    Normal users use:
+        data/pocketpilot.db
+
+    Guest users use:
+        data/guest_pocketpilot.db
+    """
+    global DATABASE_PATH
+    DATABASE_PATH = path
+
+
+def get_database_path():
+    """Return the currently active database path."""
+    return DATABASE_PATH
 # ==========================================
 # CREATE DATABASE & TABLES
 # ==========================================
 def create_database():
 
     import os
+    
+    os.makedirs(os.path.dirname(DATABASE_PATH), exist_ok=True)
 
-    print("Database:", os.path.abspath("data/pocketpilot.db"))
+    print("Database:", os.path.abspath(DATABASE_PATH))
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     # ---------- USERS TABLE ----------
@@ -107,7 +132,7 @@ def create_database():
 # ==========================================
 def add_user(name, email, password):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute(
@@ -126,7 +151,7 @@ def add_user(name, email, password):
 
 def login_user(email, password):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute(
@@ -149,7 +174,7 @@ def login_user(email, password):
 # ==========================================
 def get_user(user_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -173,7 +198,7 @@ def get_user(user_id):
 # ==========================================
 def update_user_name(user_id, new_name):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -192,7 +217,7 @@ def update_user_name(user_id, new_name):
 # ==========================================
 def verify_password(user_id, password):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -217,7 +242,7 @@ def verify_password(user_id, password):
 # ==========================================
 def update_password(user_id, new_password):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -242,7 +267,7 @@ def add_transaction(
         description,
         date):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute(
@@ -273,7 +298,7 @@ def add_transaction(
 # ==========================================
 def get_total_income(user_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -292,7 +317,7 @@ def get_total_income(user_id):
 
 def get_total_expense(user_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -322,7 +347,7 @@ def get_current_balance(user_id):
 # ==========================================
 def get_recent_transaction(user_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -368,7 +393,7 @@ def get_recent_transaction(user_id):
 # ==========================================
 def get_all_transactions(user_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -396,7 +421,7 @@ def get_all_transactions(user_id):
 # ==========================================
 def delete_transaction(transaction_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -421,7 +446,7 @@ def update_transaction(
         description,
         date):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -454,7 +479,7 @@ def update_transaction(
 # ==========================================
 def get_transaction_count(user_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -477,7 +502,7 @@ def get_total_savings(user_id):
 
 def get_expense_by_category(user_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -504,7 +529,7 @@ def get_expense_by_category(user_id):
 # ==========================================
 def get_highest_expense_category(user_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -532,7 +557,7 @@ def get_highest_expense_category(user_id):
 # ==========================================
 def get_expense_category_count(user_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -579,7 +604,7 @@ def save_goal(
         saving_percentage,
         target_date):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -621,7 +646,7 @@ def save_goal(
 # ==========================================
 def update_saved_amount(user_id, income_amount):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -666,7 +691,7 @@ def update_saved_amount(user_id, income_amount):
 # ==========================================
 def get_goal(user_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -691,7 +716,7 @@ def get_goal(user_id):
 # ==========================================
 def mark_goal_completed(user_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -709,7 +734,7 @@ def mark_goal_completed(user_id):
 # ==========================================
 def is_goal_completed(user_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -731,7 +756,7 @@ def is_goal_completed(user_id):
 # ==========================================
 def delete_goal(user_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -746,7 +771,7 @@ def delete_goal(user_id):
 # ==========================================
 def update_theme(user_id, theme):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -767,7 +792,7 @@ def update_theme(user_id, theme):
 # ==========================================
 def get_theme(user_id):
 
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -789,7 +814,7 @@ def get_theme(user_id):
 # ==========================================
 
 def update_currency(user_id, currency):
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -812,7 +837,7 @@ def update_currency(user_id, currency):
 # ==========================================
 
 def get_currency(user_id):
-    connection = sqlite3.connect("data/pocketpilot.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -829,6 +854,76 @@ def get_currency(user_id):
         return result[0]
 
     return "₹"
+# =========================================================
+# GUEST MODE
+# =========================================================
+
+GUEST_DATABASE_PATH = "data/guest_pocketpilot.db"
+
+
+def start_guest_database():
+    """
+    Create a fresh temporary database for Guest Mode.
+
+    Any previous guest database is deleted first so every
+    guest starts with a completely clean session.
+    """
+
+    global DATABASE_PATH
+
+    # Make sure the data directory exists
+    os.makedirs("data", exist_ok=True)
+
+    # Remove previous guest database if it exists
+    if os.path.exists(GUEST_DATABASE_PATH):
+        try:
+            os.remove(GUEST_DATABASE_PATH)
+        except PermissionError:
+            print("Could not remove previous guest database.")
+
+    # Switch database connection to guest database
+    DATABASE_PATH = GUEST_DATABASE_PATH
+
+    # Create all required tables
+    create_database()
+
+    # Create temporary guest user
+    add_user(
+        "Guest",
+        "guest@pocketpilot.local",
+        "guest"
+    )
+
+    # Retrieve the newly created guest user
+    guest_user = login_user(
+        "guest@pocketpilot.local",
+        "guest"
+    )
+
+    return guest_user
+
+
+def delete_guest_database():
+    """
+    Delete the temporary Guest Mode database.
+
+    The permanent PocketPilot database is never deleted.
+    """
+
+    global DATABASE_PATH
+
+    # Only delete the guest database
+    if os.path.exists(GUEST_DATABASE_PATH):
+
+        try:
+            os.remove(GUEST_DATABASE_PATH)
+            print("Guest database deleted successfully.")
+
+        except PermissionError:
+            print("Could not delete guest database.")
+
+    # Restore normal database
+    DATABASE_PATH = "data/pocketpilot.db"
 # ==========================================
 # TEST DATABASE
 # ==========================================
