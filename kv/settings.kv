@@ -2,19 +2,22 @@
 #:import BottomNav widget.bottom_nav.BottomNav
 
 <SettingsScreen>:
+
     BoxLayout:
         orientation: "vertical"
 
         canvas.before:
             Color:
                 rgba: (0.10, 0.10, 0.10, 1) if app.theme_cls.theme_style == "Dark" else (0.96, 0.97, 1, 1)
+
             Rectangle:
                 pos: self.pos
                 size: self.size
 
         # ==========================
-        # Header
+        # HEADER
         # ==========================
+
         BoxLayout:
             size_hint_y: None
             height: "70dp"
@@ -26,9 +29,11 @@
                 bold: True
                 color: 0.10, 0.32, 0.82, 1
 
+
         # ==========================
-        # Settings List
+        # SETTINGS LIST
         # ==========================
+
         ScrollView:
             do_scroll_x: False
 
@@ -36,61 +41,134 @@
                 cols: 1
                 size_hint_y: None
                 height: self.minimum_height
+
                 spacing: "12dp"
                 padding: "20dp"
 
+
+                # ==========================
+                # EDIT PROFILE
+                # ==========================
+
                 Button:
                     text: "Edit Profile"
+
                     size_hint_y: None
                     height: "55dp"
+
                     background_normal: ""
+
                     background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
+
                     color: 1, 1, 1, 1
-                    on_release: root.edit_profile()
+
+                    on_release:
+                        root.edit_profile()
+
+
+                # ==========================
+                # CHANGE PASSWORD
+                # ==========================
 
                 Button:
                     text: "Change Password"
+
                     size_hint_y: None
                     height: "55dp"
+
                     background_normal: ""
+
                     background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
+
                     color: 1, 1, 1, 1
-                    on_release: root.change_password()
+
+                    on_release:
+                        root.change_password()
+
+
+                # ==========================
+                # THEME
+                # ==========================
 
                 Button:
                     text: "Theme"
+
                     size_hint_y: None
                     height: "55dp"
+
                     background_normal: ""
+
                     background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
+
                     color: 1, 1, 1, 1
-                    on_release: root.change_theme()
+
+                    on_release:
+                        root.change_theme()
+
+
+                # ==========================
+                # CURRENCY
+                # ==========================
 
                 Button:
                     text: "Currency"
+
                     size_hint_y: None
                     height: "55dp"
+
                     background_normal: ""
+
                     background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
+
                     color: 1, 1, 1, 1
+
+                    on_release:
+                        root.change_currency()
+
+
+                # ==========================
+                # ABOUT POCKETPILOT
+                # ==========================
 
                 Button:
                     text: "About PocketPilot"
+
                     size_hint_y: None
                     height: "55dp"
+
                     background_normal: ""
+
                     background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
+
                     color: 1, 1, 1, 1
-                    on_release: root.about_app()
+
+                    on_release:
+                        root.about_app()
+
+
+                # ==========================
+                # LOGOUT
+                # ==========================
 
                 Button:
                     text: "Logout"
+
                     size_hint_y: None
                     height: "55dp"
+
                     background_normal: ""
+
                     background_color: 0.75, 0.15, 0.15, 1
+
                     color: 1, 1, 1, 1
-                    on_release: root.logout()
+
+                    on_release:
+                        root.logout()
+
+
+        # ==========================
+        # BOTTOM NAVIGATION
+        # ==========================
 
         BottomNav:
             size_hint_y: None

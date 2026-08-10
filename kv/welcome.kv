@@ -1,31 +1,43 @@
 #:kivy 2.3.1
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
+#:import MDTextButton kivymd.uix.button.MDTextButton
 
 <WelcomeScreen>:
+
     canvas.before:
         Color:
             rgba: 1, 1, 1, 1
+
         Rectangle:
             pos: self.pos
             size: self.size
 
     BoxLayout:
         orientation: "vertical"
-        spacing: "20dp"
+        spacing: "15dp"
         padding: "40dp"
 
-        Widget:
-            size_hint_y: 0.3
+        # ==========================================
+        # TOP SPACE
+        # ==========================================
 
-        Label:
-            text: "PP"
-            font_size: "72sp"
-            bold: True
-            color: 0.1, 0.2, 0.6, 1
-            halign: "center"
-            valign: "middle"
-            text_size: self.size
+        Widget:
+            size_hint_y: 0.18
+
+        # ==========================================
+        # POCKETPILOT LOGO
+        # ==========================================
+
+        Image:
+            source: "assets/icons/p1.png"
             size_hint_y: None
-            height: "80dp"
+            height: "180dp"
+            allow_stretch: True
+            keep_ratio: True
+
+        # ==========================================
+        # APP NAME
+        # ==========================================
 
         Label:
             text: "PocketPilot"
@@ -38,6 +50,10 @@
             size_hint_y: None
             height: "50dp"
 
+        # ==========================================
+        # TAGLINE
+        # ==========================================
+
         Label:
             text: "Take control of your money."
             font_size: "18sp"
@@ -48,15 +64,31 @@
             size_hint_y: None
             height: "40dp"
 
+        # ==========================================
+        # SPACE
+        # ==========================================
+
         Widget:
-            size_hint_y: 0.2
+            size_hint_y: 0.12
+
+        # ==========================================
+        # GET STARTED BUTTON
+        # ==========================================
 
         MDRaisedButton:
             text: "Get Started"
             size_hint: None, None
             size: "220dp", "50dp"
             pos_hint: {"center_x": 0.5}
-            on_release: root.go_to_choice()
+            md_bg_color: 0.1, 0.2, 0.6, 1
+            text_color: 1, 1, 1, 1
+
+            on_release:
+                root.go_to_choice()
+
+        # ==========================================
+        # ACCOUNT MESSAGE
+        # ==========================================
 
         Label:
             text: "Already have an account?"
@@ -68,10 +100,22 @@
             size_hint_y: None
             height: "30dp"
 
-        MDFlatButton:
+        # ==========================================
+        # LOGIN BUTTON
+        # ==========================================
+
+        MDTextButton:
             text: "Login"
             pos_hint: {"center_x": 0.5}
-            on_release: root.go_to_login()
+            theme_text_color: "Custom"
+            text_color: 0.1, 0.2, 0.6, 1
+
+            on_release:
+                root.go_to_login()
+
+        # ==========================================
+        # BOTTOM SPACE
+        # ==========================================
 
         Widget:
-            size_hint_y: 0.2
+            size_hint_y: 0.15

@@ -4,225 +4,382 @@
 #:import MDCard kivymd.uix.card.MDCard
 #:import Image kivy.uix.image.Image
 
+
 <AnalyticsScreen>:
 
     BoxLayout:
         orientation: "vertical"
 
+        # ============================================================
+        # PAGE BACKGROUND
+        # ============================================================
+
         canvas.before:
             Color:
                 rgba: (0.10, 0.10, 0.10, 1) if app.theme_cls.theme_style == "Dark" else (0.96, 0.97, 1, 1)
+
             Rectangle:
                 pos: self.pos
                 size: self.size
 
+
+        # ============================================================
+        # SCROLLABLE CONTENT
+        # ============================================================
+
         ScrollView:
             do_scroll_x: False
+            bar_width: "5dp"
 
             BoxLayout:
                 orientation: "vertical"
+
                 size_hint_y: None
                 height: self.minimum_height
 
                 padding: "20dp"
                 spacing: "20dp"
 
+
+                # ====================================================
+                # PAGE TITLE
+                # ====================================================
+
                 Label:
                     text: "Analytics"
+
                     font_size: "32sp"
                     bold: True
+
                     color: 0.10, 0.32, 0.82, 1
+
                     size_hint_y: None
                     height: "50dp"
 
-                # =====================================
-                # Expense Breakdown
-                # =====================================
+                    halign: "center"
+                    valign: "middle"
+
+                    text_size: self.size
+
+
+                # ====================================================
+                # EXPENSE BREAKDOWN
+                # ====================================================
+
                 MDCard:
                     size_hint_y: None
-                    height: "620dp"
+                    height: "560dp"
+
                     radius: [20]
-                    elevation: 2
+                    elevation: 3
+
                     padding: "20dp"
-                    md_bg_color: (0.16,0.16,0.16,1) if app.theme_cls.theme_style=="Dark" else (1,1,1,1)
+
+                    md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
 
                     BoxLayout:
                         orientation: "vertical"
-                        spacing: "15dp"
+                        spacing: "10dp"
+
 
                         Label:
                             text: "Expense Breakdown"
+
                             font_size: "24sp"
                             bold: True
-                            color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0.15,0.15,0.15,1)
+
+                            color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.15, 0.15, 0.15, 1)
+
                             size_hint_y: None
                             height: "40dp"
+
+                            halign: "center"
+                            valign: "middle"
+
+                            text_size: self.size
+
 
                         Image:
                             id: expense_chart
+
                             source: ""
+
                             allow_stretch: True
                             keep_ratio: True
 
-                        Widget:
-                            size_hint_y: None
-                            height: "10dp"
 
-                        Label:
-                            text: "Highest Spending Category"
-                            font_size: "18sp"
-                            bold: True
-                            color: (.85,.85,.85,1) if app.theme_cls.theme_style=="Dark" else (.25,.25,.25,1)
-                            size_hint_y: None
-                            height: "30dp"
+                        BoxLayout:
+                            orientation: "vertical"
 
-                        Label:
-                            id: highest_category
-                            text: "-"
-                            font_size: "24sp"
-                            bold: True
-                            color: 0.10,0.32,0.82,1
                             size_hint_y: None
-                            height: "35dp"
+                            height: "95dp"
 
-                        Label:
-                            id: highest_amount
-                            text: "₹0.00"
-                            font_size: "20sp"
-                            bold: True
-                            color: .85,0,0,1
-                            size_hint_y: None
-                            height: "30dp"
+                            spacing: "4dp"
 
-                # =====================================
-                # Income vs Expense
-                # =====================================
+
+                            Label:
+                                text: "Highest Spending Category"
+
+                                font_size: "16sp"
+                                bold: True
+
+                                color: (.85, .85, .85, 1) if app.theme_cls.theme_style == "Dark" else (.35, .35, .35, 1)
+
+                                size_hint_y: None
+                                height: "25dp"
+
+                                halign: "center"
+                                text_size: self.size
+
+
+                            Label:
+                                id: highest_category
+
+                                text: "-"
+
+                                font_size: "24sp"
+                                bold: True
+
+                                color: 0.10, 0.32, 0.82, 1
+
+                                size_hint_y: None
+                                height: "32dp"
+
+                                halign: "center"
+                                text_size: self.size
+
+
+                            Label:
+                                id: highest_amount
+
+                                text: "₹0.00"
+
+                                font_size: "18sp"
+                                bold: True
+
+                                color: 0.85, 0, 0, 1
+
+                                size_hint_y: None
+                                height: "28dp"
+
+                                halign: "center"
+                                text_size: self.size
+
+
+                # ====================================================
+                # INCOME VS EXPENSE
+                # ====================================================
+
                 MDCard:
                     size_hint_y: None
-                    height: "430dp"
+                    height: "390dp"
+
                     radius: [20]
-                    elevation: 2
+                    elevation: 3
+
                     padding: "20dp"
-                    md_bg_color: (0.16,0.16,0.16,1) if app.theme_cls.theme_style=="Dark" else (1,1,1,1)
+
+                    md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
 
                     BoxLayout:
                         orientation: "vertical"
-                        spacing: "15dp"
+                        spacing: "10dp"
+
 
                         Label:
                             text: "Income vs Expense"
+
                             font_size: "24sp"
                             bold: True
-                            color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0.15,0.15,0.15,1)
+
+                            color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.15, 0.15, 0.15, 1)
+
                             size_hint_y: None
                             height: "40dp"
+
+                            halign: "center"
+                            valign: "middle"
+
+                            text_size: self.size
+
 
                         Image:
                             id: income_expense_chart
+
                             source: ""
+
                             allow_stretch: True
                             keep_ratio: True
 
-                # =====================================
-                # Category-wise Spending
-                # =====================================
+
+                # ====================================================
+                # CATEGORY-WISE SPENDING
+                # ====================================================
+
                 MDCard:
                     size_hint_y: None
-                    height: "450dp"
+                    height: "430dp"
+
                     radius: [20]
-                    elevation: 2
+                    elevation: 3
+
                     padding: "20dp"
-                    md_bg_color: (0.16,0.16,0.16,1) if app.theme_cls.theme_style=="Dark" else (1,1,1,1)
+
+                    md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
 
                     BoxLayout:
                         orientation: "vertical"
-                        spacing: "15dp"
+                        spacing: "10dp"
+
 
                         Label:
                             text: "Category-wise Spending"
+
                             font_size: "24sp"
                             bold: True
-                            color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0.15,0.15,0.15,1)
+
+                            color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.15, 0.15, 0.15, 1)
+
                             size_hint_y: None
                             height: "40dp"
+
+                            halign: "center"
+                            valign: "middle"
+
+                            text_size: self.size
+
 
                         Image:
                             id: category_chart
+
                             source: ""
+
                             allow_stretch: True
                             keep_ratio: True
 
-                # =====================================
-                # Financial Insights
-                # =====================================
+
+                # ====================================================
+                # FINANCIAL INSIGHTS
+                # ====================================================
+
                 MDCard:
                     size_hint_y: None
                     height: "330dp"
+
                     radius: [20]
-                    elevation: 2
+                    elevation: 3
+
                     padding: "20dp"
-                    md_bg_color: (0.16,0.16,0.16,1) if app.theme_cls.theme_style=="Dark" else (1,1,1,1)
+
+                    md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
 
                     BoxLayout:
                         orientation: "vertical"
-                        spacing: "12dp"
+                        spacing: "8dp"
+
 
                         Label:
                             text: "Financial Insights"
+
                             font_size: "24sp"
                             bold: True
-                            color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (0.15,0.15,0.15,1)
+
+                            color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.15, 0.15, 0.15, 1)
+
                             size_hint_y: None
                             height: "40dp"
 
+                            halign: "center"
+                            text_size: self.size
+
+
                         Label:
                             text: "Current Balance"
-                            color: (.80,.80,.80,1) if app.theme_cls.theme_style=="Dark" else (.45,.45,.45,1)
+
+                            font_size: "15sp"
+
+                            color: (.80, .80, .80, 1) if app.theme_cls.theme_style == "Dark" else (.45, .45, .45, 1)
+
                             size_hint_y: None
-                            height: "25dp"
+                            height: "22dp"
+
 
                         Label:
                             id: balance_label
+
                             text: "₹0.00"
+
                             font_size: "26sp"
                             bold: True
-                            color: 0.10,0.32,0.82,1
+
+                            color: 0.10, 0.32, 0.82, 1
+
                             size_hint_y: None
                             height: "35dp"
 
+
                         Label:
                             text: "Total Transactions"
-                            color: (.80,.80,.80,1) if app.theme_cls.theme_style=="Dark" else (.45,.45,.45,1)
+
+                            font_size: "15sp"
+
+                            color: (.80, .80, .80, 1) if app.theme_cls.theme_style == "Dark" else (.45, .45, .45, 1)
+
                             size_hint_y: None
-                            height: "25dp"
+                            height: "22dp"
+
 
                         Label:
                             id: transaction_count_label
+
                             text: "0"
+
                             font_size: "22sp"
                             bold: True
-                            color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (.2,.2,.2,1)
+
+                            color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (.20, .20, .20, 1)
+
                             size_hint_y: None
                             height: "30dp"
+
 
                         Label:
                             text: "Expense Categories"
-                            color: (.80,.80,.80,1) if app.theme_cls.theme_style=="Dark" else (.45,.45,.45,1)
+
+                            font_size: "15sp"
+
+                            color: (.80, .80, .80, 1) if app.theme_cls.theme_style == "Dark" else (.45, .45, .45, 1)
+
                             size_hint_y: None
-                            height: "25dp"
+                            height: "22dp"
+
 
                         Label:
                             id: category_count_label
+
                             text: "0"
+
                             font_size: "22sp"
                             bold: True
-                            color: (1,1,1,1) if app.theme_cls.theme_style=="Dark" else (.2,.2,.2,1)
+
+                            color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (.20, .20, .20, 1)
+
                             size_hint_y: None
                             height: "30dp"
+
 
                 Widget:
                     size_hint_y: None
                     height: "20dp"
+
+
+        # ============================================================
+        # BOTTOM NAVIGATION
+        # ============================================================
 
         BottomNav:
             size_hint_y: None

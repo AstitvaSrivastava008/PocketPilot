@@ -1,9 +1,11 @@
 from kivy.app import App
 from kivy.uix.screenmanager import Screen
+
 from kivy.properties import (
     StringProperty,
     NumericProperty
 )
+
 from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
@@ -18,27 +20,74 @@ from database import (
     get_goal,
     save_goal,
     delete_goal,
-    mark_goal_completed
+    mark_goal_completed,
+    get_currency
 )
 
 
 class HomeScreen(Screen):
 
+    # =========================================================
+    # USER
+    # =========================================================
+
     user_name = StringProperty("User")
+
+    # =========================================================
+    # DASHBOARD VALUES
+    # =========================================================
 
     balance = StringProperty("₹0.00")
     income = StringProperty("₹0.00")
     expense = StringProperty("₹0.00")
-    recent_transaction = StringProperty("No transactions yet.")
 
-    goal_progress = StringProperty("No Goal Set")
+    recent_transaction = StringProperty(
+        "No transactions yet."
+    )
+
+    # =========================================================
+    # SAVINGS GOAL
+    # =========================================================
+
+    goal_progress = StringProperty(
+        "No Goal Set"
+    )
+
     goal_percentage = NumericProperty(0)
-    goal_percentage_text = StringProperty("0% Completed")
-    goal_remaining = StringProperty("Remaining: ₹0.00")
 
-    # =====================================
-    # Refresh Dashboard
-    # =====================================
+    goal_percentage_text = StringProperty(
+        "0% Completed"
+    )
+
+    goal_remaining = StringProperty(
+        "Remaining: ₹0.00"
+    )
+
+    # =========================================================
+    # CURRENCY HELPER
+    # =========================================================
+
+    def get_currency_symbol(self):
+
+        app = App.get_running_app()
+
+        # Try to use the currency already loaded in App
+        symbol = getattr(
+            app,
+            "currency_symbol",
+            None
+        )
+
+        if symbol:
+            return symbol
+
+        # Fallback
+        return "₹"
+
+    # =========================================================
+    # REFRESH DASHBOARD
+    # =========================================================
+
     def refresh_dashboard(self):
 
         app = App.get_running_app()
@@ -47,22 +96,79 @@ class HomeScreen(Screen):
             return
 
         user_id = app.current_user[0]
-        # Update username on dashboard
+
+        # -----------------------------------------------------
+        # Username
+        # -----------------------------------------------------
+
         self.user_name = app.current_user[1]
 
-        total_income = get_total_income(user_id)
-        total_expense = get_total_expense(user_id)
-        balance = get_current_balance(user_id)
+        # -----------------------------------------------------
+        # Load saved currency from database
+        # -----------------------------------------------------
 
-        self.income = f"₹{total_income:.2f}"
-        self.expense = f"₹{total_expense:.2f}"
-        self.balance = f"₹{balance:.2f}"
+        try:
 
-        self.recent_transaction = get_recent_transaction(user_id)
+            currency_symbol = get_currency(
+                user_id
+            )
 
-        # =========================
-        # Savings Goal
-        # =========================
+            if not currency_symbol:
+                currency_symbol = "₹"
+
+        except Exception:
+
+            currency_symbol = "₹"
+
+        # Save currency to App
+        app.currency_symbol = currency_symbol
+
+        # -----------------------------------------------------
+        # Dashboard values
+        # -----------------------------------------------------
+
+        total_income = get_total_income(
+            user_id
+        )
+
+        total_expense = get_total_expense(
+            user_id
+        )
+
+        balance = get_current_balance(
+            user_id
+        )
+
+        # -----------------------------------------------------
+        # Display currency
+        # -----------------------------------------------------
+
+        self.income = (
+            f"{currency_symbol}"
+            f"{total_income:,.2f}"
+        )
+
+        self.expense = (
+            f"{currency_symbol}"
+            f"{total_expense:,.2f}"
+        )
+
+        self.balance = (
+            f"{currency_symbol}"
+            f"{balance:,.2f}"
+        )
+
+        # -----------------------------------------------------
+        # Recent transaction
+        # -----------------------------------------------------
+
+        self.recent_transaction = (
+            get_recent_transaction(user_id)
+        )
+
+        # =====================================================
+        # SAVINGS GOAL
+        # =====================================================
 
         goal = get_goal(user_id)
 
@@ -77,37 +183,69 @@ class HomeScreen(Screen):
                 goal_completed
             ) = goal
 
+            # -------------------------------------------------
+            # Calculate percentage
+            # -------------------------------------------------
+
             percentage = 0
 
             if goal_amount > 0:
+
                 percentage = min(
                     (saved_amount / goal_amount) * 100,
                     100
                 )
+
+            # -------------------------------------------------
+            # Calculate remaining
+            # -------------------------------------------------
 
             remaining = max(
                 goal_amount - saved_amount,
                 0
             )
 
+            # -------------------------------------------------
+            # Goal progress
+            # -------------------------------------------------
+
             self.goal_progress = (
                 f"{goal_name}\n"
-                f"₹{saved_amount:,.2f} / ₹{goal_amount:,.2f}"
+                f"{currency_symbol}"
+                f"{saved_amount:,.2f}"
+                f" / "
+                f"{currency_symbol}"
+                f"{goal_amount:,.2f}"
             )
 
+            # -------------------------------------------------
+            # Progress bar
+            # -------------------------------------------------
+
             self.goal_percentage = percentage
+
+            # -------------------------------------------------
+            # Percentage text
+            # -------------------------------------------------
 
             self.goal_percentage_text = (
                 f"{percentage:.1f}% Completed"
             )
 
+            # -------------------------------------------------
+            # Remaining amount
+            # -------------------------------------------------
+
             self.goal_remaining = (
-                f"Remaining: ₹{remaining:,.2f}"
+                f"Remaining: "
+                f"{currency_symbol}"
+                f"{remaining:,.2f}"
             )
 
-            # -------------------------
-            # Goal Completed Popup
-            # -------------------------
+            # =================================================
+            # GOAL COMPLETED POPUP
+            # =================================================
+
             if (
                 goal_amount > 0
                 and saved_amount >= goal_amount
@@ -115,38 +253,72 @@ class HomeScreen(Screen):
             ):
 
                 popup = Popup(
-                    title=" Congratulations!",
+                    title="Congratulations!",
+
                     content=Label(
                         text=(
-                            "You achieved your savings goal!\n\n"
+                            "You achieved your "
+                            "savings goal!\n\n"
                             f"{goal_name}\n"
-                            f"₹{goal_amount:,.2f}"
+                            f"{currency_symbol}"
+                            f"{goal_amount:,.2f}"
                         ),
                         halign="center"
                     ),
+
                     size_hint=(0.75, 0.40)
                 )
 
                 popup.open()
 
-                mark_goal_completed(user_id)
+                mark_goal_completed(
+                    user_id
+                )
 
         else:
 
-            self.goal_progress = "No Goal Set"
-            self.goal_percentage = 0
-            self.goal_percentage_text = "0% Completed"
-            self.goal_remaining = "Remaining: ₹0.00"
+            # -------------------------------------------------
+            # No goal
+            # -------------------------------------------------
 
-    # =====================================
-    # Smart Savings Goal Popup
-    # =====================================
+            self.goal_progress = (
+                "No Goal Set"
+            )
+
+            self.goal_percentage = 0
+
+            self.goal_percentage_text = (
+                "0% Completed"
+            )
+
+            self.goal_remaining = (
+                f"Remaining: "
+                f"{currency_symbol}"
+                f"0.00"
+            )
+
+    # =========================================================
+    # SMART SAVINGS GOAL POPUP
+    # =========================================================
+
     def open_goal_popup(self):
 
         app = App.get_running_app()
+
+        if not app.current_user:
+            return
+
         user_id = app.current_user[0]
 
+        currency_symbol = (
+            self.get_currency_symbol()
+        )
+
         goal = get_goal(user_id)
+
+        # -----------------------------------------------------
+        # Layout
+        # -----------------------------------------------------
 
         layout = BoxLayout(
             orientation="vertical",
@@ -154,16 +326,31 @@ class HomeScreen(Screen):
             padding=20
         )
 
+        # -----------------------------------------------------
+        # Goal name
+        # -----------------------------------------------------
+
         goal_name = TextInput(
             hint_text="Goal Name (Laptop, Bike...)",
             multiline=False
         )
 
+        # -----------------------------------------------------
+        # Goal amount
+        # -----------------------------------------------------
+
         goal_amount = TextInput(
-            hint_text="Goal Amount",
+            hint_text=(
+                f"Goal Amount "
+                f"({currency_symbol})"
+            ),
             multiline=False,
             input_filter="float"
         )
+
+        # -----------------------------------------------------
+        # Saving percentage
+        # -----------------------------------------------------
 
         saving_percentage = TextInput(
             hint_text="Saving Percentage (%)",
@@ -171,14 +358,19 @@ class HomeScreen(Screen):
             input_filter="float"
         )
 
+        # -----------------------------------------------------
+        # Target date
+        # -----------------------------------------------------
+
         target_date = TextInput(
             hint_text="Target Date (Optional)",
             multiline=False
         )
 
-        # -----------------------------
-        # Pre-fill existing goal
-        # -----------------------------
+        # =====================================================
+        # PRE-FILL EXISTING GOAL
+        # =====================================================
+
         if goal:
 
             (
@@ -191,9 +383,24 @@ class HomeScreen(Screen):
             ) = goal
 
             goal_name.text = current_name
-            goal_amount.text = str(current_goal)
-            saving_percentage.text = str(current_percentage)
-            target_date.text = current_target if current_target else ""
+
+            goal_amount.text = str(
+                current_goal
+            )
+
+            saving_percentage.text = str(
+                current_percentage
+            )
+
+            target_date.text = (
+                current_target
+                if current_target
+                else ""
+            )
+
+        # =====================================================
+        # SAVE BUTTON
+        # =====================================================
 
         save_button = Button(
             text="Save Goal",
@@ -201,21 +408,54 @@ class HomeScreen(Screen):
             height=50
         )
 
+        # =====================================================
+        # DELETE BUTTON
+        # =====================================================
+
         delete_button = Button(
             text="Delete Goal",
             size_hint_y=None,
             height=50,
-            background_color=(0.85, 0.20, 0.20, 1)
+            background_color=(
+                0.85,
+                0.20,
+                0.20,
+                1
+            )
         )
 
-        layout.add_widget(goal_name)
-        layout.add_widget(goal_amount)
-        layout.add_widget(saving_percentage)
-        layout.add_widget(target_date)
-        layout.add_widget(save_button)
+        # =====================================================
+        # ADD WIDGETS
+        # =====================================================
+
+        layout.add_widget(
+            goal_name
+        )
+
+        layout.add_widget(
+            goal_amount
+        )
+
+        layout.add_widget(
+            saving_percentage
+        )
+
+        layout.add_widget(
+            target_date
+        )
+
+        layout.add_widget(
+            save_button
+        )
 
         if goal:
-            layout.add_widget(delete_button)
+            layout.add_widget(
+                delete_button
+            )
+
+        # =====================================================
+        # POPUP
+        # =====================================================
 
         popup = Popup(
             title="Smart Savings Goal",
@@ -223,9 +463,10 @@ class HomeScreen(Screen):
             size_hint=(0.85, 0.75)
         )
 
-        # -----------------------------
-        # Save Goal
-        # -----------------------------
+        # =====================================================
+        # SAVE GOAL
+        # =====================================================
+
         def save(instance):
 
             if (
@@ -239,7 +480,9 @@ class HomeScreen(Screen):
                 user_id,
                 goal_name.text.strip(),
                 float(goal_amount.text),
-                float(saving_percentage.text),
+                float(
+                    saving_percentage.text
+                ),
                 target_date.text.strip()
             )
 
@@ -247,38 +490,64 @@ class HomeScreen(Screen):
 
             self.refresh_dashboard()
 
-        # -----------------------------
-        # Delete Goal
-        # -----------------------------
+        # =====================================================
+        # DELETE GOAL
+        # =====================================================
+
         def delete(instance):
 
-            delete_goal(user_id)
+            delete_goal(
+                user_id
+            )
 
             popup.dismiss()
 
             self.refresh_dashboard()
 
-        save_button.bind(on_release=save)
+        # =====================================================
+        # BUTTON EVENTS
+        # =====================================================
+
+        save_button.bind(
+            on_release=save
+        )
 
         if goal:
-            delete_button.bind(on_release=delete)
+
+            delete_button.bind(
+                on_release=delete
+            )
 
         popup.open()
 
-    # =====================================
-    # Open Income Screen
-    # =====================================
+    # =========================================================
+    # OPEN INCOME SCREEN
+    # =========================================================
+
     def open_income(self):
 
-        screen = self.manager.get_screen("add_transaction")
-        screen.transaction_mode = "income"
-        self.manager.current = "add_transaction"
+        screen = self.manager.get_screen(
+            "add_transaction"
+        )
 
-    # =====================================
-    # Open Expense Screen
-    # =====================================
+        screen.transaction_mode = "income"
+
+        self.manager.current = (
+            "add_transaction"
+        )
+
+    # =========================================================
+    # OPEN EXPENSE SCREEN
+    # =========================================================
+
     def open_expense(self):
 
-        screen = self.manager.get_screen("add_transaction")
+        screen = self.manager.get_screen(
+            "add_transaction"
+        )
+
         screen.transaction_mode = "expense"
-        self.manager.current = "add_transaction"
+
+        self.manager.current = (
+            "add_transaction"
+        )

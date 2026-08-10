@@ -1,60 +1,136 @@
 #:kivy 2.3.1
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
+#:import MDTextButton kivymd.uix.button.MDTextButton
 
 <ChoiceScreen>:
 
     canvas.before:
         Color:
             rgba: 1, 1, 1, 1
+
         Rectangle:
             pos: self.pos
             size: self.size
 
     BoxLayout:
         orientation: "vertical"
-        spacing: "20dp"
         padding: "30dp"
+        spacing: "18dp"
+
+        # ==========================================
+        # TOP SPACE
+        # ==========================================
 
         Widget:
-            size_hint_y: 0.2
+            size_hint_y: 0.22
+
+        # ==========================================
+        # TITLE
+        # ==========================================
 
         Label:
             text: "How would you like to continue?"
             font_size: "28sp"
             bold: True
+
             color: 0.1, 0.2, 0.6, 1
+
             halign: "center"
+            valign: "middle"
             text_size: self.size
 
+            size_hint_y: None
+            height: "55dp"
+
+        # ==========================================
+        # SMALL SPACE
+        # ==========================================
+
         Widget:
-            size_hint_y: 0.05
+            size_hint_y: 0.04
+
+        # ==========================================
+        # CREATE ACCOUNT BUTTON
+        # ==========================================
 
         MDRaisedButton:
             text: "Create Account"
+
             size_hint: None, None
             size: "250dp", "50dp"
+
             pos_hint: {"center_x": 0.5}
-            on_release: root.create_account()
+
+            md_bg_color: 0.1, 0.2, 0.6, 1
+            text_color: 1, 1, 1, 1
+
+            elevation: 3
+
+            on_release:
+                root.create_account()
+
+        # ==========================================
+        # CONTINUE AS GUEST BUTTON
+        # ==========================================
 
         MDRaisedButton:
             text: "Continue as Guest"
+
             size_hint: None, None
             size: "250dp", "50dp"
+
             pos_hint: {"center_x": 0.5}
-            on_release: root.continue_as_guest()
+
+            md_bg_color: 0.1, 0.2, 0.6, 1
+            text_color: 1, 1, 1, 1
+
+            elevation: 3
+
+            on_release:
+                root.continue_as_guest()
+
+        # ==========================================
+        # SPACE BEFORE LOGIN
+        # ==========================================
 
         Widget:
-            size_hint_y: 0.1
+            size_hint_y: 0.08
+
+        # ==========================================
+        # ACCOUNT MESSAGE
+        # ==========================================
 
         Label:
             text: "Already have an account?"
-            color: 0.5, 0.5, 0.5, 1
+            color: 0.3, 0.3, 0.3, 1
+
+            font_size: "14sp"
+
             halign: "center"
+            valign: "middle"
             text_size: self.size
 
-        MDFlatButton:
+            size_hint_y: None
+            height: "30dp"
+
+        # ==========================================
+        # LOGIN BUTTON
+        # ==========================================
+
+        MDTextButton:
             text: "Login"
+
             pos_hint: {"center_x": 0.5}
-            on_release: root.login()
+
+            theme_text_color: "Custom"
+            text_color: 0.1, 0.2, 0.6, 1
+
+            on_release:
+                root.login()
+
+        # ==========================================
+        # BOTTOM SPACE
+        # ==========================================
 
         Widget:
             size_hint_y: 0.2

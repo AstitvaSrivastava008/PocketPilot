@@ -1,48 +1,71 @@
 #:kivy 2.3.1
-
 #:import MDIcon kivymd.uix.label.MDIcon
 #:import MDIconButton kivymd.uix.button.MDIconButton
 
 <TransactionCard>:
 
+    # ==========================================================
+    # CARD SIZE & APPEARANCE
+    # ==========================================================
+
     size_hint_y: None
     height: "120dp"
 
     radius: [18]
-    elevation: 2
-    padding: "18dp"
+    elevation: 3
+    padding: "15dp"
 
     md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
 
-    BoxLayout:
-        spacing: "15dp"
+    # ==========================================================
+    # MAIN CONTENT
+    # ==========================================================
 
-        # ==========================
-        # Transaction Icon
-        # ==========================
+    BoxLayout:
+        orientation: "horizontal"
+        spacing: "12dp"
+
+        # ======================================================
+        # TRANSACTION ICON
+        # ======================================================
+
         MDIcon:
             icon: root.icon
             font_size: "30sp"
+
             theme_text_color: "Custom"
             text_color: root.amount_color
+
             size_hint_x: None
             width: "40dp"
 
-        # ==========================
-        # Transaction Details
-        # ==========================
+            halign: "center"
+            valign: "middle"
+
+        # ======================================================
+        # TRANSACTION DETAILS
+        # ======================================================
+
         BoxLayout:
             orientation: "vertical"
+            spacing: "2dp"
+
+            # --------------------------------------------------
+            # CATEGORY + AMOUNT
+            # --------------------------------------------------
 
             BoxLayout:
+                orientation: "horizontal"
                 size_hint_y: None
-                height: "28dp"
+                height: "30dp"
 
                 Label:
                     text: root.category
                     bold: True
-                    font_size: "20sp"
-                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (.15, .15, .15, 1)
+                    font_size: "18sp"
+
+                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.15, 0.15, 0.15, 1)
+
                     halign: "left"
                     valign: "middle"
                     text_size: self.size
@@ -50,49 +73,92 @@
                 Label:
                     text: root.amount
                     bold: True
-                    font_size: "21sp"
+                    font_size: "19sp"
+
                     color: root.amount_color
+
                     halign: "right"
                     valign: "middle"
                     text_size: self.size
 
+            # --------------------------------------------------
+            # DESCRIPTION
+            # --------------------------------------------------
+
             Label:
-                text: root.description
-                font_size: "15sp"
-                color: (.82, .82, .82, 1) if app.theme_cls.theme_style == "Dark" else (.45, .45, .45, 1)
+                text: root.description if root.description else "No description"
+                font_size: "14sp"
+
+                color: (0.82, 0.82, 0.82, 1) if app.theme_cls.theme_style == "Dark" else (0.45, 0.45, 0.45, 1)
+
                 halign: "left"
-                text_size: self.size
+                valign: "middle"
+                text_size: self.width, None
+
+                shorten: True
+                shorten_from: "right"
+
+            # --------------------------------------------------
+            # DATE
+            # --------------------------------------------------
 
             Label:
                 text: root.date
-                font_size: "13sp"
-                color: (.65, .65, .65, 1) if app.theme_cls.theme_style == "Dark" else (.60, .60, .60, 1)
-                halign: "left"
-                text_size: self.size
+                font_size: "12sp"
 
-        # ==========================
-        # Action Buttons
-        # ==========================
+                color: (0.65, 0.65, 0.65, 1) if app.theme_cls.theme_style == "Dark" else (0.60, 0.60, 0.60, 1)
+
+                halign: "left"
+                valign: "middle"
+                text_size: self.width, None
+
+        # ======================================================
+        # ACTION BUTTONS
+        # ======================================================
+
         BoxLayout:
             orientation: "vertical"
+
             size_hint_x: None
             width: "45dp"
-            spacing: "5dp"
 
+            spacing: "2dp"
+
+            # Empty space to keep buttons vertically centred
             Widget:
+                size_hint_y: 0.2
+
+            # --------------------------------------------------
+            # EDIT
+            # --------------------------------------------------
 
             MDIconButton:
                 icon: "pencil"
+
                 theme_text_color: "Custom"
                 text_color: 0.10, 0.32, 0.82, 1
+
+                size_hint_y: None
+                height: "40dp"
 
                 on_release:
                     app.root.get_screen("history").edit_transaction(root.transaction_id)
 
+            # --------------------------------------------------
+            # DELETE
+            # --------------------------------------------------
+
             MDIconButton:
                 icon: "delete"
+
                 theme_text_color: "Custom"
-                text_color: 0.85, 0, 0, 1
+                text_color: 0.85, 0.05, 0.05, 1
+
+                size_hint_y: None
+                height: "40dp"
 
                 on_release:
                     app.root.get_screen("history").confirm_delete(root.transaction_id)
+
+            Widget:
+                size_hint_y: 0.2

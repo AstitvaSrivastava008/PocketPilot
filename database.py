@@ -317,10 +317,26 @@ def get_current_balance(user_id):
     return income - expense
 
 
+# ==========================================
+# GET RECENT TRANSACTION
+# ==========================================
 def get_recent_transaction(user_id):
 
     connection = sqlite3.connect("data/pocketpilot.db")
     cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT currency
+        FROM users
+        WHERE id = ?
+    """, (user_id,))
+
+    currency_result = cursor.fetchone()
+
+    if currency_result and currency_result[0]:
+        currency = currency_result[0]
+    else:
+        currency = "₹"
 
     cursor.execute("""
         SELECT type, category, amount
@@ -340,7 +356,11 @@ def get_recent_transaction(user_id):
 
         sign = "+" if transaction_type == "income" else "-"
 
-        return f"{category}   {sign}₹{amount}"
+        return (
+            f"{category}   "
+            f"{sign}{currency}"
+            f"{amount:,.2f}"
+        )
 
     return "No transactions yet."
 # ==========================================
@@ -764,6 +784,51 @@ def get_theme(user_id):
         return result[0]
 
     return "Light"
+# ==========================================
+# UPDATE CURRENCY
+# ==========================================
+
+def update_currency(user_id, currency):
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        UPDATE users
+        SET currency = ?
+        WHERE id = ?
+    """, (
+        currency,
+        user_id
+    ))
+
+    connection.commit()
+    connection.close()
+
+    print(f"Currency updated successfully: {currency}")
+
+
+# ==========================================
+# GET CURRENCY
+# ==========================================
+
+def get_currency(user_id):
+    connection = sqlite3.connect("data/pocketpilot.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT currency
+        FROM users
+        WHERE id = ?
+    """, (user_id,))
+
+    result = cursor.fetchone()
+
+    connection.close()
+
+    if result and result[0]:
+        return result[0]
+
+    return "₹"
 # ==========================================
 # TEST DATABASE
 # ==========================================
