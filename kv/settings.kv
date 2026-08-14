@@ -8,30 +8,32 @@
 
         canvas.before:
             Color:
-                rgba: (0.10, 0.10, 0.10, 1) if app.theme_cls.theme_style == "Dark" else (0.96, 0.97, 1, 1)
-
+                rgba: (0.08, 0.08, 0.10, 1) if app.theme_cls.theme_style == "Dark" else (0.94, 0.96, 1, 1)
             Rectangle:
                 pos: self.pos
                 size: self.size
 
-        # ==========================
+        # ==================================================
         # HEADER
-        # ==========================
+        # ==================================================
 
         BoxLayout:
             size_hint_y: None
-            height: "70dp"
-            padding: "15dp"
+            height: "75dp"
+            padding: "20dp"
 
             Label:
                 text: "Settings"
                 font_size: "30sp"
                 bold: True
                 color: 0.10, 0.32, 0.82, 1
+                halign: "left"
+                valign: "middle"
+                text_size: self.size
 
-        # ==========================
+        # ==================================================
         # SETTINGS LIST
-        # ==========================
+        # ==================================================
 
         ScrollView:
             do_scroll_x: False
@@ -43,29 +45,29 @@
                 spacing: "12dp"
                 padding: "20dp"
 
-                # ==========================
+                # ==================================================
                 # EDIT PROFILE
-                # ==========================
+                # ==================================================
 
                 Button:
                     text: "Edit Profile"
                     size_hint_y: None
                     height: "55dp"
+
                     background_normal: ""
-                    background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
-                    color: 1, 1, 1, 1
+                    background_down: ""
+                    background_color: (0.15, 0.15, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.82, 0.90, 1)
+                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.08, 0.10, 0.16, 1)
 
                     on_release:
                         root.edit_profile()
 
-                # ==========================
+                # ==================================================
                 # CHANGE PASSWORD
-                # Hidden for Guest
-                # ==========================
+                # ==================================================
 
                 Button:
                     text: "Change Password"
-
                     size_hint_y: None
                     height: "0dp" if app.is_guest else "55dp"
 
@@ -73,75 +75,84 @@
                     disabled: app.is_guest
 
                     background_normal: ""
-                    background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
-                    color: 1, 1, 1, 1
+                    background_down: ""
+                    background_color: (0.15, 0.15, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.82, 0.90, 1)
+                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.08, 0.10, 0.16, 1)
 
                     on_release:
                         root.change_password()
 
-                # ==========================
+                # ==================================================
                 # THEME
-                # ==========================
+                # ==================================================
 
                 Button:
                     text: "Theme"
                     size_hint_y: None
                     height: "55dp"
+
                     background_normal: ""
-                    background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
-                    color: 1, 1, 1, 1
+                    background_down: ""
+                    background_color: (0.15, 0.15, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.82, 0.90, 1)
+                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.08, 0.10, 0.16, 1)
 
                     on_release:
                         root.change_theme()
 
-                # ==========================
+                # ==================================================
                 # CURRENCY
-                # ==========================
+                # ==================================================
 
                 Button:
                     text: "Currency"
                     size_hint_y: None
                     height: "55dp"
+
                     background_normal: ""
-                    background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
-                    color: 1, 1, 1, 1
+                    background_down: ""
+                    background_color: (0.15, 0.15, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.82, 0.90, 1)
+                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.08, 0.10, 0.16, 1)
 
                     on_release:
                         root.change_currency()
 
-                # ==========================
+                # ==================================================
                 # ABOUT POCKETPILOT
-                # ==========================
+                # ==================================================
 
                 Button:
                     text: "About PocketPilot"
                     size_hint_y: None
                     height: "55dp"
+
                     background_normal: ""
-                    background_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
-                    color: 1, 1, 1, 1
+                    background_down: ""
+                    background_color: (0.15, 0.15, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.82, 0.90, 1)
+                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.08, 0.10, 0.16, 1)
 
                     on_release:
                         root.about_app()
 
-                # ==========================
+                # ==================================================
                 # LOGOUT
-                # ==========================
+                # ==================================================
 
                 Button:
                     text: "Logout"
                     size_hint_y: None
                     height: "55dp"
+
                     background_normal: ""
-                    background_color: 0.75, 0.15, 0.15, 1
+                    background_down: ""
+                    background_color: (0.70, 0.12, 0.12, 1) if app.theme_cls.theme_style == "Dark" else (0.82, 0.20, 0.20, 1)
                     color: 1, 1, 1, 1
 
                     on_release:
                         root.logout()
 
-        # ==========================
+        # ==================================================
         # BOTTOM NAVIGATION
-        # ==========================
+        # ==================================================
 
         BottomNav:
             size_hint_y: None

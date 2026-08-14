@@ -8,7 +8,7 @@ class SplashScreen(Screen):
         """
         Called automatically when this screen becomes visible.
         """
-        Clock.schedule_once(self.go_to_welcome, 2)
+        Clock.schedule_once(self.go_to_welcome, 4)
 
     def go_to_welcome(self, dt):
         """
