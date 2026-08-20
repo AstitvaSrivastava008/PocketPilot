@@ -1,21 +1,27 @@
 #:kivy 2.3.1
+
+#:import MDCard kivymd.uix.card.MDCard
 #:import MDIcon kivymd.uix.label.MDIcon
 #:import MDIconButton kivymd.uix.button.MDIconButton
+
 
 <TransactionCard>:
 
     # ==========================================================
-    # CARD SIZE & APPEARANCE
+    # TRANSACTION CARD
     # ==========================================================
 
     size_hint_y: None
-    height: "120dp"
+    height: "125dp"
 
     radius: [18]
-    elevation: 3
-    padding: "15dp"
+    elevation: 2
+    padding: "14dp"
 
-    md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+    # Dark = dark card
+    # Light = white card
+    md_bg_color: (0.13, 0.13, 0.15, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
 
     # ==========================================================
     # MAIN CONTENT
@@ -25,92 +31,149 @@
         orientation: "horizontal"
         spacing: "12dp"
 
+
         # ======================================================
-        # TRANSACTION ICON
+        # TRANSACTION ICON CONTAINER
         # ======================================================
 
-        MDIcon:
-            icon: root.icon
-            font_size: "30sp"
-
-            theme_text_color: "Custom"
-            text_color: root.amount_color
-
+        MDCard:
             size_hint_x: None
-            width: "40dp"
+            width: "52dp"
 
-            halign: "center"
-            valign: "middle"
+            radius: [16]
+            elevation: 0
+
+            # Slight transparent income/expense colour
+            md_bg_color: root.amount_color[0], root.amount_color[1], root.amount_color[2], 0.15
+
+
+            # --------------------------------------------------
+            # CENTER ICON
+            # --------------------------------------------------
+
+            AnchorLayout:
+                anchor_x: "center"
+                anchor_y: "center"
+
+                MDIcon:
+                    icon: root.icon
+
+                    theme_text_color: "Custom"
+                    text_color: root.amount_color
+
+                    font_size: "27sp"
+
+                    size_hint: None, None
+                    size: "32dp", "32dp"
+
 
         # ======================================================
-        # TRANSACTION DETAILS
+        # TRANSACTION INFORMATION
         # ======================================================
 
         BoxLayout:
             orientation: "vertical"
-            spacing: "2dp"
+            spacing: "3dp"
 
-            # --------------------------------------------------
+
+            # ==================================================
             # CATEGORY + AMOUNT
-            # --------------------------------------------------
+            # ==================================================
 
             BoxLayout:
                 orientation: "horizontal"
+
                 size_hint_y: None
-                height: "30dp"
+                height: "32dp"
+
+                spacing: "5dp"
+
+
+                # ----------------------------------------------
+                # CATEGORY
+                # ----------------------------------------------
 
                 Label:
                     text: root.category
-                    bold: True
-                    font_size: "18sp"
 
-                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.15, 0.15, 0.15, 1)
+                    bold: True
+                    font_size: "17sp"
+
+                    # Dark mode = white
+                    # Light mode = dark
+                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.10, 0.10, 0.12, 1)
 
                     halign: "left"
                     valign: "middle"
+
                     text_size: self.size
+
+                    shorten: True
+                    shorten_from: "right"
+
+
+                # ----------------------------------------------
+                # AMOUNT
+                # ----------------------------------------------
 
                 Label:
                     text: root.amount
-                    bold: True
-                    font_size: "19sp"
 
+                    bold: True
+                    font_size: "17sp"
+
+                    # Income = green
+                    # Expense = red
                     color: root.amount_color
 
                     halign: "right"
                     valign: "middle"
+
                     text_size: self.size
 
-            # --------------------------------------------------
+                    size_hint_x: 0.9
+
+
+            # ==================================================
             # DESCRIPTION
-            # --------------------------------------------------
+            # ==================================================
 
             Label:
                 text: root.description if root.description else "No description"
+
                 font_size: "14sp"
 
-                color: (0.82, 0.82, 0.82, 1) if app.theme_cls.theme_style == "Dark" else (0.45, 0.45, 0.45, 1)
+                # Dark mode = light grey
+                # Light mode = dark grey
+                color: (0.78, 0.78, 0.82, 1) if app.theme_cls.theme_style == "Dark" else (0.30, 0.32, 0.38, 1)
 
                 halign: "left"
                 valign: "middle"
+
                 text_size: self.width, None
 
                 shorten: True
                 shorten_from: "right"
 
-            # --------------------------------------------------
+
+            # ==================================================
             # DATE
-            # --------------------------------------------------
+            # ==================================================
 
             Label:
                 text: root.date
+
                 font_size: "12sp"
 
-                color: (0.65, 0.65, 0.65, 1) if app.theme_cls.theme_style == "Dark" else (0.60, 0.60, 0.60, 1)
+                # Dark mode = grey
+                # Light mode = darker grey
+                color: (0.58, 0.58, 0.62, 1) if app.theme_cls.theme_style == "Dark" else (0.45, 0.47, 0.52, 1)
 
                 halign: "left"
                 valign: "middle"
+
                 text_size: self.width, None
+
 
         # ======================================================
         # ACTION BUTTONS
@@ -120,45 +183,44 @@
             orientation: "vertical"
 
             size_hint_x: None
-            width: "45dp"
+            width: "42dp"
 
             spacing: "2dp"
 
-            # Empty space to keep buttons vertically centred
-            Widget:
-                size_hint_y: 0.2
 
-            # --------------------------------------------------
-            # EDIT
-            # --------------------------------------------------
+            # ==================================================
+            # EDIT BUTTON
+            # ==================================================
 
             MDIconButton:
                 icon: "pencil"
 
                 theme_text_color: "Custom"
+
+                # PocketPilot blue
                 text_color: 0.10, 0.32, 0.82, 1
 
                 size_hint_y: None
-                height: "40dp"
+                height: "42dp"
 
                 on_release:
                     app.root.get_screen("history").edit_transaction(root.transaction_id)
 
-            # --------------------------------------------------
-            # DELETE
-            # --------------------------------------------------
+
+            # ==================================================
+            # DELETE BUTTON
+            # ==================================================
 
             MDIconButton:
                 icon: "delete"
 
                 theme_text_color: "Custom"
-                text_color: 0.85, 0.05, 0.05, 1
+
+                # Red
+                text_color: 0.90, 0.08, 0.08, 1
 
                 size_hint_y: None
-                height: "40dp"
+                height: "42dp"
 
                 on_release:
                     app.root.get_screen("history").confirm_delete(root.transaction_id)
-
-            Widget:
-                size_hint_y: 0.2

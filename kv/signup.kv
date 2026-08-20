@@ -1,229 +1,535 @@
 #:kivy 2.3.1
+
+#:import dp kivy.metrics.dp
 #:import MDRaisedButton kivymd.uix.button.MDRaisedButton
 #:import MDTextButton kivymd.uix.button.MDTextButton
+
+
+# ============================================================
+# SIGNUP SCREEN
+# ============================================================
 
 <SignupScreen>:
 
     canvas.before:
+
         Color:
-            rgba: 1, 1, 1, 1
+            rgba:
+                (0.07, 0.08, 0.11, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (0.96, 0.97, 1, 1)
 
         Rectangle:
             pos: self.pos
             size: self.size
 
-    BoxLayout:
-        orientation: "vertical"
-        padding: "30dp"
-        spacing: "15dp"
 
-        # ==========================================
+    BoxLayout:
+
+        orientation: "vertical"
+
+        padding:
+            dp(30)
+
+        spacing:
+            dp(15)
+
+
+        # ====================================================
         # TOP SPACE
-        # ==========================================
+        # ====================================================
 
         Widget:
-            size_hint_y: 0.12
+            size_hint_y: 0.08
 
-        # ==========================================
+
+        # ====================================================
         # TITLE
-        # ==========================================
+        # ====================================================
 
         Label:
+
             text: "Create Account"
+
             font_size: "34sp"
+
             bold: True
-            color: 0.1, 0.2, 0.6, 1
+
+            color:
+                (0.30, 0.60, 1, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (0.10, 0.32, 0.82, 1)
+
             halign: "center"
+
             valign: "middle"
-            text_size: self.size
-            size_hint_y: None
-            height: "50dp"
 
-        # ==========================================
+            text_size:
+                self.size
+
+            size_hint_y: None
+
+            height:
+                dp(50)
+
+
+        # ====================================================
+        # SUBTITLE
+        # ====================================================
+
+        Label:
+
+            text: "Start managing your money with PocketPilot."
+
+            font_size: "16sp"
+
+            color:
+                (0.70, 0.74, 0.82, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (0.30, 0.36, 0.48, 1)
+
+            halign: "center"
+
+            valign: "middle"
+
+            text_size:
+                self.size
+
+            size_hint_y: None
+
+            height:
+                dp(35)
+
+
+        # ====================================================
         # FULL NAME
-        # ==========================================
+        # ====================================================
 
         TextInput:
+
             id: name_input
+
             hint_text: "Full Name"
+
             multiline: False
 
             size_hint_y: None
-            height: "45dp"
+
+            height:
+                dp(56)
+
+            font_size:
+                "16sp"
+
+            # ------------------------------------------------
+            # TYPED TEXT
+            # ------------------------------------------------
+
+            foreground_color:
+                (0.95, 0.97, 1, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (0.08, 0.10, 0.14, 1)
+
+            # ------------------------------------------------
+            # HINT
+            # ------------------------------------------------
+
+            hint_text_color:
+                (0.58, 0.62, 0.70, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (0.38, 0.42, 0.48, 1)
+
+            # ------------------------------------------------
+            # CURSOR
+            # ------------------------------------------------
+
+            cursor_color:
+                (0.25, 0.55, 1, 1)
+
+            # ------------------------------------------------
+            # SELECTION
+            # ------------------------------------------------
+
+            selection_color:
+                (0.20, 0.45, 0.90, 0.35)
 
             background_normal: ""
+
             background_active: ""
-            background_color: 0.96, 0.97, 1, 1
 
-            foreground_color: 0, 0, 0, 1
-            hint_text_color: 0.45, 0.45, 0.45, 1
+            background_color:
+                (0.12, 0.14, 0.18, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (1, 1, 1, 1)
 
-            padding: "12dp", "10dp"
-
-            cursor_color: 0.1, 0.2, 0.6, 1
+            padding:
+                dp(16), dp(14)
 
             canvas.before:
+
                 Color:
-                    rgba: 0.55, 0.55, 0.55, 1
+                    rgba:
+                        (0.12, 0.14, 0.18, 1) \
+                        if app.theme_cls.theme_style == "Dark" \
+                        else (1, 1, 1, 1)
+
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius:
+                        [dp(12), dp(12), dp(12), dp(12)]
+
+                Color:
+                    rgba:
+                        (0.25, 0.55, 1, 0.90) \
+                        if self.focus \
+                        else (
+                        (0.30, 0.33, 0.40, 1) \
+                        if app.theme_cls.theme_style == "Dark" \
+                        else (0.78, 0.80, 0.85, 1)
+                        )
 
                 Line:
-                    rectangle: self.x, self.y, self.width, self.height
-                    width: 1
+                    rounded_rectangle:
+                        self.x, self.y, self.width, self.height, dp(12)
+                    width:
+                        dp(1.5)
 
-        # ==========================================
+
+        # ====================================================
         # EMAIL
-        # ==========================================
+        # ====================================================
 
         TextInput:
+
             id: email_input
+
             hint_text: "Email"
+
             multiline: False
 
             size_hint_y: None
-            height: "45dp"
+
+            height:
+                dp(56)
+
+            font_size:
+                "16sp"
+
+            foreground_color:
+                (0.95, 0.97, 1, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (0.08, 0.10, 0.14, 1)
+
+            hint_text_color:
+                (0.58, 0.62, 0.70, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (0.38, 0.42, 0.48, 1)
+
+            cursor_color:
+                (0.25, 0.55, 1, 1)
+
+            selection_color:
+                (0.20, 0.45, 0.90, 0.35)
 
             background_normal: ""
+
             background_active: ""
-            background_color: 0.96, 0.97, 1, 1
 
-            foreground_color: 0, 0, 0, 1
-            hint_text_color: 0.45, 0.45, 0.45, 1
+            background_color:
+                (0.12, 0.14, 0.18, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (1, 1, 1, 1)
 
-            padding: "12dp", "10dp"
-
-            cursor_color: 0.1, 0.2, 0.6, 1
+            padding:
+                dp(16), dp(14)
 
             canvas.before:
+
                 Color:
-                    rgba: 0.55, 0.55, 0.55, 1
+                    rgba:
+                        (0.12, 0.14, 0.18, 1) \
+                        if app.theme_cls.theme_style == "Dark" \
+                        else (1, 1, 1, 1)
+
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius:
+                        [dp(12), dp(12), dp(12), dp(12)]
+
+                Color:
+                    rgba:
+                        (0.25, 0.55, 1, 0.90) \
+                        if self.focus \
+                        else (
+                        (0.30, 0.33, 0.40, 1) \
+                        if app.theme_cls.theme_style == "Dark" \
+                        else (0.78, 0.80, 0.85, 1)
+                        )
 
                 Line:
-                    rectangle: self.x, self.y, self.width, self.height
-                    width: 1
+                    rounded_rectangle:
+                        self.x, self.y, self.width, self.height, dp(12)
+                    width:
+                        dp(1.5)
 
-        # ==========================================
+
+        # ====================================================
         # PASSWORD
-        # ==========================================
+        # ====================================================
 
         TextInput:
+
             id: password_input
+
             hint_text: "Password"
+
             multiline: False
+
             password: True
 
             size_hint_y: None
-            height: "45dp"
+
+            height:
+                dp(56)
+
+            font_size:
+                "16sp"
+
+            foreground_color:
+                (0.95, 0.97, 1, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (0.08, 0.10, 0.14, 1)
+
+            hint_text_color:
+                (0.58, 0.62, 0.70, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (0.38, 0.42, 0.48, 1)
+
+            cursor_color:
+                (0.25, 0.55, 1, 1)
+
+            selection_color:
+                (0.20, 0.45, 0.90, 0.35)
 
             background_normal: ""
+
             background_active: ""
-            background_color: 0.96, 0.97, 1, 1
 
-            foreground_color: 0, 0, 0, 1
-            hint_text_color: 0.45, 0.45, 0.45, 1
+            background_color:
+                (0.12, 0.14, 0.18, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (1, 1, 1, 1)
 
-            padding: "12dp", "10dp"
-
-            cursor_color: 0.1, 0.2, 0.6, 1
+            padding:
+                dp(16), dp(14)
 
             canvas.before:
+
                 Color:
-                    rgba: 0.55, 0.55, 0.55, 1
+                    rgba:
+                        (0.12, 0.14, 0.18, 1) \
+                        if app.theme_cls.theme_style == "Dark" \
+                        else (1, 1, 1, 1)
+
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius:
+                        [dp(12), dp(12), dp(12), dp(12)]
+
+                Color:
+                    rgba:
+                        (0.25, 0.55, 1, 0.90) \
+                        if self.focus \
+                        else (
+                        (0.30, 0.33, 0.40, 1) \
+                        if app.theme_cls.theme_style == "Dark" \
+                        else (0.78, 0.80, 0.85, 1)
+                        )
 
                 Line:
-                    rectangle: self.x, self.y, self.width, self.height
-                    width: 1
+                    rounded_rectangle:
+                        self.x, self.y, self.width, self.height, dp(12)
+                    width:
+                        dp(1.5)
 
-        # ==========================================
+
+        # ====================================================
         # CONFIRM PASSWORD
-        # ==========================================
+        # ====================================================
 
         TextInput:
+
             id: confirm_password_input
+
             hint_text: "Confirm Password"
+
             multiline: False
+
             password: True
 
             size_hint_y: None
-            height: "45dp"
+
+            height:
+                dp(56)
+
+            font_size:
+                "16sp"
+
+            foreground_color:
+                (0.95, 0.97, 1, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (0.08, 0.10, 0.14, 1)
+
+            hint_text_color:
+                (0.58, 0.62, 0.70, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (0.38, 0.42, 0.48, 1)
+
+            cursor_color:
+                (0.25, 0.55, 1, 1)
+
+            selection_color:
+                (0.20, 0.45, 0.90, 0.35)
 
             background_normal: ""
+
             background_active: ""
-            background_color: 0.96, 0.97, 1, 1
 
-            foreground_color: 0, 0, 0, 1
-            hint_text_color: 0.45, 0.45, 0.45, 1
+            background_color:
+                (0.12, 0.14, 0.18, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (1, 1, 1, 1)
 
-            padding: "12dp", "10dp"
-
-            cursor_color: 0.1, 0.2, 0.6, 1
+            padding:
+                dp(16), dp(14)
 
             canvas.before:
+
                 Color:
-                    rgba: 0.55, 0.55, 0.55, 1
+                    rgba:
+                        (0.12, 0.14, 0.18, 1) \
+                        if app.theme_cls.theme_style == "Dark" \
+                        else (1, 1, 1, 1)
+
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius:
+                        [dp(12), dp(12), dp(12), dp(12)]
+
+                Color:
+                    rgba:
+                        (0.25, 0.55, 1, 0.90) \
+                        if self.focus \
+                        else (
+                        (0.30, 0.33, 0.40, 1) \
+                        if app.theme_cls.theme_style == "Dark" \
+                        else (0.78, 0.80, 0.85, 1)
+                        )
 
                 Line:
-                    rectangle: self.x, self.y, self.width, self.height
-                    width: 1
+                    rounded_rectangle:
+                        self.x, self.y, self.width, self.height, dp(12)
+                    width:
+                        dp(1.5)
 
-        # ==========================================
+
+        # ====================================================
         # CREATE ACCOUNT BUTTON
-        # ==========================================
+        # ====================================================
 
         MDRaisedButton:
+
             text: "Create Account"
 
             size_hint: None, None
-            size: "220dp", "45dp"
 
-            pos_hint: {"center_x": 0.5}
+            size:
+                dp(220), dp(48)
 
-            md_bg_color: 0.1, 0.2, 0.6, 1
-            text_color: 1, 1, 1, 1
+            pos_hint:
+                {"center_x": 0.5}
+
+            md_bg_color:
+                0.10, 0.32, 0.82, 1
+
+            text_color:
+                1, 1, 1, 1
+
+            elevation:
+                3
 
             on_release:
                 root.create_account()
 
-        # ==========================================
+
+        # ====================================================
         # SMALL SPACE
-        # ==========================================
+        # ====================================================
 
         Widget:
             size_hint_y: 0.03
 
-        # ==========================================
+
+        # ====================================================
         # LOGIN MESSAGE
-        # ==========================================
+        # ====================================================
 
         Label:
+
             text: "Already have an account?"
-            color: 0.3, 0.3, 0.3, 1
-            font_size: "14sp"
+
+            color:
+                (0.72, 0.75, 0.82, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (0.25, 0.25, 0.30, 1)
+
+            font_size:
+                "14sp"
 
             halign: "center"
+
             valign: "middle"
-            text_size: self.size
+
+            text_size:
+                self.size
 
             size_hint_y: None
-            height: "30dp"
 
-        # ==========================================
+            height:
+                dp(30)
+
+
+        # ====================================================
         # LOGIN BUTTON
-        # ==========================================
+        # ====================================================
 
         MDTextButton:
+
             text: "Login"
 
-            pos_hint: {"center_x": 0.5}
+            pos_hint:
+                {"center_x": 0.5}
 
-            theme_text_color: "Custom"
-            text_color: 0.1, 0.2, 0.6, 1
+            theme_text_color:
+                "Custom"
+
+            text_color:
+                (0.30, 0.60, 1, 1) \
+                if app.theme_cls.theme_style == "Dark" \
+                else (0.10, 0.32, 0.82, 1)
 
             on_release:
                 app.root.current = "login"
 
-        # ==========================================
+
+        # ====================================================
         # BOTTOM SPACE
-        # ==========================================
+        # ====================================================
 
         Widget:
-            size_hint_y: 0.15
+
+            size_hint_y: 0.10

@@ -1,15 +1,28 @@
-# Python cache
-__pycache__/
-*.pyc
-
 # Virtual environment
 venv/
+.env/
+.venv/
 
-# Kivy logs
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Kivy
 .kivy/
 
-# VS Code settings
-.vscode/
+# Local database
+*.db
+*.sqlite
+*.sqlite3
 
-# Windows
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
 Thumbs.db
+
+# Logs
+*.log

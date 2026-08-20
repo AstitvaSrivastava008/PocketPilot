@@ -2,56 +2,68 @@
 #:import MDRaisedButton kivymd.uix.button.MDRaisedButton
 #:import MDTextButton kivymd.uix.button.MDTextButton
 
+
 <ChoiceScreen>:
+
+    # =========================================================
+    # BACKGROUND
+    # =========================================================
 
     canvas.before:
         Color:
-            rgba: 1, 1, 1, 1
+            rgba: (0.10, 0.10, 0.10, 1) if app.theme_cls.theme_style == "Dark" else (0.95, 0.97, 1, 1)
 
         Rectangle:
             pos: self.pos
             size: self.size
+
 
     BoxLayout:
         orientation: "vertical"
         padding: "30dp"
         spacing: "18dp"
 
-        # ==========================================
+
+        # =====================================================
         # TOP SPACE
-        # ==========================================
+        # =====================================================
 
         Widget:
             size_hint_y: 0.22
 
-        # ==========================================
+
+        # =====================================================
         # TITLE
-        # ==========================================
+        # =====================================================
 
         Label:
             text: "How would you like to continue?"
+
             font_size: "28sp"
             bold: True
 
-            color: 0.1, 0.2, 0.6, 1
+            color: (0.30, 0.60, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.10, 0.22, 0.55, 1)
 
             halign: "center"
             valign: "middle"
+
             text_size: self.size
 
             size_hint_y: None
             height: "55dp"
 
-        # ==========================================
+
+        # =====================================================
         # SMALL SPACE
-        # ==========================================
+        # =====================================================
 
         Widget:
             size_hint_y: 0.04
 
-        # ==========================================
-        # CREATE ACCOUNT BUTTON
-        # ==========================================
+
+        # =====================================================
+        # CREATE ACCOUNT
+        # =====================================================
 
         MDRaisedButton:
             text: "Create Account"
@@ -61,7 +73,7 @@
 
             pos_hint: {"center_x": 0.5}
 
-            md_bg_color: 0.1, 0.2, 0.6, 1
+            md_bg_color: 0.10, 0.32, 0.82, 1
             text_color: 1, 1, 1, 1
 
             elevation: 3
@@ -69,9 +81,10 @@
             on_release:
                 root.create_account()
 
-        # ==========================================
-        # CONTINUE AS GUEST BUTTON
-        # ==========================================
+
+        # =====================================================
+        # CONTINUE AS GUEST
+        # =====================================================
 
         MDRaisedButton:
             text: "Continue as Guest"
@@ -81,7 +94,8 @@
 
             pos_hint: {"center_x": 0.5}
 
-            md_bg_color: 0.1, 0.2, 0.6, 1
+            md_bg_color: (0.22, 0.24, 0.29, 1) if app.theme_cls.theme_style == "Dark" else (0.30, 0.36, 0.48, 1)
+
             text_color: 1, 1, 1, 1
 
             elevation: 3
@@ -89,33 +103,38 @@
             on_release:
                 root.continue_as_guest()
 
-        # ==========================================
+
+        # =====================================================
         # SPACE BEFORE LOGIN
-        # ==========================================
+        # =====================================================
 
         Widget:
             size_hint_y: 0.08
 
-        # ==========================================
+
+        # =====================================================
         # ACCOUNT MESSAGE
-        # ==========================================
+        # =====================================================
 
         Label:
             text: "Already have an account?"
-            color: 0.3, 0.3, 0.3, 1
+
+            color: (0.68, 0.68, 0.72, 1) if app.theme_cls.theme_style == "Dark" else (0.45, 0.45, 0.48, 1)
 
             font_size: "14sp"
 
             halign: "center"
             valign: "middle"
+
             text_size: self.size
 
             size_hint_y: None
             height: "30dp"
 
-        # ==========================================
-        # LOGIN BUTTON
-        # ==========================================
+
+        # =====================================================
+        # LOGIN
+        # =====================================================
 
         MDTextButton:
             text: "Login"
@@ -123,14 +142,16 @@
             pos_hint: {"center_x": 0.5}
 
             theme_text_color: "Custom"
-            text_color: 0.1, 0.2, 0.6, 1
+
+            text_color: (0.30, 0.60, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.10, 0.22, 0.55, 1)
 
             on_release:
                 root.login()
 
-        # ==========================================
+
+        # =====================================================
         # BOTTOM SPACE
-        # ==========================================
+        # =====================================================
 
         Widget:
             size_hint_y: 0.2

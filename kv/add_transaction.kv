@@ -1,231 +1,605 @@
 #:kivy 2.3.1
+
+#:import dp kivy.metrics.dp
 #:import MDCard kivymd.uix.card.MDCard
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
+
+
+# ============================================================
+# MODERN TEXT INPUT
+# ============================================================
+
+<ModernTextInput@TextInput>:
+
+    multiline: False
+
+    font_size: "16sp"
+
+    foreground_color:
+        (0.95, 0.97, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.08, 0.10, 0.14, 1)
+
+    hint_text_color:
+        (0.58, 0.62, 0.70, 1) if app.theme_cls.theme_style == "Dark" else (0.38, 0.42, 0.48, 1)
+
+    cursor_color: 0.25, 0.55, 1, 1
+
+    selection_color: 0.20, 0.45, 0.90, 0.35
+
+    background_normal: ""
+    background_active: ""
+
+    background_color:
+        (0.12, 0.14, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+    padding:
+        dp(16), dp(12)
+
+    canvas.before:
+
+        Color:
+            rgba:
+                (0.12, 0.14, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [12, 12, 12, 12]
+
+        Color:
+            rgba:
+                (0.25, 0.55, 1, 0.75) if self.focus else ((0.30, 0.33, 0.40, 1) if app.theme_cls.theme_style == "Dark" else (0.82, 0.84, 0.88, 1))
+
+        Line:
+            rounded_rectangle:
+                self.x, self.y, self.width, self.height, dp(12)
+            width: 1.2
+
+
+# ============================================================
+# MODERN DESCRIPTION INPUT
+# ============================================================
+
+<ModernDescriptionInput@TextInput>:
+
+    multiline: True
+
+    font_size: "16sp"
+
+    foreground_color:
+        (0.95, 0.97, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.08, 0.10, 0.14, 1)
+
+    hint_text_color:
+        (0.58, 0.62, 0.70, 1) if app.theme_cls.theme_style == "Dark" else (0.38, 0.42, 0.48, 1)
+
+    cursor_color: 0.25, 0.55, 1, 1
+
+    selection_color: 0.20, 0.45, 0.90, 0.35
+
+    background_normal: ""
+    background_active: ""
+
+    background_color:
+        (0.12, 0.14, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+    padding:
+        dp(16), dp(14)
+
+    canvas.before:
+
+        Color:
+            rgba:
+                (0.12, 0.14, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [12, 12, 12, 12]
+
+        Color:
+            rgba:
+                (0.25, 0.55, 1, 0.75) if self.focus else ((0.30, 0.33, 0.40, 1) if app.theme_cls.theme_style == "Dark" else (0.82, 0.84, 0.88, 1))
+
+        Line:
+            rounded_rectangle:
+                self.x, self.y, self.width, self.height, dp(12)
+            width: 1.2
+
+
+# ============================================================
+# MODERN TRANSACTION TYPE BUTTON
+# ============================================================
+
+<ModernToggle@ToggleButton>:
+
+    background_normal: ""
+    background_down: ""
+    background_color: 0, 0, 0, 0
+
+    color:
+        (1, 1, 1, 1) if self.state == "down" else ((0.88, 0.90, 0.94, 1) if app.theme_cls.theme_style == "Dark" else (0.22, 0.25, 0.30, 1))
+
+    bold: True
+
+    font_size: "15sp"
+
+    canvas.before:
+
+        Color:
+            rgba:
+                (0.10, 0.32, 0.82, 1) if self.state == "down" else ((0.15, 0.17, 0.21, 1) if app.theme_cls.theme_style == "Dark" else (0.94, 0.95, 0.97, 1))
+
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [12, 12, 12, 12]
+
+        Color:
+            rgba:
+                (0.10, 0.32, 0.82, 0.30) if self.state == "down" else ((0.30, 0.33, 0.40, 0.45) if app.theme_cls.theme_style == "Dark" else (0.78, 0.80, 0.84, 1))
+
+        Line:
+            rounded_rectangle:
+                self.x, self.y, self.width, self.height, dp(12)
+            width: 1
+
+
+# ============================================================
+# MODERN SPINNER
+# ============================================================
+
+<ModernSpinner@Spinner>:
+
+    background_normal: ""
+    background_down: ""
+    background_color: 0, 0, 0, 0
+
+    color:
+        (0.95, 0.97, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.08, 0.10, 0.14, 1)
+
+    font_size: "16sp"
+
+    text_size:
+        self.width - dp(32), None
+
+    halign: "left"
+    valign: "middle"
+
+    padding:
+        dp(16), 0
+
+    canvas.before:
+
+        Color:
+            rgba:
+                (0.12, 0.14, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [12, 12, 12, 12]
+
+        Color:
+            rgba:
+                (0.30, 0.33, 0.40, 1) if app.theme_cls.theme_style == "Dark" else (0.82, 0.84, 0.88, 1)
+
+        Line:
+            rounded_rectangle:
+                self.x, self.y, self.width, self.height, dp(12)
+            width: 1.2
+
+
+# ============================================================
+# ADD TRANSACTION SCREEN
+# ============================================================
 
 <AddTransactionScreen>:
 
     BoxLayout:
+
         orientation: "vertical"
 
         canvas.before:
+
             Color:
-                rgba: (0.10, 0.10, 0.10, 1) if app.theme_cls.theme_style == "Dark" else (0.96, 0.97, 1, 1)
+                rgba:
+                    (0.07, 0.08, 0.11, 1) if app.theme_cls.theme_style == "Dark" else (0.96, 0.97, 1, 1)
 
             Rectangle:
                 pos: self.pos
                 size: self.size
 
-        # ======================================
+
+        # ====================================================
         # HEADER
-        # ======================================
+        # ====================================================
 
         MDCard:
+
             size_hint_y: None
-            height: "120dp"
-            radius: [0, 0, 30, 30]
+            height: dp(125)
+
+            radius:
+                [0, 0, dp(28), dp(28)]
+
             elevation: 0
-            md_bg_color: 0.10, 0.32, 0.82, 1
+
+            md_bg_color:
+                0.10, 0.32, 0.82, 1
 
             BoxLayout:
+
                 orientation: "vertical"
-                padding: "20dp"
+
+                padding:
+                    dp(24), dp(20)
+
+                spacing:
+                    dp(4)
+
 
                 Label:
-                    text: "Edit Transaction" if root.edit_mode else "Add Transaction"
-                    font_size: "30sp"
+
+                    text:
+                        "Edit Transaction" if root.edit_mode else "Add Transaction"
+
+                    font_size: "29sp"
+
                     bold: True
-                    color: 1, 1, 1, 1
+
+                    color:
+                        1, 1, 1, 1
+
+                    halign: "left"
+
+                    valign: "middle"
+
+                    text_size:
+                        self.width, None
+
 
                 Label:
-                    text: "Record your income or expense"
-                    font_size: "16sp"
-                    color: 0.9, 0.9, 1, 1
 
-        # ======================================
+                    text:
+                        "Update your transaction details" if root.edit_mode else "Record your income or expense"
+
+                    font_size: "15sp"
+
+                    color:
+                        0.88, 0.93, 1, 1
+
+                    halign: "left"
+
+                    valign: "middle"
+
+                    text_size:
+                        self.width, None
+
+
+        # ====================================================
         # FORM
-        # ======================================
+        # ====================================================
 
         ScrollView:
+
             do_scroll_x: False
 
-            BoxLayout:
-                orientation: "vertical"
-                size_hint_y: None
-                height: self.minimum_height
-                padding: "20dp"
-                spacing: "20dp"
+            bar_width: dp(4)
 
-                # ======================================
+            BoxLayout:
+
+                orientation: "vertical"
+
+                size_hint_y: None
+
+                height:
+                    self.minimum_height
+
+                padding:
+                    dp(22), dp(22), dp(22), dp(30)
+
+                spacing:
+                    dp(12)
+
+
+                # ==================================================
                 # TRANSACTION TYPE
-                # ======================================
+                # ==================================================
 
                 Label:
+
                     text: "Transaction Type"
-                    font_size: "18sp"
+
+                    font_size: "16sp"
+
                     bold: True
-                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.15, 0.15, 0.15, 1)
+
+                    color:
+                        (0.94, 0.96, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.12, 0.14, 0.18, 1)
+
                     size_hint_y: None
-                    height: "30dp"
+
+                    height: dp(28)
+
+                    halign: "left"
+
+                    valign: "middle"
+
+                    text_size:
+                        self.width, None
+
 
                 BoxLayout:
-                    spacing: "15dp"
-                    size_hint_y: None
-                    height: "50dp"
 
-                    ToggleButton:
+                    spacing:
+                        dp(12)
+
+                    size_hint_y: None
+
+                    height:
+                        dp(52)
+
+
+                    ModernToggle:
+
                         id: income_toggle
+
                         text: "Income"
-                        background_normal: ""
-                        background_down: ""
-                        background_color: (0.20, 0.20, 0.20, 1) if app.theme_cls.theme_style == "Dark" else (0.85, 0.85, 0.85, 1)
-                        color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
+
                         group: "type"
 
                         on_state:
                             root.load_income_categories() if self.state == "down" else None
 
-                    ToggleButton:
+
+                    ModernToggle:
+
                         id: expense_toggle
+
                         text: "Expense"
+
                         group: "type"
+
                         state: "down"
-                        background_normal: ""
-                        background_down: ""
-                        background_color: (0.20, 0.20, 0.20, 1) if app.theme_cls.theme_style == "Dark" else (0.85, 0.85, 0.85, 1)
-                        color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
 
                         on_state:
                             root.load_expense_categories() if self.state == "down" else None
 
-                # ======================================
+
+                Widget:
+
+                    size_hint_y: None
+                    height: dp(8)
+
+
+                # ==================================================
                 # AMOUNT
-                # ======================================
+                # ==================================================
 
                 Label:
-                    text: "Amount"
-                    font_size: "18sp"
-                    bold: True
-                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.15, 0.15, 0.15, 1)
-                    size_hint_y: None
-                    height: "25dp"
 
-                TextInput:
+                    text: "Amount"
+
+                    font_size: "16sp"
+
+                    bold: True
+
+                    color:
+                        (0.94, 0.96, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.12, 0.14, 0.18, 1)
+
+                    size_hint_y: None
+
+                    height: dp(28)
+
+                    halign: "left"
+
+                    valign: "middle"
+
+                    text_size:
+                        self.width, None
+
+
+                ModernTextInput:
+
                     id: amount_input
+
                     hint_text: "Enter amount"
+
                     multiline: False
+
                     input_filter: "float"
 
                     size_hint_y: None
-                    height: "45dp"
 
-                    background_normal: ""
-                    background_active: ""
+                    height: dp(56)
 
-                    # Better visibility in Light Mode
-                    background_color: (0.18, 0.18, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (0.90, 0.92, 0.96, 1)
-                    foreground_color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.05, 0.05, 0.05, 1)
-                    hint_text_color: (0.70, 0.70, 0.70, 1)
 
-                    padding: "12dp", "10dp"
+                Widget:
 
-                    canvas.before:
-                        Color:
-                            rgba: (0.45, 0.45, 0.45, 1) if app.theme_cls.theme_style == "Dark" else (0.55, 0.55, 0.60, 1)
+                    size_hint_y: None
+                    height: dp(8)
 
-                        Line:
-                            rectangle: self.x, self.y, self.width, self.height
-                            width: 1.2
 
-                # ======================================
+                # ==================================================
                 # CATEGORY
-                # ======================================
+                # ==================================================
 
                 Label:
-                    text: "Category"
-                    font_size: "18sp"
-                    bold: True
-                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.15, 0.15, 0.15, 1)
-                    size_hint_y: None
-                    height: "25dp"
 
-                Spinner:
+                    text: "Category"
+
+                    font_size: "16sp"
+
+                    bold: True
+
+                    color:
+                        (0.94, 0.96, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.12, 0.14, 0.18, 1)
+
+                    size_hint_y: None
+
+                    height: dp(28)
+
+                    halign: "left"
+
+                    valign: "middle"
+
+                    text_size:
+                        self.width, None
+
+
+                ModernSpinner:
+
                     id: category_spinner
+
                     text: "Select Category"
+
                     values: ()
 
                     size_hint_y: None
-                    height: "45dp"
 
-                    background_normal: ""
-                    background_color: (0.18, 0.18, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (0.90, 0.92, 0.96, 1)
-                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.05, 0.05, 0.05, 1)
+                    height: dp(56)
 
-                # ======================================
+
+                Widget:
+
+                    size_hint_y: None
+                    height: dp(8)
+
+
+                # ==================================================
                 # DESCRIPTION
-                # ======================================
+                # ==================================================
 
                 Label:
+
                     text: "Description"
-                    font_size: "18sp"
+
+                    font_size: "16sp"
+
                     bold: True
-                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.15, 0.15, 0.15, 1)
-                    size_hint_y: None
-                    height: "25dp"
 
-                TextInput:
+                    color:
+                        (0.94, 0.96, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.12, 0.14, 0.18, 1)
+
+                    size_hint_y: None
+
+                    height: dp(28)
+
+                    halign: "left"
+
+                    valign: "middle"
+
+                    text_size:
+                        self.width, None
+
+
+                ModernDescriptionInput:
+
                     id: description_input
-                    hint_text: "Optional"
-                    multiline: True
+
+                    hint_text:
+                        "Optional — add a note about this transaction"
 
                     size_hint_y: None
-                    height: "100dp"
 
-                    background_normal: ""
-                    background_active: ""
+                    height: dp(115)
 
-                    # Better visibility in Light Mode
-                    background_color: (0.18, 0.18, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (0.90, 0.92, 0.96, 1)
-                    foreground_color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.05, 0.05, 0.05, 1)
-                    hint_text_color: (0.70, 0.70, 0.70, 1)
 
-                    padding: "12dp", "10dp"
+                Widget:
 
-                    canvas.before:
-                        Color:
-                            rgba: (0.45, 0.45, 0.45, 1) if app.theme_cls.theme_style == "Dark" else (0.55, 0.55, 0.60, 1)
+                    size_hint_y: None
+                    height: dp(14)
 
-                        Line:
-                            rectangle: self.x, self.y, self.width, self.height
-                            width: 1.2
 
-                # ======================================
-                # BUTTONS
-                # ======================================
+                # ==================================================
+                # ACTION BUTTONS
+                # ==================================================
 
                 BoxLayout:
-                    spacing: "15dp"
-                    size_hint_y: None
-                    height: "50dp"
 
-                    MDRaisedButton:
+                    spacing:
+                        dp(12)
+
+                    size_hint_y: None
+
+                    height:
+                        dp(54)
+
+
+                    # ==================================================
+                    # CANCEL
+                    # ==================================================
+
+                    Button:
+
                         text: "Cancel"
-                        md_bg_color: 0.55, 0.55, 0.55, 1
-                        size_hint_x: 0.5
+
+                        font_size: "15sp"
+
+                        bold: True
+
+                        color:
+                            (0.92, 0.93, 0.96, 1) if app.theme_cls.theme_style == "Dark" else (0.25, 0.27, 0.31, 1)
+
+                        background_normal: ""
+                        background_down: ""
+                        background_color: 0, 0, 0, 0
+
+                        canvas.before:
+
+                            Color:
+                                rgba:
+                                    (0.18, 0.20, 0.25, 1) if app.theme_cls.theme_style == "Dark" else (0.90, 0.91, 0.94, 1)
+
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [dp(12), dp(12), dp(12), dp(12)]
 
                         on_release:
+
                             root.edit_mode = False
                             root.clear_form()
                             app.root.current = "home"
 
-                    MDRaisedButton:
+
+                    # ==================================================
+                    # SAVE
+                    # ==================================================
+
+                    Button:
+
                         id: save_button
-                        text: "Update Transaction" if root.edit_mode else "Save Transaction"
-                        md_bg_color: 0.10, 0.32, 0.82, 1
-                        size_hint_x: 0.5
+
+                        text:
+                            "Update Transaction" if root.edit_mode else "Save Transaction"
+
+                        font_size: "15sp"
+
+                        bold: True
+
+                        color:
+                            1, 1, 1, 1
+
+                        background_normal: ""
+                        background_down: ""
+                        background_color: 0, 0, 0, 0
+
+                        canvas.before:
+
+                            Color:
+                                rgba:
+                                    0.08, 0.27, 0.72, 1
+
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [dp(12), dp(12), dp(12), dp(12)]
 
                         on_release:
+
                             root.save_transaction()
 
+
                 Widget:
+
                     size_hint_y: None
-                    height: "20dp"
+                    height: dp(10)

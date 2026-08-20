@@ -7,7 +7,7 @@
 
     canvas.before:
         Color:
-            rgba: (0.10, 0.10, 0.10, 1) if app.theme_cls.theme_style == "Dark" else (0.96, 0.97, 1, 1)
+            rgba: (0.07, 0.07, 0.09, 1) if app.theme_cls.theme_style == "Dark" else (0.96, 0.97, 1, 1)
 
         Rectangle:
             pos: self.pos
@@ -17,17 +17,18 @@
         orientation: "vertical"
 
         # ==========================================================
-        # SCROLLABLE CONTENT
+        # MAIN SCROLL AREA
         # ==========================================================
 
         ScrollView:
             do_scroll_x: False
+            bar_width: "4dp"
 
             BoxLayout:
                 orientation: "vertical"
                 size_hint_y: None
                 height: self.minimum_height
-                spacing: "16dp"
+                spacing: "14dp"
 
                 # ==================================================
                 # HEADER
@@ -35,53 +36,50 @@
 
                 MDCard:
                     size_hint_y: None
-                    height: "205dp"
+                    height: "175dp"
                     radius: [0, 0, 28, 28]
                     elevation: 0
                     md_bg_color: 0.10, 0.32, 0.82, 1
 
                     BoxLayout:
                         orientation: "vertical"
-                        padding: "25dp"
-                        spacing: "5dp"
+                        padding: "24dp"
+                        spacing: "4dp"
 
                         Label:
                             text: "PocketPilot"
-                            font_size: "30sp"
+                            font_size: "29sp"
                             bold: True
                             color: 1, 1, 1, 1
-                            halign: "center"
+                            halign: "left"
                             valign: "middle"
                             text_size: self.size
                             size_hint_y: None
-                            height: "45dp"
+                            height: "42dp"
 
                         Widget:
-                            size_hint_y: 0.25
+                            size_hint_y: 0.18
 
                         Label:
                             text: "Welcome back,"
-                            font_size: "17sp"
-                            color: 0.90, 0.93, 1, 1
+                            font_size: "16sp"
+                            color: 0.86, 0.91, 1, 1
                             halign: "left"
                             valign: "middle"
                             text_size: self.width, None
                             size_hint_y: None
-                            height: "30dp"
+                            height: "28dp"
 
                         Label:
                             text: root.user_name
-                            font_size: "28sp"
+                            font_size: "27sp"
                             bold: True
                             color: 1, 1, 1, 1
                             halign: "left"
                             valign: "middle"
                             text_size: self.width, None
                             size_hint_y: None
-                            height: "40dp"
-
-                        Widget:
-                            size_hint_y: 0.1
+                            height: "38dp"
 
                 # ==================================================
                 # BODY
@@ -90,7 +88,7 @@
                 BoxLayout:
                     orientation: "vertical"
                     padding: "18dp", "16dp", "18dp", "20dp"
-                    spacing: "16dp"
+                    spacing: "14dp"
                     size_hint_y: None
                     height: self.minimum_height
 
@@ -102,17 +100,18 @@
                         orientation: "vertical"
                         size_hint_y: None
                         height: "145dp"
-                        radius: [18]
+                        radius: [20]
                         elevation: 3
                         padding: "20dp"
-                        spacing: "5dp"
-                        md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+                        spacing: "4dp"
+
+                        md_bg_color: (0.13, 0.13, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
 
                         Label:
                             text: "Current Balance"
-                            font_size: "18sp"
+                            font_size: "17sp"
                             bold: True
-                            color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.30, 0.30, 0.30, 1)
+                            color: (0.82, 0.82, 0.85, 1) if app.theme_cls.theme_style == "Dark" else (0.35, 0.35, 0.40, 1)
                             halign: "center"
                             valign: "middle"
                             text_size: self.size
@@ -121,9 +120,9 @@
 
                         Label:
                             text: root.balance
-                            font_size: "40sp"
+                            font_size: "38sp"
                             bold: True
-                            color: 0.05, 0.65, 0.20, 1
+                            color: 0.08, 0.68, 0.25, 1
                             halign: "center"
                             valign: "middle"
                             text_size: self.size
@@ -131,78 +130,19 @@
                             height: "60dp"
 
                     # ==================================================
-                    # SAVINGS GOAL
+                    # QUICK ACTIONS
                     # ==================================================
 
-                    MDCard:
-                        orientation: "vertical"
+                    Label:
+                        text: "Quick Actions"
+                        font_size: "19sp"
+                        bold: True
+                        color: (0.92, 0.92, 0.94, 1) if app.theme_cls.theme_style == "Dark" else (0.15, 0.15, 0.18, 1)
+                        halign: "left"
+                        valign: "middle"
+                        text_size: self.size
                         size_hint_y: None
-                        height: "230dp"
-                        radius: [18]
-                        elevation: 3
-                        padding: "18dp"
-                        spacing: "7dp"
-                        md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
-
-                        Label:
-                            text: "Savings Goal"
-                            font_size: "20sp"
-                            bold: True
-                            color: 0.10, 0.32, 0.82, 1
-                            halign: "center"
-                            valign: "middle"
-                            text_size: self.size
-                            size_hint_y: None
-                            height: "32dp"
-
-                        Label:
-                            text: root.goal_progress
-                            font_size: "16sp"
-                            color: (0.85, 0.85, 0.85, 1) if app.theme_cls.theme_style == "Dark" else (0.45, 0.45, 0.45, 1)
-                            halign: "center"
-                            text_size: self.size
-                            size_hint_y: None
-                            height: "28dp"
-
-                        ProgressBar:
-                            id: goal_progress_bar
-                            max: 100
-                            value: root.goal_percentage
-                            size_hint_y: None
-                            height: "10dp"
-
-                        Label:
-                            text: root.goal_percentage_text
-                            font_size: "17sp"
-                            bold: True
-                            color: 0.05, 0.65, 0.20, 1
-                            halign: "center"
-                            text_size: self.size
-                            size_hint_y: None
-                            height: "28dp"
-
-                        Label:
-                            text: root.goal_remaining
-                            font_size: "15sp"
-                            color: (0.75, 0.75, 0.75, 1) if app.theme_cls.theme_style == "Dark" else (0.45, 0.45, 0.45, 1)
-                            halign: "center"
-                            text_size: self.size
-                            size_hint_y: None
-                            height: "25dp"
-
-                        MDRaisedButton:
-                            text: "Set Goal"
-                            size_hint: None, None
-                            size: "150dp", "40dp"
-                            pos_hint: {"center_x": 0.5}
-                            md_bg_color: 0.10, 0.32, 0.82, 1
-                            text_color: 1, 1, 1, 1
-                            on_release:
-                                root.open_goal_popup()
-
-                    # ==================================================
-                    # ACTION BUTTONS
-                    # ==================================================
+                        height: "30dp"
 
                     BoxLayout:
                         spacing: "12dp"
@@ -214,76 +154,178 @@
                             size_hint_x: 0.5
                             md_bg_color: 0.05, 0.65, 0.20, 1
                             text_color: 1, 1, 1, 1
+                            elevation: 2
+
                             on_release:
                                 root.open_income()
 
                         MDRaisedButton:
                             text: "+ Expense"
                             size_hint_x: 0.5
-                            md_bg_color: 0.10, 0.32, 0.82, 1
+                            md_bg_color: 0.85, 0.20, 0.20, 1
                             text_color: 1, 1, 1, 1
+                            elevation: 2
+
                             on_release:
                                 root.open_expense()
 
                     # ==================================================
-                    # INCOME & EXPENSE
+                    # SAVINGS GOAL
                     # ==================================================
+
+                    MDCard:
+                        orientation: "vertical"
+                        size_hint_y: None
+                        height: "220dp"
+                        radius: [20]
+                        elevation: 3
+                        padding: "18dp"
+                        spacing: "6dp"
+
+                        md_bg_color: (0.13, 0.13, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+                        Label:
+                            text: "Savings Goal"
+                            font_size: "20sp"
+                            bold: True
+                            color: (0.30, 0.60, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.10, 0.32, 0.82, 1)
+                            halign: "left"
+                            valign: "middle"
+                            text_size: self.size
+                            size_hint_y: None
+                            height: "32dp"
+
+                        Label:
+                            text: root.goal_progress
+                            font_size: "16sp"
+                            color: (0.84, 0.84, 0.87, 1) if app.theme_cls.theme_style == "Dark" else (0.45, 0.45, 0.48, 1)
+                            halign: "left"
+                            valign: "middle"
+                            text_size: self.size
+                            size_hint_y: None
+                            height: "38dp"
+
+                        ProgressBar:
+                            id: goal_progress_bar
+                            max: 100
+                            value: root.goal_percentage
+                            size_hint_y: None
+                            height: "10dp"
+
+                        Label:
+                            text: root.goal_percentage_text
+                            font_size: "16sp"
+                            bold: True
+                            color: 0.08, 0.68, 0.25, 1
+                            halign: "left"
+                            valign: "middle"
+                            text_size: self.size
+                            size_hint_y: None
+                            height: "28dp"
+
+                        Label:
+                            text: root.goal_remaining
+                            font_size: "14sp"
+                            color: (0.72, 0.72, 0.75, 1) if app.theme_cls.theme_style == "Dark" else (0.45, 0.45, 0.48, 1)
+                            halign: "left"
+                            valign: "middle"
+                            text_size: self.size
+                            size_hint_y: None
+                            height: "25dp"
+
+                        MDRaisedButton:
+                            text: "Set Goal"
+                            size_hint: None, None
+                            size: "145dp", "40dp"
+                            pos_hint: {"center_x": 0.5}
+                            md_bg_color: 0.10, 0.32, 0.82, 1
+                            text_color: 1, 1, 1, 1
+
+                            on_release:
+                                root.open_goal_popup()
+
+                    # ==================================================
+                    # INCOME / EXPENSE SUMMARY
+                    # ==================================================
+
+                    Label:
+                        text: "Financial Summary"
+                        font_size: "19sp"
+                        bold: True
+                        color: (0.92, 0.92, 0.94, 1) if app.theme_cls.theme_style == "Dark" else (0.15, 0.15, 0.18, 1)
+                        halign: "left"
+                        valign: "middle"
+                        text_size: self.size
+                        size_hint_y: None
+                        height: "30dp"
 
                     BoxLayout:
                         spacing: "12dp"
                         size_hint_y: None
-                        height: "105dp"
+                        height: "110dp"
+
+                        # ------------------------------------------
+                        # INCOME
+                        # ------------------------------------------
 
                         MDCard:
-                            radius: [16]
+                            radius: [18]
                             elevation: 2
-                            md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+                            md_bg_color: (0.13, 0.13, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
 
                             BoxLayout:
                                 orientation: "vertical"
-                                padding: "15dp"
-                                spacing: "5dp"
+                                padding: "14dp"
+                                spacing: "3dp"
 
                                 Label:
                                     text: "Income"
                                     font_size: "15sp"
                                     bold: True
-                                    color: (0.85, 0.85, 0.85, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
+                                    color: (0.80, 0.80, 0.83, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.43, 1)
                                     halign: "center"
+                                    valign: "middle"
                                     text_size: self.size
 
                                 Label:
                                     text: root.income
-                                    font_size: "24sp"
+                                    font_size: "23sp"
                                     bold: True
-                                    color: 0.05, 0.70, 0.05, 1
+                                    color: 0.08, 0.68, 0.25, 1
                                     halign: "center"
+                                    valign: "middle"
                                     text_size: self.size
 
+                        # ------------------------------------------
+                        # EXPENSE
+                        # ------------------------------------------
+
                         MDCard:
-                            radius: [16]
+                            radius: [18]
                             elevation: 2
-                            md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+                            md_bg_color: (0.13, 0.13, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
 
                             BoxLayout:
                                 orientation: "vertical"
-                                padding: "15dp"
-                                spacing: "5dp"
+                                padding: "14dp"
+                                spacing: "3dp"
 
                                 Label:
                                     text: "Expense"
                                     font_size: "15sp"
                                     bold: True
-                                    color: (0.85, 0.85, 0.85, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.40, 1)
+                                    color: (0.80, 0.80, 0.83, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.40, 0.43, 1)
                                     halign: "center"
+                                    valign: "middle"
                                     text_size: self.size
 
                                 Label:
                                     text: root.expense
-                                    font_size: "24sp"
+                                    font_size: "23sp"
                                     bold: True
-                                    color: 0.80, 0.05, 0.05, 1
+                                    color: 0.85, 0.18, 0.18, 1
                                     halign: "center"
+                                    valign: "middle"
                                     text_size: self.size
 
                     # ==================================================
@@ -292,27 +334,28 @@
 
                     Label:
                         text: "Recent Transactions"
-                        font_size: "21sp"
+                        font_size: "19sp"
                         bold: True
-                        color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.15, 0.15, 0.15, 1)
+                        color: (0.92, 0.92, 0.94, 1) if app.theme_cls.theme_style == "Dark" else (0.15, 0.15, 0.18, 1)
                         halign: "left"
                         valign: "middle"
                         text_size: self.size
                         size_hint_y: None
-                        height: "35dp"
+                        height: "30dp"
 
                     MDCard:
                         size_hint_y: None
-                        height: "110dp"
-                        radius: [16]
+                        height: "105dp"
+                        radius: [18]
                         elevation: 2
                         padding: "15dp"
-                        md_bg_color: (0.16, 0.16, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+                        md_bg_color: (0.13, 0.13, 0.16, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
 
                         Label:
                             text: root.recent_transaction
-                            font_size: "16sp"
-                            color: (0.85, 0.85, 0.85, 1) if app.theme_cls.theme_style == "Dark" else (0.50, 0.50, 0.50, 1)
+                            font_size: "15sp"
+                            color: (0.82, 0.82, 0.85, 1) if app.theme_cls.theme_style == "Dark" else (0.50, 0.50, 0.53, 1)
                             halign: "center"
                             valign: "middle"
                             text_size: self.size
@@ -326,3 +369,5 @@
         # ==========================================================
 
         BottomNav:
+            size_hint_y: None
+            height: "75dp"

@@ -1,159 +1,535 @@
 #:kivy 2.3.1
+
+#:import dp kivy.metrics.dp
 #:import BottomNav widget.bottom_nav.BottomNav
+
 
 <SettingsScreen>:
 
     BoxLayout:
         orientation: "vertical"
 
+        # =========================================================
+        # MAIN BACKGROUND
+        # =========================================================
+
         canvas.before:
             Color:
-                rgba: (0.08, 0.08, 0.10, 1) if app.theme_cls.theme_style == "Dark" else (0.94, 0.96, 1, 1)
+                rgba: (0.055, 0.055, 0.065, 1) if app.theme_cls.theme_style == "Dark" else (0.94, 0.96, 1, 1)
+
             Rectangle:
                 pos: self.pos
                 size: self.size
 
-        # ==================================================
+
+        # =========================================================
         # HEADER
-        # ==================================================
+        # =========================================================
 
         BoxLayout:
+            orientation: "vertical"
+
             size_hint_y: None
-            height: "75dp"
-            padding: "20dp"
+            height: dp(125)
+
+            padding: dp(20), dp(15), dp(20), dp(15)
+
+            canvas.before:
+                Color:
+                    rgba: 0.10, 0.32, 0.82, 1
+
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [0, 0, dp(30), dp(30)]
+
 
             Label:
                 text: "Settings"
                 font_size: "30sp"
                 bold: True
-                color: 0.10, 0.32, 0.82, 1
+
+                color: 1, 1, 1, 1
+
                 halign: "left"
                 valign: "middle"
+
                 text_size: self.size
 
-        # ==================================================
-        # SETTINGS LIST
-        # ==================================================
+
+            Label:
+                text: "Manage your PocketPilot preferences"
+
+                font_size: "15sp"
+
+                color: 0.90, 0.94, 1, 1
+
+                halign: "left"
+                valign: "middle"
+
+                text_size: self.size
+
+
+        # =========================================================
+        # SETTINGS CONTENT
+        # =========================================================
 
         ScrollView:
+
             do_scroll_x: False
+            bar_width: dp(4)
 
             GridLayout:
                 cols: 1
+
                 size_hint_y: None
                 height: self.minimum_height
-                spacing: "12dp"
-                padding: "20dp"
 
-                # ==================================================
+                spacing: dp(10)
+
+                padding: dp(10), dp(18), dp(10), dp(20)
+
+
+                # =================================================
+                # ACCOUNT
+                # =================================================
+
+                Label:
+                    text: "ACCOUNT"
+
+                    size_hint_y: None
+                    height: dp(25)
+
+                    font_size: "13sp"
+                    bold: True
+
+                    color: (0.55, 0.60, 0.72, 1) if app.theme_cls.theme_style == "Dark" else (0.30, 0.38, 0.55, 1)
+
+                    halign: "left"
+                    valign: "middle"
+
+                    text_size: self.size
+
+
+                # =================================================
                 # EDIT PROFILE
-                # ==================================================
+                # =================================================
 
                 Button:
                     text: "Edit Profile"
+
                     size_hint_y: None
-                    height: "55dp"
+                    height: dp(68)
 
                     background_normal: ""
                     background_down: ""
-                    background_color: (0.15, 0.15, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.82, 0.90, 1)
-                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.08, 0.10, 0.16, 1)
+
+                    background_color: (0.12, 0.12, 0.15, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+                    color: (0.95, 0.95, 0.98, 1) if app.theme_cls.theme_style == "Dark" else (0.10, 0.12, 0.18, 1)
+
+                    font_size: "16sp"
+                    bold: True
+
+                    halign: "left"
+                    valign: "middle"
+
+                    text_size: self.width - dp(30), self.height
+
+                    padding_x: dp(15)
+
+                    canvas.before:
+
+                        # Card background
+                        Color:
+                            rgba: (0.12, 0.12, 0.15, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [dp(16)]
+
+                        # Blue accent
+                        Color:
+                            rgba: 0.10, 0.32, 0.82, 1
+
+                        RoundedRectangle:
+                            pos: self.x, self.y
+                            size: dp(5), self.height
+                            radius: [dp(3)]
+
+                        # Full boundary
+                        Color:
+                            rgba: (0.30, 0.30, 0.35, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.80, 0.86, 1)
+
+                        Line:
+                            rounded_rectangle: self.x, self.y, self.width, self.height, dp(16)
+                            width: 1
 
                     on_release:
                         root.edit_profile()
 
-                # ==================================================
+
+                # =================================================
                 # CHANGE PASSWORD
-                # ==================================================
+                # =================================================
 
                 Button:
                     text: "Change Password"
-                    size_hint_y: None
-                    height: "0dp" if app.is_guest else "55dp"
 
-                    opacity: 0 if app.is_guest else 1
+                    size_hint_y: None
+
+                    height: dp(68) if not app.is_guest else dp(0)
+
+                    opacity: 1 if not app.is_guest else 0
+
                     disabled: app.is_guest
 
                     background_normal: ""
                     background_down: ""
-                    background_color: (0.15, 0.15, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.82, 0.90, 1)
-                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.08, 0.10, 0.16, 1)
+
+                    background_color: (0.12, 0.12, 0.15, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+                    color: (0.95, 0.95, 0.98, 1) if app.theme_cls.theme_style == "Dark" else (0.10, 0.12, 0.18, 1)
+
+                    font_size: "16sp"
+                    bold: True
+
+                    halign: "left"
+                    valign: "middle"
+
+                    text_size: self.width - dp(30), self.height
+
+                    padding_x: dp(15)
+
+                    canvas.before:
+
+                        # Card background
+                        Color:
+                            rgba: (0.12, 0.12, 0.15, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [dp(16)]
+
+                        # Blue accent
+                        Color:
+                            rgba: 0.10, 0.32, 0.82, 1
+
+                        RoundedRectangle:
+                            pos: self.x, self.y
+                            size: dp(5), self.height
+                            radius: [dp(3)]
+
+                        # Full boundary
+                        Color:
+                            rgba: (0.30, 0.30, 0.35, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.80, 0.86, 1)
+
+                        Line:
+                            rounded_rectangle: self.x, self.y, self.width, self.height, dp(16)
+                            width: 1
 
                     on_release:
                         root.change_password()
 
-                # ==================================================
+
+                # =================================================
+                # PREFERENCES
+                # =================================================
+
+                Label:
+                    text: "PREFERENCES"
+
+                    size_hint_y: None
+                    height: dp(30)
+
+                    font_size: "13sp"
+                    bold: True
+
+                    color: (0.55, 0.60, 0.72, 1) if app.theme_cls.theme_style == "Dark" else (0.30, 0.38, 0.55, 1)
+
+                    halign: "left"
+                    valign: "middle"
+
+                    text_size: self.size
+
+
+                # =================================================
                 # THEME
-                # ==================================================
+                # =================================================
 
                 Button:
                     text: "Theme"
+
                     size_hint_y: None
-                    height: "55dp"
+                    height: dp(68)
 
                     background_normal: ""
                     background_down: ""
-                    background_color: (0.15, 0.15, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.82, 0.90, 1)
-                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.08, 0.10, 0.16, 1)
+
+                    background_color: (0.12, 0.12, 0.15, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+                    color: (0.95, 0.95, 0.98, 1) if app.theme_cls.theme_style == "Dark" else (0.10, 0.12, 0.18, 1)
+
+                    font_size: "16sp"
+                    bold: True
+
+                    halign: "left"
+                    valign: "middle"
+
+                    text_size: self.width - dp(30), self.height
+
+                    padding_x: dp(15)
+
+                    canvas.before:
+
+                        Color:
+                            rgba: (0.12, 0.12, 0.15, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [dp(16)]
+
+                        Color:
+                            rgba: 0.10, 0.32, 0.82, 1
+
+                        RoundedRectangle:
+                            pos: self.x, self.y
+                            size: dp(5), self.height
+                            radius: [dp(3)]
+
+                        Color:
+                            rgba: (0.30, 0.30, 0.35, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.80, 0.86, 1)
+
+                        Line:
+                            rounded_rectangle: self.x, self.y, self.width, self.height, dp(16)
+                            width: 1
 
                     on_release:
                         root.change_theme()
 
-                # ==================================================
+
+                # =================================================
                 # CURRENCY
-                # ==================================================
+                # =================================================
 
                 Button:
                     text: "Currency"
+
                     size_hint_y: None
-                    height: "55dp"
+                    height: dp(68)
 
                     background_normal: ""
                     background_down: ""
-                    background_color: (0.15, 0.15, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.82, 0.90, 1)
-                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.08, 0.10, 0.16, 1)
+
+                    background_color: (0.12, 0.12, 0.15, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+                    color: (0.95, 0.95, 0.98, 1) if app.theme_cls.theme_style == "Dark" else (0.10, 0.12, 0.18, 1)
+
+                    font_size: "16sp"
+                    bold: True
+
+                    halign: "left"
+                    valign: "middle"
+
+                    text_size: self.width - dp(30), self.height
+
+                    padding_x: dp(15)
+
+                    canvas.before:
+
+                        Color:
+                            rgba: (0.12, 0.12, 0.15, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [dp(16)]
+
+                        Color:
+                            rgba: 0.10, 0.32, 0.82, 1
+
+                        RoundedRectangle:
+                            pos: self.x, self.y
+                            size: dp(5), self.height
+                            radius: [dp(3)]
+
+                        Color:
+                            rgba: (0.30, 0.30, 0.35, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.80, 0.86, 1)
+
+                        Line:
+                            rounded_rectangle: self.x, self.y, self.width, self.height, dp(16)
+                            width: 1
 
                     on_release:
                         root.change_currency()
 
-                # ==================================================
+
+                # =================================================
+                # INFORMATION
+                # =================================================
+
+                Label:
+                    text: "INFORMATION"
+
+                    size_hint_y: None
+                    height: dp(30)
+
+                    font_size: "13sp"
+                    bold: True
+
+                    color: (0.55, 0.60, 0.72, 1) if app.theme_cls.theme_style == "Dark" else (0.30, 0.38, 0.55, 1)
+
+                    halign: "left"
+                    valign: "middle"
+
+                    text_size: self.size
+
+
+                # =================================================
                 # ABOUT POCKETPILOT
-                # ==================================================
+                # =================================================
 
                 Button:
                     text: "About PocketPilot"
+
                     size_hint_y: None
-                    height: "55dp"
+                    height: dp(68)
 
                     background_normal: ""
                     background_down: ""
-                    background_color: (0.15, 0.15, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.82, 0.90, 1)
-                    color: (1, 1, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.08, 0.10, 0.16, 1)
+
+                    background_color: (0.12, 0.12, 0.15, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+                    color: (0.95, 0.95, 0.98, 1) if app.theme_cls.theme_style == "Dark" else (0.10, 0.12, 0.18, 1)
+
+                    font_size: "16sp"
+                    bold: True
+
+                    halign: "left"
+                    valign: "middle"
+
+                    text_size: self.width - dp(30), self.height
+
+                    padding_x: dp(15)
+
+                    canvas.before:
+
+                        Color:
+                            rgba: (0.12, 0.12, 0.15, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [dp(16)]
+
+                        Color:
+                            rgba: 0.10, 0.32, 0.82, 1
+
+                        RoundedRectangle:
+                            pos: self.x, self.y
+                            size: dp(5), self.height
+                            radius: [dp(3)]
+
+                        Color:
+                            rgba: (0.30, 0.30, 0.35, 1) if app.theme_cls.theme_style == "Dark" else (0.78, 0.80, 0.86, 1)
+
+                        Line:
+                            rounded_rectangle: self.x, self.y, self.width, self.height, dp(16)
+                            width: 1
 
                     on_release:
                         root.about_app()
 
-                # ==================================================
+
+                # =================================================
+                # SESSION
+                # =================================================
+
+                Label:
+                    text: "SESSION"
+
+                    size_hint_y: None
+                    height: dp(30)
+
+                    font_size: "13sp"
+                    bold: True
+
+                    color: (0.55, 0.60, 0.72, 1) if app.theme_cls.theme_style == "Dark" else (0.30, 0.38, 0.55, 1)
+
+                    halign: "left"
+                    valign: "middle"
+
+                    text_size: self.size
+
+
+                # =================================================
                 # LOGOUT
-                # ==================================================
+                # =================================================
 
                 Button:
                     text: "Logout"
+
                     size_hint_y: None
-                    height: "55dp"
+                    height: dp(68)
 
                     background_normal: ""
                     background_down: ""
-                    background_color: (0.70, 0.12, 0.12, 1) if app.theme_cls.theme_style == "Dark" else (0.82, 0.20, 0.20, 1)
-                    color: 1, 1, 1, 1
+
+                    background_color: (0.35, 0.08, 0.09, 1) if app.theme_cls.theme_style == "Dark" else (1, 0.94, 0.94, 1)
+
+                    color: (1, 0.92, 0.92, 1) if app.theme_cls.theme_style == "Dark" else (0.75, 0.05, 0.05, 1)
+
+                    font_size: "16sp"
+                    bold: True
+
+                    halign: "left"
+                    valign: "middle"
+
+                    text_size: self.width - dp(30), self.height
+
+                    padding_x: dp(15)
+
+                    canvas.before:
+
+                        Color:
+                            rgba: (0.35, 0.08, 0.09, 1) if app.theme_cls.theme_style == "Dark" else (1, 0.94, 0.94, 1)
+
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [dp(16)]
+
+                        Color:
+                            rgba: 0.90, 0.05, 0.05, 1
+
+                        RoundedRectangle:
+                            pos: self.x, self.y
+                            size: dp(5), self.height
+                            radius: [dp(3)]
+
+                        Color:
+                            rgba: (0.70, 0.15, 0.15, 1) if app.theme_cls.theme_style == "Dark" else (0.90, 0.60, 0.60, 1)
+
+                        Line:
+                            rounded_rectangle: self.x, self.y, self.width, self.height, dp(16)
+                            width: 1
 
                     on_release:
                         root.logout()
 
-        # ==================================================
+
+                Widget:
+                    size_hint_y: None
+                    height: dp(20)
+
+
+        # =========================================================
         # BOTTOM NAVIGATION
-        # ==================================================
+        # =========================================================
 
         BottomNav:
             size_hint_y: None
-            height: "75dp"
+            height: dp(75)
