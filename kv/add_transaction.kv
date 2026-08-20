@@ -235,7 +235,6 @@
                 spacing:
                     dp(4)
 
-
                 Label:
 
                     text:
@@ -506,6 +505,59 @@
                 Widget:
 
                     size_hint_y: None
+                    height: dp(12)
+
+
+                # ==================================================
+                # SMART TRANSACTION / RECEIPT SCANNER
+                # ==================================================
+
+                Button:
+
+                    text: "📷  Scan Receipt / Screenshot"
+
+                    size_hint_y: None
+
+                    height: dp(54)
+
+                    font_size: "15sp"
+
+                    bold: True
+
+                    color:
+                        1, 1, 1, 1
+
+                    background_normal: ""
+
+                    background_down: ""
+
+                    background_color: 0, 0, 0, 0
+
+                    canvas.before:
+
+                        Color:
+
+                            rgba:
+                                0.10, 0.32, 0.82, 1
+
+                        RoundedRectangle:
+
+                            pos: self.pos
+
+                            size: self.size
+
+                            radius:
+                                [dp(12), dp(12), dp(12), dp(12)]
+
+                    on_release:
+
+                        app.root.current = "receipt"
+
+
+                Widget:
+
+                    size_hint_y: None
+
                     height: dp(14)
 
 
@@ -546,13 +598,18 @@
                         canvas.before:
 
                             Color:
+
                                 rgba:
                                     (0.18, 0.20, 0.25, 1) if app.theme_cls.theme_style == "Dark" else (0.90, 0.91, 0.94, 1)
 
                             RoundedRectangle:
+
                                 pos: self.pos
+
                                 size: self.size
-                                radius: [dp(12), dp(12), dp(12), dp(12)]
+
+                                radius:
+                                    [dp(12), dp(12), dp(12), dp(12)]
 
                         on_release:
 
@@ -586,13 +643,18 @@
                         canvas.before:
 
                             Color:
+
                                 rgba:
                                     0.08, 0.27, 0.72, 1
 
                             RoundedRectangle:
+
                                 pos: self.pos
+
                                 size: self.size
-                                radius: [dp(12), dp(12), dp(12), dp(12)]
+
+                                radius:
+                                    [dp(12), dp(12), dp(12), dp(12)]
 
                         on_release:
 
@@ -602,4 +664,5 @@
                 Widget:
 
                     size_hint_y: None
+
                     height: dp(10)

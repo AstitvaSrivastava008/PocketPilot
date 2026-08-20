@@ -1,0 +1,393 @@
+#:kivy 2.3.1
+
+#:import dp kivy.metrics.dp
+
+
+<ReceiptScreen>:
+
+    BoxLayout:
+
+        orientation: "vertical"
+
+        canvas.before:
+
+            Color:
+
+                rgba:
+                    (0.07, 0.08, 0.11, 1) if app.theme_cls.theme_style == "Dark" else (0.96, 0.97, 1, 1)
+
+            Rectangle:
+
+                pos: self.pos
+
+                size: self.size
+
+
+        # ====================================================
+        # HEADER
+        # ====================================================
+
+        BoxLayout:
+
+            orientation: "vertical"
+
+            size_hint_y: None
+
+            height: dp(125)
+
+            padding:
+                dp(24), dp(20)
+
+            spacing:
+                dp(4)
+
+            canvas.before:
+
+                Color:
+
+                    rgba:
+                        0.10, 0.32, 0.82, 1
+
+                RoundedRectangle:
+
+                    pos: self.pos
+
+                    size: self.size
+
+                    radius:
+                        [0, 0, dp(28), dp(28)]
+
+
+            Label:
+
+                text: "Smart Transaction"
+
+                font_size: "29sp"
+
+                bold: True
+
+                color:
+                    1, 1, 1, 1
+
+                halign: "left"
+
+                valign: "middle"
+
+                text_size:
+                    self.width, None
+
+
+            Label:
+
+                text: "Scan a receipt or payment screenshot"
+
+                font_size: "15sp"
+
+                color:
+                    0.88, 0.93, 1, 1
+
+                halign: "left"
+
+                valign: "middle"
+
+                text_size:
+                    self.width, None
+
+
+        # ====================================================
+        # MAIN CONTENT
+        # ====================================================
+
+        ScrollView:
+
+            do_scroll_x: False
+
+            BoxLayout:
+
+                orientation: "vertical"
+
+                size_hint_y: None
+
+                height:
+                    self.minimum_height
+
+                padding:
+                    dp(22), dp(24), dp(22), dp(30)
+
+                spacing:
+                    dp(16)
+
+
+                # ==================================================
+                # STATUS
+                # ==================================================
+
+                Label:
+
+                    id: status_label
+
+                    text: "No receipt selected"
+
+                    font_size: "17sp"
+
+                    bold: True
+
+                    color:
+                        (0.94, 0.96, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.12, 0.14, 0.18, 1)
+
+                    size_hint_y: None
+
+                    height: dp(32)
+
+                    halign: "center"
+
+                    valign: "middle"
+
+                    text_size:
+                        self.width, None
+
+
+                # ==================================================
+                # IMAGE PREVIEW CARD
+                # ==================================================
+
+                BoxLayout:
+
+                    orientation: "vertical"
+
+                    size_hint_y: None
+
+                    height: dp(330)
+
+                    padding:
+                        dp(12)
+
+                    canvas.before:
+
+                        Color:
+
+                            rgba:
+                                (0.12, 0.14, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+
+                        RoundedRectangle:
+
+                            pos: self.pos
+
+                            size: self.size
+
+                            radius:
+                                [dp(16), dp(16), dp(16), dp(16)]
+
+                        Color:
+
+                            rgba:
+                                (0.30, 0.33, 0.40, 1) if app.theme_cls.theme_style == "Dark" else (0.82, 0.84, 0.88, 1)
+
+                        Line:
+
+                            rounded_rectangle:
+                                self.x, self.y, self.width, self.height, dp(16)
+
+                            width: 1.2
+
+
+                    Image:
+
+                        id: receipt_image
+
+                        source: ""
+
+                        opacity: 0
+
+                        allow_stretch: True
+
+                        keep_ratio: True
+
+
+                # ==================================================
+                # INSTRUCTION
+                # ==================================================
+
+                Label:
+
+                    id: instruction_label
+
+                    text:
+                        "Select a receipt or payment screenshot to begin."
+
+                    font_size: "14sp"
+
+                    color:
+                        (0.70, 0.73, 0.80, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.43, 0.48, 1)
+
+                    size_hint_y: None
+
+                    height: dp(48)
+
+                    halign: "center"
+
+                    valign: "middle"
+
+                    text_size:
+                        self.width, None
+
+
+                # ==================================================
+                # SELECT RECEIPT
+                # ==================================================
+
+                Button:
+
+                    text: "📷  Select Receipt / Screenshot"
+
+                    size_hint_y: None
+
+                    height: dp(56)
+
+                    font_size: "15sp"
+
+                    bold: True
+
+                    color:
+                        1, 1, 1, 1
+
+                    background_normal: ""
+
+                    background_down: ""
+
+                    background_color: 0, 0, 0, 0
+
+                    canvas.before:
+
+                        Color:
+
+                            rgba:
+                                0.10, 0.32, 0.82, 1
+
+                        RoundedRectangle:
+
+                            pos: self.pos
+
+                            size: self.size
+
+                            radius:
+                                [dp(12), dp(12), dp(12), dp(12)]
+
+                    on_release:
+
+                        root.select_receipt()
+
+
+                # ==================================================
+                # PROCESS RECEIPT
+                # ==================================================
+
+                Button:
+
+                    id: process_button
+
+                    text: "🤖  Process Receipt"
+
+                    size_hint_y: None
+
+                    height: dp(56)
+
+                    font_size: "15sp"
+
+                    bold: True
+
+                    disabled: True
+
+                    color:
+                        1, 1, 1, 1
+
+                    background_normal: ""
+
+                    background_down: ""
+
+                    background_color: 0, 0, 0, 0
+
+                    canvas.before:
+
+                        Color:
+
+                            rgba:
+                                (0.10, 0.65, 0.28, 1) if not self.disabled else (0.25, 0.27, 0.32, 1)
+
+                        RoundedRectangle:
+
+                            pos: self.pos
+
+                            size: self.size
+
+                            radius:
+                                [dp(12), dp(12), dp(12), dp(12)]
+
+                    on_release:
+
+                        root.process_receipt()
+
+
+                # ==================================================
+                # CLEAR
+                # ==================================================
+
+                Button:
+
+                    text: "Clear Selected Image"
+
+                    size_hint_y: None
+
+                    height: dp(42)
+
+                    font_size: "14sp"
+
+                    color:
+                        (0.35, 0.62, 1, 1)
+
+                    background_normal: ""
+
+                    background_down: ""
+
+                    background_color:
+                        0, 0, 0, 0
+
+                    on_release:
+
+                        root.clear_image()
+
+
+                Widget:
+
+                    size_hint_y: None
+
+                    height: dp(4)
+
+
+                # ==================================================
+                # BACK
+                # ==================================================
+
+                Button:
+
+                    text: "←  Back to Add Transaction"
+
+                    size_hint_y: None
+
+                    height: dp(46)
+
+                    font_size: "14sp"
+
+                    color:
+                        (0.70, 0.73, 0.80, 1) if app.theme_cls.theme_style == "Dark" else (0.35, 0.38, 0.44, 1)
+
+                    background_normal: ""
+
+                    background_down: ""
+
+                    background_color:
+                        0, 0, 0, 0
+
+                    on_release:
+
+                        root.go_back()

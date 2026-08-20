@@ -12,6 +12,7 @@ from screens.history import HistoryScreen
 from screens.analytics import AnalyticsScreen
 from screens.settings import SettingsScreen
 from screens.add_transaction import AddTransactionScreen
+from screens.receipt import ReceiptScreen
 
 from database import create_database
 
@@ -61,6 +62,7 @@ class PocketPilot(MDApp):
         Builder.load_file("kv/analytics.kv")
         Builder.load_file("kv/settings.kv")
         Builder.load_file("kv/add_transaction.kv")
+        Builder.load_file("kv/receipt.kv")
 
         # -----------------------------
         # Application Settings
@@ -113,6 +115,9 @@ class PocketPilot(MDApp):
 
         screen_manager.add_widget(
             AddTransactionScreen(name="add_transaction")
+        )
+        screen_manager.add_widget(
+            ReceiptScreen(name="receipt")
         )
 
         return screen_manager
