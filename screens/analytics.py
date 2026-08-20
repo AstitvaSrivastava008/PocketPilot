@@ -16,6 +16,8 @@ from charts import (
     create_category_bar_chart
 )
 
+from ai.financial_advisor import FinancialAdvisor
+
 
 class AnalyticsScreen(Screen):
 
@@ -33,6 +35,10 @@ class AnalyticsScreen(Screen):
     def load_analytics(self):
 
         app = App.get_running_app()
+
+        # -----------------------------------------------------
+        # Make sure a user is logged in
+        # -----------------------------------------------------
 
         if app.current_user is None:
             return
@@ -70,9 +76,11 @@ class AnalyticsScreen(Screen):
         )
 
         self.ids.expense_chart.source = ""
+
         self.ids.expense_chart.source = (
             "assets/expense_chart.png"
         )
+
         self.ids.expense_chart.reload()
 
         # =====================================================
@@ -90,9 +98,11 @@ class AnalyticsScreen(Screen):
         )
 
         self.ids.income_expense_chart.source = ""
+
         self.ids.income_expense_chart.source = (
             "assets/income_expense_chart.png"
         )
+
         self.ids.income_expense_chart.reload()
 
         # =====================================================
@@ -105,9 +115,11 @@ class AnalyticsScreen(Screen):
         )
 
         self.ids.category_chart.source = ""
+
         self.ids.category_chart.source = (
             "assets/category_chart.png"
         )
+
         self.ids.category_chart.reload()
 
         # =====================================================
@@ -134,6 +146,7 @@ class AnalyticsScreen(Screen):
         else:
 
             category = "No Expenses"
+
             highest_amount = 0
 
             self.ids.highest_category.text = (
@@ -189,19 +202,28 @@ class AnalyticsScreen(Screen):
         # FINANCIAL INSIGHTS
         # =====================================================
 
+        # -----------------------------------------------------
         # Total income
+        # -----------------------------------------------------
+
         self.ids.total_income_label.text = (
             f"{currency_symbol}"
             f"{income:,.2f}"
         )
 
+        # -----------------------------------------------------
         # Total expenses
+        # -----------------------------------------------------
+
         self.ids.total_expense_label.text = (
             f"{currency_symbol}"
             f"{expense:,.2f}"
         )
 
+        # -----------------------------------------------------
         # Highest spending category
+        # -----------------------------------------------------
+
         self.ids.insight_category_label.text = (
             str(category)
         )
@@ -230,56 +252,19 @@ class AnalyticsScreen(Screen):
         )
 
         # =====================================================
-        # DYNAMIC INSIGHT MESSAGE
+        # AI FINANCIAL RECOMMENDATION
         # =====================================================
 
-        if income <= 0 and expense <= 0:
-
-            insight = (
-                "Start adding transactions to see "
-                "your financial insights."
+        recommendation = (
+            FinancialAdvisor.generate_recommendation(
+                user_id
             )
+        )
 
-        elif income <= 0:
+        # -----------------------------------------------------
+        # Recommendation message
+        # -----------------------------------------------------
 
-            insight = (
-                "You currently have expenses recorded "
-                "but no income recorded."
-            )
-
-        elif expense <= 0:
-
-            insight = (
-                "Great start! You have income recorded "
-                "but no expenses yet."
-            )
-
-        elif expense > income:
-
-            insight = (
-                "Your expenses are higher than your "
-                "income. Consider reviewing your spending."
-            )
-
-        elif savings_rate >= 50:
-
-            insight = (
-                "Excellent! You are keeping more than "
-                "half of your income after expenses."
-            )
-
-        elif savings_rate >= 20:
-
-            insight = (
-                "Good progress! You are saving a healthy "
-                "portion of your income."
-            )
-
-        else:
-
-            insight = (
-                "Your expenses are taking a large share "
-                "of your income. Keep an eye on spending."
-            )
-
-        self.ids.insight_message.text = insight
+        self.ids.insight_message.text = (
+            recommendation["message"]
+        )
