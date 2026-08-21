@@ -5,27 +5,28 @@
 
 <ReceiptScreen>:
 
+    canvas.before:
+
+        Color:
+            rgba: 0.055, 0.06, 0.09, 1
+
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+
     BoxLayout:
 
         orientation: "vertical"
 
-        canvas.before:
+        spacing: dp(8)
 
-            Color:
-
-                rgba:
-                    (0.07, 0.08, 0.11, 1) if app.theme_cls.theme_style == "Dark" else (0.96, 0.97, 1, 1)
-
-            Rectangle:
-
-                pos: self.pos
-
-                size: self.size
+        padding: dp(12)
 
 
-        # ====================================================
+        # =====================================================
         # HEADER
-        # ====================================================
+        # =====================================================
 
         BoxLayout:
 
@@ -33,123 +34,251 @@
 
             size_hint_y: None
 
-            height: dp(125)
+            height: dp(92)
 
-            padding:
-                dp(24), dp(20)
+            padding: dp(16), dp(10)
 
-            spacing:
-                dp(4)
+            spacing: dp(2)
 
             canvas.before:
 
                 Color:
-
-                    rgba:
-                        0.10, 0.32, 0.82, 1
+                    rgba: 0.10, 0.32, 0.82, 1
 
                 RoundedRectangle:
-
                     pos: self.pos
-
                     size: self.size
-
-                    radius:
-                        [0, 0, dp(28), dp(28)]
+                    radius: [dp(18), dp(18), dp(18), dp(18)]
 
 
             Label:
 
                 text: "Smart Transaction"
 
-                font_size: "29sp"
+                color: 1, 1, 1, 1
+
+                font_size: "24sp"
 
                 bold: True
-
-                color:
-                    1, 1, 1, 1
 
                 halign: "left"
 
                 valign: "middle"
 
-                text_size:
-                    self.width, None
+                text_size: self.width, None
 
 
             Label:
 
                 text: "Scan a receipt or payment screenshot"
 
-                font_size: "15sp"
+                color: 0.88, 0.93, 1, 1
 
-                color:
-                    0.88, 0.93, 1, 1
+                font_size: "12sp"
 
                 halign: "left"
 
                 valign: "middle"
 
-                text_size:
-                    self.width, None
+                text_size: self.width, None
 
 
-        # ====================================================
-        # MAIN CONTENT
-        # ====================================================
+        # =====================================================
+        # STATUS
+        # =====================================================
 
-        ScrollView:
+        Label:
 
-            do_scroll_x: False
+            id: receipt_status
 
-            BoxLayout:
+            text: "No receipt selected"
 
-                orientation: "vertical"
+            color: 0.92, 0.94, 1, 1
 
-                size_hint_y: None
+            font_size: "15sp"
 
-                height:
-                    self.minimum_height
+            bold: True
 
-                padding:
-                    dp(22), dp(24), dp(22), dp(30)
+            size_hint_y: None
 
-                spacing:
-                    dp(16)
+            height: dp(27)
 
+            halign: "center"
 
-                # ==================================================
-                # STATUS
-                # ==================================================
+            valign: "middle"
 
-                Label:
-
-                    id: status_label
-
-                    text: "No receipt selected"
-
-                    font_size: "17sp"
-
-                    bold: True
-
-                    color:
-                        (0.94, 0.96, 1, 1) if app.theme_cls.theme_style == "Dark" else (0.12, 0.14, 0.18, 1)
-
-                    size_hint_y: None
-
-                    height: dp(32)
-
-                    halign: "center"
-
-                    valign: "middle"
-
-                    text_size:
-                        self.width, None
+            text_size: self.width, None
 
 
-                # ==================================================
-                # IMAGE PREVIEW CARD
-                # ==================================================
+        # =====================================================
+        # RECEIPT IMAGE
+        # =====================================================
+
+        BoxLayout:
+
+            size_hint_y: None
+
+            height: dp(190)
+
+            padding: dp(6)
+
+            canvas.before:
+
+                Color:
+                    rgba: 0.12, 0.14, 0.19, 1
+
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(14), dp(14), dp(14), dp(14)]
+
+
+            Image:
+
+                id: receipt_image
+
+                source: ""
+
+                allow_stretch: True
+
+                keep_ratio: True
+
+
+        # =====================================================
+        # INSTRUCTION
+        # =====================================================
+
+        Label:
+
+            id: instruction_label
+
+            text: "Choose a receipt from the PocketPilot receipt folder."
+
+            color: 0.70, 0.75, 0.84, 1
+
+            font_size: "12sp"
+
+            size_hint_y: None
+
+            height: dp(30)
+
+            halign: "center"
+
+            valign: "middle"
+
+            text_size: self.width - dp(20), None
+
+
+        # =====================================================
+        # ACTION BUTTONS
+        # =====================================================
+
+        BoxLayout:
+
+            size_hint_y: None
+
+            height: dp(46)
+
+            spacing: dp(8)
+
+
+            Button:
+
+                text: "Select Receipt / Screenshot"
+
+                font_size: "13sp"
+
+                bold: True
+
+                color: 1, 1, 1, 1
+
+                background_normal: ""
+
+                background_color: 0.10, 0.38, 0.88, 1
+
+                on_release:
+
+                    root.select_receipt()
+
+
+            Button:
+
+                id: process_button
+
+                text: "Process Receipt"
+
+                font_size: "13sp"
+
+                bold: True
+
+                disabled: True
+
+                color: 1, 1, 1, 1
+
+                background_normal: ""
+
+                background_color: 0.05, 0.65, 0.28, 1
+
+                on_release:
+
+                    root.process_receipt()
+
+
+        # =====================================================
+        # EXTRACTED TRANSACTION AREA
+        #
+        # IMPORTANT:
+        # This has its own fixed area so it cannot disappear
+        # because of BoxLayout size calculations.
+        # =====================================================
+
+        BoxLayout:
+
+            id: extracted_card
+
+            orientation: "vertical"
+
+            size_hint_y: 1
+
+            padding: dp(2)
+
+            opacity: 0
+
+            disabled: True
+
+
+            canvas.before:
+
+                Color:
+                    rgba: 0.12, 0.14, 0.20, 1
+
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(15), dp(15), dp(15), dp(15)]
+
+                Color:
+                    rgba: 0.10, 0.38, 0.88, 1
+
+                Line:
+                    rounded_rectangle:
+                        self.x, self.y, self.width, self.height, dp(15)
+
+                    width: dp(1.2)
+
+
+            # -------------------------------------------------
+            # SCROLLABLE CONTENT
+            # -------------------------------------------------
+
+            ScrollView:
+
+                do_scroll_x: False
+
+                do_scroll_y: True
+
+                bar_width: dp(5)
+
 
                 BoxLayout:
 
@@ -157,237 +286,464 @@
 
                     size_hint_y: None
 
-                    height: dp(330)
+                    height: self.minimum_height
 
-                    padding:
-                        dp(12)
+                    padding: dp(14)
 
-                    canvas.before:
+                    spacing: dp(4)
 
-                        Color:
 
-                            rgba:
-                                (0.12, 0.14, 0.18, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+                    # =========================================
+                    # TITLE
+                    # =========================================
 
-                        RoundedRectangle:
+                    Label:
 
-                            pos: self.pos
+                        text: "Extracted Transaction"
 
-                            size: self.size
+                        color: 0.35, 0.68, 1, 1
 
-                            radius:
-                                [dp(16), dp(16), dp(16), dp(16)]
+                        font_size: "18sp"
 
-                        Color:
+                        bold: True
 
-                            rgba:
-                                (0.30, 0.33, 0.40, 1) if app.theme_cls.theme_style == "Dark" else (0.82, 0.84, 0.88, 1)
+                        size_hint_y: None
 
-                        Line:
+                        height: dp(27)
 
-                            rounded_rectangle:
-                                self.x, self.y, self.width, self.height, dp(16)
+                        halign: "left"
 
-                            width: 1.2
+                        valign: "middle"
 
+                        text_size: self.width, None
 
-                    Image:
 
-                        id: receipt_image
+                    Label:
 
-                        source: ""
+                        text: "Review the information before saving."
 
-                        opacity: 0
+                        color: 0.65, 0.70, 0.80, 1
 
-                        allow_stretch: True
+                        font_size: "11sp"
 
-                        keep_ratio: True
+                        size_hint_y: None
 
+                        height: dp(21)
 
-                # ==================================================
-                # INSTRUCTION
-                # ==================================================
+                        halign: "left"
 
-                Label:
+                        text_size: self.width, None
 
-                    id: instruction_label
 
-                    text:
-                        "Select a receipt or payment screenshot to begin."
+                    # =========================================
+                    # MERCHANT
+                    # =========================================
 
-                    font_size: "14sp"
+                    Label:
 
-                    color:
-                        (0.70, 0.73, 0.80, 1) if app.theme_cls.theme_style == "Dark" else (0.40, 0.43, 0.48, 1)
+                        text: "Merchant"
 
-                    size_hint_y: None
+                        color: 0.55, 0.61, 0.72, 1
 
-                    height: dp(48)
+                        font_size: "11sp"
 
-                    halign: "center"
+                        size_hint_y: None
 
-                    valign: "middle"
+                        height: dp(17)
 
-                    text_size:
-                        self.width, None
+                        halign: "left"
 
+                        text_size: self.width, None
 
-                # ==================================================
-                # SELECT RECEIPT
-                # ==================================================
 
-                Button:
+                    Label:
 
-                    text: "📷  Select Receipt / Screenshot"
+                        id: merchant_value
 
-                    size_hint_y: None
+                        text: "-"
 
-                    height: dp(56)
+                        color: 1, 1, 1, 1
 
-                    font_size: "15sp"
+                        font_size: "14sp"
 
-                    bold: True
+                        bold: True
 
-                    color:
-                        1, 1, 1, 1
+                        size_hint_y: None
 
-                    background_normal: ""
+                        height: dp(22)
 
-                    background_down: ""
+                        halign: "left"
 
-                    background_color: 0, 0, 0, 0
+                        text_size: self.width, None
 
-                    canvas.before:
 
-                        Color:
+                    # =========================================
+                    # AMOUNT
+                    # =========================================
 
-                            rgba:
-                                0.10, 0.32, 0.82, 1
+                    Label:
 
-                        RoundedRectangle:
+                        text: "Amount"
 
-                            pos: self.pos
+                        color: 0.55, 0.61, 0.72, 1
 
-                            size: self.size
+                        font_size: "11sp"
 
-                            radius:
-                                [dp(12), dp(12), dp(12), dp(12)]
+                        size_hint_y: None
 
-                    on_release:
+                        height: dp(17)
 
-                        root.select_receipt()
+                        halign: "left"
 
+                        text_size: self.width, None
 
-                # ==================================================
-                # PROCESS RECEIPT
-                # ==================================================
 
-                Button:
+                    Label:
 
-                    id: process_button
+                        id: amount_value
 
-                    text: "🤖  Process Receipt"
+                        text: "-"
 
-                    size_hint_y: None
+                        color: 0.15, 0.90, 0.42, 1
 
-                    height: dp(56)
+                        font_size: "19sp"
 
-                    font_size: "15sp"
+                        bold: True
 
-                    bold: True
+                        size_hint_y: None
 
-                    disabled: True
+                        height: dp(27)
 
-                    color:
-                        1, 1, 1, 1
+                        halign: "left"
 
-                    background_normal: ""
+                        text_size: self.width, None
 
-                    background_down: ""
 
-                    background_color: 0, 0, 0, 0
+                    # =========================================
+                    # DATE
+                    # =========================================
 
-                    canvas.before:
+                    Label:
 
-                        Color:
+                        id: date_value
 
-                            rgba:
-                                (0.10, 0.65, 0.28, 1) if not self.disabled else (0.25, 0.27, 0.32, 1)
+                        text: "Date: -"
 
-                        RoundedRectangle:
+                        color: 0.92, 0.94, 0.98, 1
 
-                            pos: self.pos
+                        font_size: "12sp"
 
-                            size: self.size
+                        size_hint_y: None
 
-                            radius:
-                                [dp(12), dp(12), dp(12), dp(12)]
+                        height: dp(20)
 
-                    on_release:
+                        halign: "left"
 
-                        root.process_receipt()
+                        text_size: self.width, None
 
 
-                # ==================================================
-                # CLEAR
-                # ==================================================
+                    # =========================================
+                    # TIME
+                    # =========================================
 
-                Button:
+                    Label:
 
-                    text: "Clear Selected Image"
+                        id: time_value
 
-                    size_hint_y: None
+                        text: "Time: -"
 
-                    height: dp(42)
+                        color: 0.92, 0.94, 0.98, 1
 
-                    font_size: "14sp"
+                        font_size: "12sp"
 
-                    color:
-                        (0.35, 0.62, 1, 1)
+                        size_hint_y: None
 
-                    background_normal: ""
+                        height: dp(20)
 
-                    background_down: ""
+                        halign: "left"
 
-                    background_color:
-                        0, 0, 0, 0
+                        text_size: self.width, None
 
-                    on_release:
 
-                        root.clear_image()
+                    # =========================================
+                    # TYPE
+                    # =========================================
 
+                    Label:
 
-                Widget:
+                        id: type_value
 
-                    size_hint_y: None
+                        text: "Type: Expense"
 
-                    height: dp(4)
+                        color: 1, 0.75, 0.25, 1
 
+                        font_size: "12sp"
 
-                # ==================================================
-                # BACK
-                # ==================================================
+                        bold: True
 
-                Button:
+                        size_hint_y: None
 
-                    text: "←  Back to Add Transaction"
+                        height: dp(20)
 
-                    size_hint_y: None
+                        halign: "left"
 
-                    height: dp(46)
+                        text_size: self.width, None
 
-                    font_size: "14sp"
 
-                    color:
-                        (0.70, 0.73, 0.80, 1) if app.theme_cls.theme_style == "Dark" else (0.35, 0.38, 0.44, 1)
+                    # =========================================
+                    # CATEGORY
+                    # =========================================
 
-                    background_normal: ""
+                    Label:
 
-                    background_down: ""
+                        text: "Category"
 
-                    background_color:
-                        0, 0, 0, 0
+                        color: 0.55, 0.61, 0.72, 1
 
-                    on_release:
+                        font_size: "11sp"
 
-                        root.go_back()
+                        size_hint_y: None
+
+                        height: dp(17)
+
+                        halign: "left"
+
+                        text_size: self.width, None
+
+
+                    Label:
+
+                        id: category_value
+
+                        text: "-"
+
+                        color: 0.35, 0.68, 1, 1
+
+                        font_size: "13sp"
+
+                        bold: True
+
+                        size_hint_y: None
+
+                        height: dp(21)
+
+                        halign: "left"
+
+                        text_size: self.width, None
+
+
+                    # =========================================
+                    # DESCRIPTION
+                    # =========================================
+
+                    Label:
+
+                        text: "Description"
+
+                        color: 0.55, 0.61, 0.72, 1
+
+                        font_size: "11sp"
+
+                        size_hint_y: None
+
+                        height: dp(17)
+
+                        halign: "left"
+
+                        text_size: self.width, None
+
+
+                    Label:
+
+                        id: description_value
+
+                        text: "-"
+
+                        color: 0.92, 0.94, 0.98, 1
+
+                        font_size: "12sp"
+
+                        size_hint_y: None
+
+                        height: dp(22)
+
+                        halign: "left"
+
+                        valign: "middle"
+
+                        text_size: self.width, None
+
+
+                    # =========================================
+                    # PAYMENT
+                    # =========================================
+
+                    Label:
+
+                        id: payment_value
+
+                        text: "Payment Method: -"
+
+                        color: 0.85, 0.88, 0.95, 1
+
+                        font_size: "12sp"
+
+                        size_hint_y: None
+
+                        height: dp(21)
+
+                        halign: "left"
+
+                        text_size: self.width, None
+
+
+                    # =========================================
+                    # UPI ID
+                    # =========================================
+
+                    Label:
+
+                        id: upi_value
+
+                        text: "UPI ID: -"
+
+                        color: 0.75, 0.80, 0.90, 1
+
+                        font_size: "11sp"
+
+                        size_hint_y: None
+
+                        height: dp(20)
+
+                        halign: "left"
+
+                        text_size: self.width, None
+
+
+                    # =========================================
+                    # TRANSACTION ID
+                    # =========================================
+
+                    Label:
+
+                        id: transaction_id_value
+
+                        text: "Transaction ID: -"
+
+                        color: 0.75, 0.80, 0.90, 1
+
+                        font_size: "11sp"
+
+                        size_hint_y: None
+
+                        height: dp(20)
+
+                        halign: "left"
+
+                        text_size: self.width, None
+
+
+                    # =========================================
+                    # SAVE BUTTON
+                    # =========================================
+
+                    Button:
+
+                        id: save_button
+
+                        text: "✓  Confirm & Save Transaction"
+
+                        font_size: "13sp"
+
+                        bold: True
+
+                        disabled: True
+
+                        color: 1, 1, 1, 1
+
+                        background_normal: ""
+
+                        background_color: 0.05, 0.65, 0.28, 1
+
+                        size_hint_y: None
+
+                        height: dp(45)
+
+                        on_release:
+
+                            root.save_transaction()
+
+
+                    # =========================================
+                    # CLEAR BUTTON
+                    # =========================================
+
+                    Button:
+
+                        text: "Clear Selected Image"
+
+                        font_size: "11sp"
+
+                        color: 0.35, 0.65, 1, 1
+
+                        background_normal: ""
+
+                        background_color: 0, 0, 0, 0
+
+                        size_hint_y: None
+
+                        height: dp(30)
+
+                        on_release:
+
+                            root.clear_receipt()
+
+
+        # =====================================================
+        # STATUS MESSAGE
+        # =====================================================
+
+        Label:
+
+            id: status_label
+
+            text: "Select a receipt or payment screenshot to begin."
+
+            color: 0.72, 0.76, 0.84, 1
+
+            font_size: "11sp"
+
+            size_hint_y: None
+
+            height: dp(25)
+
+            halign: "center"
+
+            valign: "middle"
+
+            text_size: self.width - dp(20), None
+
+
+        # =====================================================
+        # BACK BUTTON
+        # =====================================================
+
+        Button:
+
+            text: "←  Back to Add Transaction"
+
+            font_size: "12sp"
+
+            color: 0.65, 0.75, 1, 1
+
+            background_normal: ""
+
+            background_color: 0, 0, 0, 0
+
+            size_hint_y: None
+
+            height: dp(30)
+
+            on_release:
+
+                root.go_back()
